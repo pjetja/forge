@@ -93,29 +93,29 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CONN-02 | Phase 1 | Pending |
 | CONN-03 | Phase 1 | Pending |
 | CONN-04 | Phase 1 | Pending |
-| EXLIB-01 | TBD | Pending |
-| EXLIB-02 | TBD | Pending |
-| EXLIB-03 | TBD | Pending |
-| PLAN-01 | TBD | Pending |
-| PLAN-02 | TBD | Pending |
-| PLAN-03 | TBD | Pending |
-| PLAN-04 | TBD | Pending |
-| PLAN-05 | TBD | Pending |
-| PLAN-06 | TBD | Pending |
-| PLAN-07 | TBD | Pending |
-| TRACK-01 | TBD | Pending |
-| TRACK-02 | TBD | Pending |
-| TRACK-03 | TBD | Pending |
-| TRACK-04 | TBD | Pending |
-| TRACK-05 | TBD | Pending |
-| PROG-01 | TBD | Pending |
-| PROG-02 | TBD | Pending |
+| EXLIB-01 | Phase 2 | Pending |
+| EXLIB-02 | Phase 2 | Pending |
+| EXLIB-03 | Phase 2 | Pending |
+| PLAN-01 | Phase 3 | Pending |
+| PLAN-02 | Phase 3 | Pending |
+| PLAN-03 | Phase 3 | Pending |
+| PLAN-04 | Phase 3 | Pending |
+| PLAN-05 | Phase 3 | Pending |
+| PLAN-06 | Phase 3 | Pending |
+| PLAN-07 | Phase 3 | Pending |
+| TRACK-01 | Phase 4 | Pending |
+| TRACK-02 | Phase 4 | Pending |
+| TRACK-03 | Phase 4 | Pending |
+| TRACK-04 | Phase 4 | Pending |
+| TRACK-05 | Phase 4 | Pending |
+| PROG-01 | Phase 5 | Pending |
+| PROG-02 | Phase 5 | Pending |
 
 **Coverage:**
 - v1 requirements: 25 total
-- Mapped to phases: 8 (auth + connections)
-- Unmapped: 17 ⚠️ (roadmap will assign)
+- Mapped to phases: 25/25
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-28*
-*Last updated: 2026-02-28 after initial definition*
+*Last updated: 2026-02-28 after roadmap creation — all 25 requirements mapped*
