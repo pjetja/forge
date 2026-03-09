@@ -1,8 +1,8 @@
-import { NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
+import { NextResponse, type NextRequest } from 'next/server';
+import { createServerClient } from '@supabase/ssr';
 import { createAdminClient } from '@/lib/supabase/admin';
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get('code');
   const tokenHash = searchParams.get('token_hash');
@@ -10,19 +10,33 @@ export async function GET(request: Request) {
   const role = searchParams.get('role') as 'trainer' | 'trainee' | null;
   const inviteToken = searchParams.get('invite');
 
-  const supabase = await createClient();
+  // Collect cookies here so we can write them directly onto the redirect response.
+  // Using cookies() from next/headers does NOT attach cookies to NextResponse.redirect().
+  const cookiesToSet: Array<{ name: string; value: string; options: Record<string, unknown> }> = [];
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+    {
+      cookies: {
+        getAll() { return request.cookies.getAll(); },
+        setAll(incoming) { cookiesToSet.push(...incoming); },
+      },
+    }
+  );
+
   const adminClient = createAdminClient();
   let user: { id: string; email?: string; app_metadata?: Record<string, unknown>; user_metadata?: Record<string, unknown> } | null = null;
 
   if (tokenHash && type) {
-    // Email confirmation flow (email/password signup)
+    // Email confirmation (token_hash flow)
     const { data, error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type: type as 'signup' | 'email' });
     if (error || !data.user) {
       return NextResponse.redirect(`${origin}/auth/auth-code-error`);
     }
     user = data.user;
   } else if (code) {
-    // OAuth PKCE flow (Google sign-in)
+    // PKCE code exchange (email confirmation + Google OAuth)
     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
     if (error || !data.user) {
       return NextResponse.redirect(`${origin}/auth/auth-code-error`);
@@ -72,7 +86,14 @@ export async function GET(request: Request) {
   }
 
   const destination = finalRole === 'trainer' ? '/trainer' : '/trainee';
-  return NextResponse.redirect(`${origin}${destination}`);
+  const response = NextResponse.redirect(`${origin}${destination}`);
+
+  // Write session cookies directly onto the redirect response so the browser receives them.
+  cookiesToSet.forEach(({ name, value, options }) => {
+    response.cookies.set(name, value, options as Parameters<typeof response.cookies.set>[2]);
+  });
+
+  return response;
 }
 
 // Helper: claim an invite link for a newly signed-up trainee
