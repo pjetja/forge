@@ -12,7 +12,7 @@ Five phases deliver a complete trainer-trainee workout tracking platform. The bu
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [x] **Phase 1: Foundation** - Auth, roles, multi-tenant isolation, and trainer-trainee connections
+- [ ] **Phase 1: Foundation** - Auth, roles, multi-tenant isolation, and trainer-trainee connections (gap closure in progress: plans 04-05)
 - [ ] **Phase 2: Exercise Library** - Trainer-scoped exercise library with search and filtering
 - [ ] **Phase 3: Plan Builder** - Multi-week workout plan creation, assignment, and editing
 - [ ] **Phase 4: Trainee Workout Logging** - The core value loop — log sets mid-session with last week's results inline
@@ -30,7 +30,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. A user can log out from any page and is immediately redirected away from protected content
   4. A trainer can add a trainee directly by email or generate an invite link/code that a trainee can use to join
   5. A trainer can view their full roster of connected trainees, and trainees from different trainers cannot see each other's data
-**Plans**: 3 (01: Scaffold+Schema, 02: Auth, 03: Invite+Connections)
+**Plans**: 5 (01: Scaffold+Schema, 02: Auth, 03: Middleware+Shells, 04: Invite Link Generation [gap], 05: Trainee Join Flow [gap])
 
 ### Phase 2: Exercise Library
 **Goal**: Trainers can build and maintain a reusable library of exercises that feeds into all their workout plans
@@ -82,7 +82,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 3/3 | Complete | 2026-03-09 |
+| 1. Foundation | 4/5 | Gap closure in progress | 2026-03-09 |
 | 2. Exercise Library | 0/TBD | Not started | - |
 | 3. Plan Builder | 0/TBD | Not started | - |
 | 4. Trainee Workout Logging | 0/TBD | Not started | - |

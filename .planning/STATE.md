@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 ## Current Position
 
 Phase: 1 of 5 (Foundation)
-Plan: 3 of 3 in current phase — PHASE COMPLETE
-Status: Phase 01 complete — all 3 plans executed, auth loop closed
-Last activity: 2026-03-09 — Plan 03 (Middleware + Route Group Shells) executed
+Plan: 4 of 5 in current phase
+Status: Phase 01 gap closure in progress — Plan 04 (Invite Link Generation) executed
+Last activity: 2026-03-09 — Plan 04 (Invite Link Generation) executed
 
-Progress: [███░░░░░░░] 20%
+Progress: [███░░░░░░░] 22%
 
 ## Performance Metrics
 
@@ -27,11 +27,11 @@ Progress: [███░░░░░░░] 20%
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01-foundation | 3/3 | 42 min | 14 min |
+| 01-foundation | 4/5 | 44 min | 11 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (13 min), 01-02 (4 min), 01-03 (25 min)
-- Trend: middleware + routing more complex than auth pages
+- Last 5 plans: 01-01 (13 min), 01-02 (4 min), 01-03 (25 min), 01-04 (2 min)
+- Trend: gap-closure plans fast when patterns already established
 
 *Updated after each plan completion*
 
@@ -56,6 +56,9 @@ Recent decisions affecting current work:
 - [01-03]: getClaims() used in middleware (not getUser/getSession) — local JWT validation, no network per request
 - [01-03]: Route group pages placed under trainer/trainee segments — Next.js 16 parallel page conflict prevented
 - [01-03]: middleware.ts convention retained (deprecation warning in Next.js 16 for proxy rename, build still succeeds)
+- [01-04]: getClaims() accessed via claimsResult.data?.claims optional chaining in Server Actions — consistent with middleware pattern, required by TypeScript strict mode
+- [01-04]: adminClient (service_role) used for invite_links INSERT — no INSERT RLS policy exists, admin client is the intended bypass path
+- [01-04]: Server Action returns relative /join/[token] path; client prepends window.location.origin to avoid hardcoding host
 
 ### Pending Todos
 
@@ -70,5 +73,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-03-09
-Stopped at: Completed 01-foundation/03-PLAN.md — middleware + route group shells complete, Phase 01 Foundation done
+Stopped at: Completed 01-foundation/04-PLAN.md — invite link generation (generateInviteLink + InviteDialog), CONN-01 and CONN-02 satisfied
 Resume file: None

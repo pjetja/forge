@@ -15,7 +15,7 @@
 ### Connections
 
 - [ ] **CONN-01**: Trainer can add a trainee directly by email
-- [ ] **CONN-02**: Trainer can generate an invite code/link for a trainee to join
+- [x] **CONN-02**: Trainer can generate an invite code/link for a trainee to join
 - [ ] **CONN-03**: Trainee can join a trainer by entering an invite code or clicking invite link
 - [ ] **CONN-04**: Trainer can view their roster of connected trainees
 
@@ -89,8 +89,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | AUTH-02 | Phase 1 (Plan 01: infra; Plan 02: auth UI) | Complete |
 | AUTH-03 | Phase 1 (Plan 01: infra; Plan 02: auth UI) | Complete |
 | AUTH-04 | Phase 1 (Plan 01: infra; Plan 02: auth UI) | Complete |
-| CONN-01 | Phase 1 (Plan 01: infra; Plan 03: invite flow) | In Progress |
-| CONN-02 | Phase 1 (Plan 01: infra; Plan 03: invite flow) | In Progress |
+| CONN-01 | Phase 1 (Plan 04: invite link generation) | Complete |
+| CONN-02 | Phase 1 (Plan 04: invite link generation) | Complete |
 | CONN-03 | Phase 1 (Plan 01: infra; Plan 03: invite flow) | In Progress |
 | CONN-04 | Phase 1 (Plan 01: infra; Plan 03: invite flow) | In Progress |
 | EXLIB-01 | Phase 2 | Pending |
@@ -118,4 +118,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-02-28*
-*Last updated: 2026-03-09 after Phase 1 Plan 03 — middleware auth guard + route group shells complete; AUTH-03/AUTH-04 confirmed via getClaims() middleware + signOut form action*
+*Last updated: 2026-03-09 after Phase 1 Plan 04 — invite link generation complete; CONN-01 and CONN-02 satisfied via generateInviteLink Server Action + InviteDialog component*
