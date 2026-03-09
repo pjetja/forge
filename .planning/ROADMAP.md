@@ -12,7 +12,7 @@ Five phases deliver a complete trainer-trainee workout tracking platform. The bu
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation** - Auth, roles, multi-tenant isolation, and trainer-trainee connections
+- [x] **Phase 1: Foundation** - Auth, roles, multi-tenant isolation, and trainer-trainee connections
 - [ ] **Phase 2: Exercise Library** - Trainer-scoped exercise library with search and filtering
 - [ ] **Phase 3: Plan Builder** - Multi-week workout plan creation, assignment, and editing
 - [ ] **Phase 4: Trainee Workout Logging** - The core value loop — log sets mid-session with last week's results inline
@@ -82,7 +82,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 2/3 | In progress | - |
+| 1. Foundation | 3/3 | Complete | 2026-03-09 |
 | 2. Exercise Library | 0/TBD | Not started | - |
 | 3. Plan Builder | 0/TBD | Not started | - |
 | 4. Trainee Workout Logging | 0/TBD | Not started | - |

@@ -118,4 +118,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-02-28*
-*Last updated: 2026-03-09 after Phase 1 Plan 02 — AUTH-01 through AUTH-04 implemented (email/password + Google OAuth, role assignment, signOut)*
+*Last updated: 2026-03-09 after Phase 1 Plan 03 — middleware auth guard + route group shells complete; AUTH-03/AUTH-04 confirmed via getClaims() middleware + signOut form action*

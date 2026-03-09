@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 ## Current Position
 
 Phase: 1 of 5 (Foundation)
-Plan: 2 of 3 in current phase
-Status: In progress — Plan 02 complete, ready for Plan 03
-Last activity: 2026-03-09 — Plan 02 (Auth pages + OAuth integration) executed
+Plan: 3 of 3 in current phase — PHASE COMPLETE
+Status: Phase 01 complete — all 3 plans executed, auth loop closed
+Last activity: 2026-03-09 — Plan 03 (Middleware + Route Group Shells) executed
 
-Progress: [██░░░░░░░░] 13%
+Progress: [███░░░░░░░] 20%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 2
-- Average duration: 8.5 min
-- Total execution time: 0.3 hours
+- Total plans completed: 3
+- Average duration: 12.7 min
+- Total execution time: 0.6 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01-foundation | 2/3 | 17 min | 8.5 min |
+| 01-foundation | 3/3 | 42 min | 14 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (13 min), 01-02 (4 min)
-- Trend: fast execution on auth pages (well-defined plan)
+- Last 5 plans: 01-01 (13 min), 01-02 (4 min), 01-03 (25 min)
+- Trend: middleware + routing more complex than auth pages
 
 *Updated after each plan completion*
 
@@ -53,6 +53,9 @@ Recent decisions affecting current work:
 - [01-02]: signOut Server Action exported from login/actions.ts for app shell use in Plan 03
 - [01-02]: Zod v4 uses .issues (not .errors) on ZodError — fixed in signup actions
 - [01-02]: getClaims() return accessed with optional chaining — TypeScript strict mode requires nullable handling
+- [01-03]: getClaims() used in middleware (not getUser/getSession) — local JWT validation, no network per request
+- [01-03]: Route group pages placed under trainer/trainee segments — Next.js 16 parallel page conflict prevented
+- [01-03]: middleware.ts convention retained (deprecation warning in Next.js 16 for proxy rename, build still succeeds)
 
 ### Pending Todos
 
@@ -67,5 +70,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-03-09
-Stopped at: Completed 01-foundation/02-PLAN.md — auth pages + OAuth integration complete, ready for Plan 03 (middleware + route protection)
+Stopped at: Completed 01-foundation/03-PLAN.md — middleware + route group shells complete, Phase 01 Foundation done
 Resume file: None
