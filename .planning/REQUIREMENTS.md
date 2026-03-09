@@ -7,10 +7,10 @@
 
 ### Authentication
 
-- [ ] **AUTH-01**: User can sign up with email and password
-- [ ] **AUTH-02**: User selects role at signup (trainer or trainee)
-- [ ] **AUTH-03**: User can log in and stay logged in across sessions
-- [ ] **AUTH-04**: User can log out from any page
+- [x] **AUTH-01**: User can sign up with email and password
+- [x] **AUTH-02**: User selects role at signup (trainer or trainee)
+- [x] **AUTH-03**: User can log in and stay logged in across sessions
+- [x] **AUTH-04**: User can log out from any page
 
 ### Connections
 
@@ -85,10 +85,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 | Phase 1 (Plan 01: infra; Plan 02: auth UI) | In Progress |
-| AUTH-02 | Phase 1 (Plan 01: infra; Plan 02: auth UI) | In Progress |
-| AUTH-03 | Phase 1 (Plan 01: infra; Plan 02: auth UI) | In Progress |
-| AUTH-04 | Phase 1 (Plan 01: infra; Plan 02: auth UI) | In Progress |
+| AUTH-01 | Phase 1 (Plan 01: infra; Plan 02: auth UI) | Complete |
+| AUTH-02 | Phase 1 (Plan 01: infra; Plan 02: auth UI) | Complete |
+| AUTH-03 | Phase 1 (Plan 01: infra; Plan 02: auth UI) | Complete |
+| AUTH-04 | Phase 1 (Plan 01: infra; Plan 02: auth UI) | Complete |
 | CONN-01 | Phase 1 (Plan 01: infra; Plan 03: invite flow) | In Progress |
 | CONN-02 | Phase 1 (Plan 01: infra; Plan 03: invite flow) | In Progress |
 | CONN-03 | Phase 1 (Plan 01: infra; Plan 03: invite flow) | In Progress |
@@ -118,4 +118,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-02-28*
-*Last updated: 2026-03-09 after Phase 1 Plan 01 — AUTH and CONN infrastructure scaffolded; full implementation in Plans 02-03*
+*Last updated: 2026-03-09 after Phase 1 Plan 02 — AUTH-01 through AUTH-04 implemented (email/password + Google OAuth, role assignment, signOut)*

@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 ## Current Position
 
 Phase: 1 of 5 (Foundation)
-Plan: 1 of 3 in current phase
-Status: In progress — Plan 01 complete, ready for Plan 02
-Last activity: 2026-03-09 — Plan 01 (Scaffold + Supabase clients + DB schema) executed
+Plan: 2 of 3 in current phase
+Status: In progress — Plan 02 complete, ready for Plan 03
+Last activity: 2026-03-09 — Plan 02 (Auth pages + OAuth integration) executed
 
-Progress: [█░░░░░░░░░] 7%
+Progress: [██░░░░░░░░] 13%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 1
-- Average duration: 13 min
-- Total execution time: 0.2 hours
+- Total plans completed: 2
+- Average duration: 8.5 min
+- Total execution time: 0.3 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01-foundation | 1/3 | 13 min | 13 min |
+| 01-foundation | 2/3 | 17 min | 8.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (13 min)
-- Trend: establishing baseline
+- Last 5 plans: 01-01 (13 min), 01-02 (4 min)
+- Trend: fast execution on auth pages (well-defined plan)
 
 *Updated after each plan completion*
 
@@ -49,6 +49,10 @@ Recent decisions affecting current work:
 - [01-01]: Hand-written migration SQL instead of drizzle-kit generate — allows RLS policies in same file as table DDL
 - [01-01]: Next.js 16.1.6 installed (create-next-app@latest default; plan said 15, 16 is current stable — no functional difference)
 - [01-01]: Admin client (service_role) used for all INSERT operations that bypass RLS — no INSERT policies defined on trainer_trainee_connections
+- [01-02]: Shared SignupForm component accepts role + action props — avoids duplication between trainer and trainee pages
+- [01-02]: signOut Server Action exported from login/actions.ts for app shell use in Plan 03
+- [01-02]: Zod v4 uses .issues (not .errors) on ZodError — fixed in signup actions
+- [01-02]: getClaims() return accessed with optional chaining — TypeScript strict mode requires nullable handling
 
 ### Pending Todos
 
@@ -63,5 +67,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-03-09
-Stopped at: Completed 01-foundation/01-PLAN.md — migration SQL ready but pending manual application
+Stopped at: Completed 01-foundation/02-PLAN.md — auth pages + OAuth integration complete, ready for Plan 03 (middleware + route protection)
 Resume file: None
