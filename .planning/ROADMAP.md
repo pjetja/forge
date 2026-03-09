@@ -1,4 +1,4 @@
-# Roadmap: GYM AI Assistant
+# Roadmap: Forge
 
 ## Overview
 
@@ -31,6 +31,16 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. A trainer can add a trainee directly by email or generate an invite link/code that a trainee can use to join
   5. A trainer can view their full roster of connected trainees, and trainees from different trainers cannot see each other's data
 **Plans**: 5 (01: Scaffold+Schema, 02: Auth, 03: Middleware+Shells, 04: Invite Link Generation [gap], 05: Trainee Join Flow [gap])
+
+### Phase 01.2: Logo Generation (INSERTED)
+
+**Goal:** [Urgent work - to be planned]
+**Requirements**: TBD
+**Depends on:** Phase 1
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 01.2 to break down)
 
 ### Phase 01.1: UI Design System (INSERTED)
 
