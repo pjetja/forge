@@ -16,8 +16,8 @@
 
 - [ ] **CONN-01**: Trainer can add a trainee directly by email
 - [x] **CONN-02**: Trainer can generate an invite code/link for a trainee to join
-- [ ] **CONN-03**: Trainee can join a trainer by entering an invite code or clicking invite link
-- [ ] **CONN-04**: Trainer can view their roster of connected trainees
+- [x] **CONN-03**: Trainee can join a trainer by entering an invite code or clicking invite link
+- [x] **CONN-04**: Trainer can view their roster of connected trainees
 
 ### Exercise Library
 
@@ -91,8 +91,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | AUTH-04 | Phase 1 (Plan 01: infra; Plan 02: auth UI) | Complete |
 | CONN-01 | Phase 1 (Plan 04: invite link generation) | Complete |
 | CONN-02 | Phase 1 (Plan 04: invite link generation) | Complete |
-| CONN-03 | Phase 1 (Plan 01: infra; Plan 03: invite flow) | In Progress |
-| CONN-04 | Phase 1 (Plan 01: infra; Plan 03: invite flow) | In Progress |
+| CONN-03 | Phase 1 (Plan 05: invite claim page) | Complete |
+| CONN-04 | Phase 1 (Plan 05: live trainer roster) | Complete |
 | EXLIB-01 | Phase 2 | Pending |
 | EXLIB-02 | Phase 2 | Pending |
 | EXLIB-03 | Phase 2 | Pending |
