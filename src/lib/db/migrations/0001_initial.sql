@@ -28,14 +28,6 @@ ALTER TABLE users ENABLE ROW LEVEL SECURITY;
 -- Trainees see their own row
 CREATE POLICY "user_sees_own_row" ON users
   FOR ALL USING ((SELECT auth.uid()) = auth_uid);
--- Trainers can see their connected trainees
-CREATE POLICY "trainer_sees_connected_trainees" ON users
-  FOR SELECT USING (
-    auth_uid IN (
-      SELECT trainee_auth_uid FROM trainer_trainee_connections
-      WHERE trainer_auth_uid = (SELECT auth.uid())
-    )
-  );
 
 -- Invite links
 CREATE TABLE IF NOT EXISTS invite_links (
@@ -77,3 +69,12 @@ CREATE POLICY "disconnect" ON trainer_trainee_connections
     trainer_auth_uid = (SELECT auth.uid()) OR trainee_auth_uid = (SELECT auth.uid())
   );
 -- Insert handled by admin client in Server Actions (bypasses RLS) — no INSERT policy needed
+
+-- Trainers can see their connected trainees (added after trainer_trainee_connections is created)
+CREATE POLICY "trainer_sees_connected_trainees" ON users
+  FOR SELECT USING (
+    auth_uid IN (
+      SELECT trainee_auth_uid FROM trainer_trainee_connections
+      WHERE trainer_auth_uid = (SELECT auth.uid())
+    )
+  );

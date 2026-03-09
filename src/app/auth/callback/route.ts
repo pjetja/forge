@@ -5,48 +5,59 @@ import { createAdminClient } from '@/lib/supabase/admin';
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get('code');
+  const tokenHash = searchParams.get('token_hash');
+  const type = searchParams.get('type');
   const role = searchParams.get('role') as 'trainer' | 'trainee' | null;
   const inviteToken = searchParams.get('invite');
 
-  if (!code) {
-    return NextResponse.redirect(`${origin}/auth/auth-code-error`);
-  }
-
   const supabase = await createClient();
-  const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+  const adminClient = createAdminClient();
+  let user: { id: string; email?: string; app_metadata?: Record<string, unknown>; user_metadata?: Record<string, unknown> } | null = null;
 
-  if (error || !data.user) {
+  if (tokenHash && type) {
+    // Email confirmation flow (email/password signup)
+    const { data, error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type: type as 'signup' | 'email' });
+    if (error || !data.user) {
+      return NextResponse.redirect(`${origin}/auth/auth-code-error`);
+    }
+    user = data.user;
+  } else if (code) {
+    // OAuth PKCE flow (Google sign-in)
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+    if (error || !data.user) {
+      return NextResponse.redirect(`${origin}/auth/auth-code-error`);
+    }
+    user = data.user;
+  } else {
     return NextResponse.redirect(`${origin}/auth/auth-code-error`);
   }
 
-  const existingRole = data.user.app_metadata?.role as 'trainer' | 'trainee' | undefined;
+  const existingRole = user.app_metadata?.role as 'trainer' | 'trainee' | undefined;
 
-  // Only assign role on FIRST OAuth signup (new user has no existing role)
+  // Only assign role and create profile on first signup (no existing role)
   if (!existingRole && role) {
-    const adminClient = createAdminClient();
-    await adminClient.auth.admin.updateUserById(data.user.id, {
+    await adminClient.auth.admin.updateUserById(user.id, {
       app_metadata: { role },
     });
 
-    // Create profile row for new OAuth user
+    // Use admin client for profile insert — no session exists yet at this point
+    // (email just confirmed, RLS would block a regular client insert)
     if (role === 'trainer') {
-      await supabase.from('trainers').insert({
-        auth_uid: data.user.id,
-        email: data.user.email!,
-        name: data.user.user_metadata?.full_name ?? data.user.email ?? 'Trainer',
+      await adminClient.from('trainers').insert({
+        auth_uid: user.id,
+        email: user.email!,
+        name: user.user_metadata?.full_name ?? user.user_metadata?.name ?? user.email ?? 'Trainer',
       });
     } else {
-      await supabase.from('users').insert({
-        auth_uid: data.user.id,
-        email: data.user.email!,
-        name: data.user.user_metadata?.full_name ?? data.user.email ?? 'Trainee',
+      await adminClient.from('users').insert({
+        auth_uid: user.id,
+        email: user.email!,
+        name: user.user_metadata?.full_name ?? user.user_metadata?.name ?? user.email ?? 'Trainee',
         role: 'trainee',
       });
 
-      // Auto-connect to trainer if invite token was preserved through OAuth redirect
       if (inviteToken) {
-        const adminClient = createAdminClient();
-        await claimInviteToken(adminClient, data.user.id, inviteToken);
+        await claimInviteToken(adminClient, user.id, inviteToken);
       }
     }
   }
@@ -67,7 +78,7 @@ export async function GET(request: Request) {
 // Helper: claim an invite link for a newly signed-up trainee
 // Uses admin client to bypass RLS — insert into trainer_trainee_connections
 async function claimInviteToken(
-  adminClient: ReturnType<typeof createAdminClient>,
+  adminClient: Awaited<ReturnType<typeof createAdminClient>>,
   traineeUid: string,
   token: string
 ) {

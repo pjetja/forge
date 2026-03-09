@@ -2,7 +2,6 @@
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
-import { createAdminClient } from '@/lib/supabase/admin';
 
 const SignupSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -25,9 +24,23 @@ export async function signUpTrainee(prevState: unknown, formData: FormData) {
 
   const { email, password, name, inviteToken } = result.data;
   const supabase = await createClient();
-  const adminClient = createAdminClient();
 
-  const { data, error } = await supabase.auth.signUp({ email, password });
+  // emailRedirectTo carries role + invite token through to /auth/callback.
+  // Profile row and role assignment happen there after email is confirmed.
+  const callbackUrl = new URL(
+    `${process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'}/auth/callback`
+  );
+  callbackUrl.searchParams.set('role', 'trainee');
+  if (inviteToken) callbackUrl.searchParams.set('invite', inviteToken);
+
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      emailRedirectTo: callbackUrl.toString(),
+      data: { name },
+    },
+  });
 
   if (error) {
     return { error: error.message };
@@ -35,26 +48,6 @@ export async function signUpTrainee(prevState: unknown, formData: FormData) {
 
   if (!data.user) {
     return { error: 'Signup failed — please try again' };
-  }
-
-  // Set role in app_metadata via Admin API
-  await adminClient.auth.admin.updateUserById(data.user.id, {
-    app_metadata: { role: 'trainee' },
-  });
-
-  // Create trainee profile row
-  await supabase.from('users').insert({
-    auth_uid: data.user.id,
-    email: data.user.email!,
-    name,
-    role: 'trainee',
-  });
-
-  // Store invite token in session cookie so it survives email verification
-  // The /join/[token] redirect will happen after email confirmation
-  if (inviteToken) {
-    // Redirect to verify-email with invite token in query so it can be picked up post-verification
-    redirect(`/verify-email?invite=${inviteToken}`);
   }
 
   redirect('/verify-email');
