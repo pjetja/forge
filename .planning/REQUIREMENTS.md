@@ -85,14 +85,14 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 | Phase 1 | Pending |
-| AUTH-02 | Phase 1 | Pending |
-| AUTH-03 | Phase 1 | Pending |
-| AUTH-04 | Phase 1 | Pending |
-| CONN-01 | Phase 1 | Pending |
-| CONN-02 | Phase 1 | Pending |
-| CONN-03 | Phase 1 | Pending |
-| CONN-04 | Phase 1 | Pending |
+| AUTH-01 | Phase 1 (Plan 01: infra; Plan 02: auth UI) | In Progress |
+| AUTH-02 | Phase 1 (Plan 01: infra; Plan 02: auth UI) | In Progress |
+| AUTH-03 | Phase 1 (Plan 01: infra; Plan 02: auth UI) | In Progress |
+| AUTH-04 | Phase 1 (Plan 01: infra; Plan 02: auth UI) | In Progress |
+| CONN-01 | Phase 1 (Plan 01: infra; Plan 03: invite flow) | In Progress |
+| CONN-02 | Phase 1 (Plan 01: infra; Plan 03: invite flow) | In Progress |
+| CONN-03 | Phase 1 (Plan 01: infra; Plan 03: invite flow) | In Progress |
+| CONN-04 | Phase 1 (Plan 01: infra; Plan 03: invite flow) | In Progress |
 | EXLIB-01 | Phase 2 | Pending |
 | EXLIB-02 | Phase 2 | Pending |
 | EXLIB-03 | Phase 2 | Pending |
@@ -118,4 +118,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-02-28*
-*Last updated: 2026-02-28 after roadmap creation — all 25 requirements mapped*
+*Last updated: 2026-03-09 after Phase 1 Plan 01 — AUTH and CONN infrastructure scaffolded; full implementation in Plans 02-03*
