@@ -62,6 +62,10 @@ Recent decisions affecting current work:
 - [01-05]: PostgREST join returns users as array[] not single object — TraineeRow.users typed as array, first element extracted via [0] ?? null
 - [01-05]: Race condition on simultaneous invite claim — unique constraint violation (23505) treated as idempotent success, redirects to /trainee
 
+### Roadmap Evolution
+
+- Phase 01.1 inserted after Phase 1: UI Design System — dark color scheme, improved contrast, consistent visual language across all auth and app pages (URGENT)
+
 ### Pending Todos
 
 - [01-01]: Apply database migration via Supabase SQL Editor — paste src/lib/db/migrations/0001_initial.sql into SQL Editor and run
