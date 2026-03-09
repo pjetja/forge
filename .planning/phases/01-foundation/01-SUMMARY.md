@@ -183,6 +183,22 @@ The database migration (`0001_initial.sql`) needs to be applied manually.
 
 **Supabase project URL:** `https://zkxlejxpopaffjvqmbgz.supabase.co`
 
+## Self-Check: PASSED
+
+| Item | Status |
+|------|--------|
+| src/lib/supabase/client.ts | FOUND |
+| src/lib/supabase/server.ts | FOUND |
+| src/lib/supabase/admin.ts | FOUND |
+| src/lib/db/schema.ts | FOUND |
+| src/lib/db/migrations/0001_initial.sql | FOUND |
+| drizzle.config.ts | FOUND |
+| .env.local.example | FOUND |
+| Commit 8798b3d (Task 1) | FOUND |
+| Commit 60cfaa1 (Task 2) | FOUND |
+| Commit ef4e5dd (Task 3) | FOUND |
+| Commit 1b945c8 (docs) | FOUND |
+
 ---
 *Phase: 01-foundation*
 *Completed: 2026-03-09*
