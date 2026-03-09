@@ -65,6 +65,10 @@ Recent decisions affecting current work:
 ### Roadmap Evolution
 
 - Phase 01.1 inserted after Phase 1: UI Design System — dark color scheme, improved contrast, consistent visual language across all auth and app pages (URGENT)
+- Phase 02.1 inserted after Phase 2: UI Polish — visual review and polish after Exercise Library is built
+- Phase 03.1 inserted after Phase 3: UI Polish — visual review and polish after Plan Builder is built
+- Phase 04.1 inserted after Phase 4: UI Polish — visual review and polish after Trainee Workout Logging is built
+- Phase 05.1 inserted after Phase 5: UI Polish — visual review and polish after Trainer Progress Visibility is built
 
 ### Pending Todos
 

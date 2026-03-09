@@ -32,6 +32,16 @@ Decimal phases appear between their surrounding integers in numeric order.
   5. A trainer can view their full roster of connected trainees, and trainees from different trainers cannot see each other's data
 **Plans**: 5 (01: Scaffold+Schema, 02: Auth, 03: Middleware+Shells, 04: Invite Link Generation [gap], 05: Trainee Join Flow [gap])
 
+### Phase 01.1: UI Design System (INSERTED)
+
+**Goal:** [Urgent work - to be planned]
+**Requirements**: TBD
+**Depends on:** Phase 1
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 01.1 to break down)
+
 ### Phase 2: Exercise Library
 **Goal**: Trainers can build and maintain a reusable library of exercises that feeds into all their workout plans
 **Depends on**: Phase 1
@@ -41,6 +51,16 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. An exercise created by one trainer is not visible to any other trainer
   3. A trainer can search their exercise library by name and filter by muscle group to find exercises quickly
 **Plans**: TBD
+
+### Phase 02.1: UI Polish (INSERTED)
+
+**Goal:** [Urgent work - to be planned]
+**Requirements**: TBD
+**Depends on:** Phase 2
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 02.1 to break down)
 
 ### Phase 3: Plan Builder
 **Goal**: Trainers can create structured multi-week workout plans and assign them to connected trainees
@@ -54,6 +74,16 @@ Decimal phases appear between their surrounding integers in numeric order.
   5. A trainer can edit a plan that is currently active for a trainee and the trainee sees the updated schedule
 **Plans**: TBD
 
+### Phase 03.1: UI Polish (INSERTED)
+
+**Goal:** [Urgent work - to be planned]
+**Requirements**: TBD
+**Depends on:** Phase 3
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 03.1 to break down)
+
 ### Phase 4: Trainee Workout Logging
 **Goal**: A trainee can open the app at the gym, see today's workout with last week's results, and log their sets in under a minute
 **Depends on**: Phase 3
@@ -65,6 +95,16 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. A trainee can log actual sets, reps, and weight for each exercise with minimal taps, and the data is saved to their history
   5. A trainee can mark a workout session as complete and the session is recorded with a timestamp
 **Plans**: TBD
+
+### Phase 04.1: UI Polish (INSERTED)
+
+**Goal:** [Urgent work - to be planned]
+**Requirements**: TBD
+**Depends on:** Phase 4
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 04.1 to break down)
 
 ### Phase 5: Trainer Progress Visibility
 **Goal**: Trainers can review each trainee's workout history to monitor progress and adjust plans
@@ -87,3 +127,13 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 3. Plan Builder | 0/TBD | Not started | - |
 | 4. Trainee Workout Logging | 0/TBD | Not started | - |
 | 5. Trainer Progress Visibility | 0/TBD | Not started | - |
+
+### Phase 05.1: UI Polish (INSERTED)
+
+**Goal:** [Urgent work - to be planned]
+**Requirements**: TBD
+**Depends on:** Phase 5
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 05.1 to break down)
