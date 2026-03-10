@@ -38,7 +38,7 @@ export function InviteDialog() {
     <>
       <button
         onClick={handleOpen}
-        className="bg-accent hover:bg-accent-hover text-white rounded-sm px-4 py-2 text-sm font-medium transition-colors"
+        className="bg-accent hover:bg-accent-hover text-white rounded-sm px-4 py-2 text-sm font-medium transition-colors cursor-pointer"
       >
         + Invite trainee
       </button>
@@ -50,7 +50,7 @@ export function InviteDialog() {
               <h2 className="text-xl font-bold text-text-primary">Invite a trainee</h2>
               <button
                 onClick={() => setOpen(false)}
-                className="text-text-primary hover:text-accent transition-colors text-xl leading-none"
+                className="text-text-primary hover:text-accent transition-colors text-xl leading-none cursor-pointer"
                 aria-label="Close"
               >
                 &times;
@@ -77,7 +77,7 @@ export function InviteDialog() {
                 </div>
                 <button
                   onClick={handleCopy}
-                  className="w-full bg-accent hover:bg-accent-hover text-white text-sm font-medium py-2 rounded-sm transition-colors"
+                  className="w-full bg-accent hover:bg-accent-hover text-white text-sm font-medium py-2 rounded-sm transition-colors cursor-pointer"
                 >
                   {copied ? 'Copied!' : 'Copy link'}
                 </button>

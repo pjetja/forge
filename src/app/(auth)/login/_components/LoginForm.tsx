@@ -21,7 +21,7 @@ export function LoginForm() {
       <button
         type="button"
         onClick={handleGoogleLogin}
-        className="w-full flex items-center justify-center gap-2 border border-border rounded-sm px-4 py-2 text-sm font-medium text-text-primary hover:border-accent transition-colors"
+        className="w-full flex items-center justify-center gap-2 border border-border rounded-sm px-4 py-2 text-sm font-medium text-text-primary hover:border-accent transition-colors cursor-pointer"
       >
         <svg className="w-5 h-5" viewBox="0 0 24 24">
           <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -76,7 +76,7 @@ export function LoginForm() {
         <button
           type="submit"
           disabled={isPending}
-          className="bg-accent hover:bg-accent-hover text-white rounded-sm px-4 py-2 text-sm font-medium transition-colors disabled:opacity-50 w-full"
+          className="bg-accent hover:bg-accent-hover text-white rounded-sm px-4 py-2 text-sm font-medium transition-colors disabled:opacity-50 w-full cursor-pointer"
         >
           {isPending ? 'Signing in...' : 'Sign in'}
         </button>

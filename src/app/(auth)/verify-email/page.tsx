@@ -32,7 +32,7 @@ function VerifyEmailContent() {
           <button
             type="submit"
             disabled={pending}
-            className="text-sm text-accent hover:text-accent-hover disabled:opacity-50 transition-colors"
+            className="text-sm text-accent hover:text-accent-hover disabled:opacity-50 transition-colors cursor-pointer"
           >
             {pending ? 'Sending…' : 'Resend verification email'}
           </button>
