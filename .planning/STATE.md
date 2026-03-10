@@ -22,10 +22,10 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 
 ## Current Position
 
-Phase: 01.2-logo-generation (Logo Generation) — next phase
-Plan: Phase 01.1 complete (3/3 plans done)
-Status: Phase 01 Foundation complete; Phase 01.1 UI Design System COMPLETE — all 3 plans done, dark design system applied across all auth and app pages
-Last activity: 2026-03-10 — Plan 03 Task 3 visual fixes applied (cursor-pointer, sign-out icon, logo Link) and phase marked complete
+Phase: 01.2-logo-generation (Logo Generation)
+Plan: 01.2-01 complete (1/1 plans done)
+Status: Phase 01.2 Logo Generation COMPLETE — ForgeLogo component (horizontal + icon variants) and icon.svg favicon authored and visually approved; ready for Plan 02 integration
+Last activity: 2026-03-10 — Plan 01 complete; logo design approved after two alignment fixes (dominantBaseline → flexbox items-center)
 
 Progress: [█████░░░░░] 38%
 
@@ -84,6 +84,9 @@ Recent decisions affecting current work:
 - [Phase 01.1-03]: Inline SVG used for sign-out icon — avoided adding lucide-react dependency for single icon; uses currentColor for hover inheritance
 - [Phase 01.1-03]: Logo wrapped in Next.js Link (not <a>) to /trainer and /trainee respectively — client-side navigation with prefetching
 - [Phase 01.1-03]: cursor-pointer required explicitly on all button elements — browser default is not always pointer (OS/browser variation)
+- [Phase 01.2-01]: ForgeLogo horizontal variant uses inline-flex items-center + h-full SVG icon + text-xl span — SVG dominantBaseline="central" unreliable cross-browser
+- [Phase 01.2-01]: Hard-coded hex fills in ForgeLogo (#10b981 emerald, #e2e8f0 slate) — brand constants, not theme-switchable
+- [Phase 01.2-01]: icon.svg placed in src/app/ (Next.js file convention) — auto-generates favicon link, no layout.tsx changes needed
 
 ### Roadmap Evolution
 
@@ -108,5 +111,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-03-10
-Stopped at: Phase 01.1 UI Design System complete — all 3 plans done. Ready to begin Phase 01.2 Logo Generation.
+Stopped at: Completed 01.2-01-PLAN.md — ForgeLogo component and icon.svg approved. Ready to begin Phase 01.2 Plan 02 (logo integration into layouts and auth pages).
 Resume file: None
