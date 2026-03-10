@@ -169,7 +169,6 @@
 
   // Buttons/Primary
   {
-    addLabel(atomsPage, 'Buttons/Primary', atomX, atomY - 24, 16, true);
     const d  = makeVariantRect(120, 40, '#10b981', 1,    null,     6); d.name  = 'State=Default';
     const hv = makeVariantRect(120, 40, '#34d399', 1,    null,     6); hv.name = 'State=Hover';
     const di = makeVariantRect(120, 40, '#10b981', 0.4,  null,     6); di.name = 'State=Disabled';
@@ -178,13 +177,13 @@
     const set = figma.combineAsVariants([d, hv, di, lo], atomsPage);
     set.name = 'Buttons/Primary';
     set.x = atomX; set.y = atomY;
+    addLabel(atomsPage, 'Buttons/Primary', atomX, set.y - 28, 16, true);
     componentCount++;
-    atomY += 100;
+    atomY += set.height + 48;
   }
 
   // Buttons/Secondary
   {
-    addLabel(atomsPage, 'Buttons/Secondary', atomX, atomY - 24, 16, true);
     const d  = makeVariantRect(120, 40, null,      1,    '#334155', 6); d.name  = 'State=Default';
     const hv = makeVariantRect(120, 40, '#1e293b', 1,    '#10b981', 6); hv.name = 'State=Hover';
     const di = makeVariantRect(120, 40, null,      0.4,  '#334155', 6); di.name = 'State=Disabled';
@@ -192,26 +191,26 @@
     const set = figma.combineAsVariants([d, hv, di], atomsPage);
     set.name = 'Buttons/Secondary';
     set.x = atomX; set.y = atomY;
+    addLabel(atomsPage, 'Buttons/Secondary', atomX, set.y - 28, 16, true);
     componentCount++;
-    atomY += 100;
+    atomY += set.height + 48;
   }
 
   // Buttons/Ghost
   {
-    addLabel(atomsPage, 'Buttons/Ghost', atomX, atomY - 24, 16, true);
     const d  = makeVariantRect(120, 40, null,      1, null,     6); d.name  = 'State=Default';
     const hv = makeVariantRect(120, 40, '#1e293b', 1, null,     6); hv.name = 'State=Hover';
     [d, hv].forEach((c, i) => { c.x = atomX + i * 140; c.y = atomY; atomsPage.appendChild(c); });
     const set = figma.combineAsVariants([d, hv], atomsPage);
     set.name = 'Buttons/Ghost';
     set.x = atomX; set.y = atomY;
+    addLabel(atomsPage, 'Buttons/Ghost', atomX, set.y - 28, 16, true);
     componentCount++;
-    atomY += 100;
+    atomY += set.height + 48;
   }
 
   // Inputs/Text
   {
-    addLabel(atomsPage, 'Inputs/Text', atomX, atomY - 24, 16, true);
     const d  = makeVariantRect(280, 44, '#1e293b', 1,   '#334155', 6); d.name  = 'State=Default';
     const fc = makeVariantRect(280, 44, '#1e293b', 1,   '#10b981', 6); fc.name = 'State=Focus';
     const er = makeVariantRect(280, 44, '#1e293b', 1,   '#ef4444', 6); er.name = 'State=Error';
@@ -220,13 +219,13 @@
     const set = figma.combineAsVariants([d, fc, er, di], atomsPage);
     set.name = 'Inputs/Text';
     set.x = atomX; set.y = atomY;
+    addLabel(atomsPage, 'Inputs/Text', atomX, set.y - 28, 16, true);
     componentCount++;
-    atomY += 120;
+    atomY += set.height + 48;
   }
 
   // Inputs/Textarea
   {
-    addLabel(atomsPage, 'Inputs/Textarea', atomX, atomY - 24, 16, true);
     const d  = makeVariantRect(280, 100, '#1e293b', 1,   '#334155', 6); d.name  = 'State=Default';
     const fc = makeVariantRect(280, 100, '#1e293b', 1,   '#10b981', 6); fc.name = 'State=Focus';
     const er = makeVariantRect(280, 100, '#1e293b', 1,   '#ef4444', 6); er.name = 'State=Error';
@@ -235,32 +234,33 @@
     const set = figma.combineAsVariants([d, fc, er, di], atomsPage);
     set.name = 'Inputs/Textarea';
     set.x = atomX; set.y = atomY;
+    addLabel(atomsPage, 'Inputs/Textarea', atomX, set.y - 28, 16, true);
     componentCount++;
-    atomY += 180;
+    atomY += set.height + 48;
   }
 
   // Badges/Tag
   {
-    addLabel(atomsPage, 'Badges/Tag', atomX, atomY - 24, 16, true);
     const ac = makeVariantRect(80, 24, '#10b981', 1, null, 8); ac.name = 'Type=Accent';
     const mu = makeVariantRect(80, 24, '#334155', 1, null, 8); mu.name = 'Type=Muted';
     [ac, mu].forEach((c, i) => { c.x = atomX + i * 100; c.y = atomY; atomsPage.appendChild(c); });
     const set = figma.combineAsVariants([ac, mu], atomsPage);
     set.name = 'Badges/Tag';
     set.x = atomX; set.y = atomY;
+    addLabel(atomsPage, 'Badges/Tag', atomX, set.y - 28, 16, true);
     componentCount++;
-    atomY += 80;
+    atomY += set.height + 48;
   }
 
   // Logo/Horizontal — single component (no variants)
   {
-    addLabel(atomsPage, 'Logo/Horizontal', atomX, atomY - 24, 16, true);
     const logo = figma.createComponent();
     logo.resize(120, 28);
     logo.fills = [solidFill('#10b981', 0.15)];
     logo.name = 'Logo/Horizontal';
     logo.x = atomX; logo.y = atomY;
     atomsPage.appendChild(logo);
+    addLabel(atomsPage, 'Logo/Horizontal', atomX, atomY - 28, 16, true);
     addLabel(atomsPage, 'Replace with actual SVG logo asset', atomX + 130, atomY + 8, 11, false);
     componentCount++;
     atomY += 80;
@@ -268,7 +268,6 @@
 
   // Logo/Icon — single component
   {
-    addLabel(atomsPage, 'Logo/Icon', atomX, atomY - 24, 16, true);
     const icon = figma.createComponent();
     icon.resize(28, 28);
     icon.fills = [solidFill('#10b981')];
@@ -276,6 +275,7 @@
     icon.name = 'Logo/Icon';
     icon.x = atomX; icon.y = atomY;
     atomsPage.appendChild(icon);
+    addLabel(atomsPage, 'Logo/Icon', atomX, atomY - 28, 16, true);
     addLabel(atomsPage, 'Replace with actual SVG icon asset', atomX + 48, atomY + 8, 11, false);
     componentCount++;
     atomY += 80;
@@ -291,7 +291,7 @@
 
   // Forms/InputGroup
   {
-    addLabel(moleculesPage, 'Forms/InputGroup', molX, molY - 24, 16, true);
+    addLabel(moleculesPage, 'Forms/InputGroup', molX, molY - 28, 16, true);
     const c = figma.createComponent();
     c.resize(280, 72);
     c.name = 'Forms/InputGroup';
@@ -322,7 +322,7 @@
 
   // Forms/ErrorMessage
   {
-    addLabel(moleculesPage, 'Forms/ErrorMessage', molX, molY - 24, 16, true);
+    addLabel(moleculesPage, 'Forms/ErrorMessage', molX, molY - 28, 16, true);
     const c = figma.createComponent();
     c.resize(280, 20);
     c.name = 'Forms/ErrorMessage';
@@ -341,7 +341,7 @@
 
   // Cards/Shell
   {
-    addLabel(moleculesPage, 'Cards/Shell', molX, molY - 24, 16, true);
+    addLabel(moleculesPage, 'Cards/Shell', molX, molY - 28, 16, true);
     const c = figma.createComponent();
     c.resize(320, 160);
     c.name = 'Cards/Shell';
@@ -356,7 +356,7 @@
 
   // Dialogs/ModalShell
   {
-    addLabel(moleculesPage, 'Dialogs/ModalShell', molX, molY - 24, 16, true);
+    addLabel(moleculesPage, 'Dialogs/ModalShell', molX, molY - 28, 16, true);
     const c = figma.createComponent();
     c.resize(480, 320);
     c.name = 'Dialogs/ModalShell';
@@ -370,7 +370,7 @@
 
   // Search/SearchBar
   {
-    addLabel(moleculesPage, 'Search/SearchBar', molX, molY - 24, 16, true);
+    addLabel(moleculesPage, 'Search/SearchBar', molX, molY - 28, 16, true);
     const c = figma.createComponent();
     c.resize(320, 44);
     c.name = 'Search/SearchBar';
@@ -403,7 +403,7 @@
 
   // Navigation/TrainerNav
   {
-    addLabel(organismsPage, 'Navigation/TrainerNav', orgX, orgY - 24, 16, true);
+    addLabel(organismsPage, 'Navigation/TrainerNav', orgX, orgY - 28, 16, true);
     const c = figma.createComponent();
     c.resize(1200, 64);
     c.name = 'Navigation/TrainerNav';
@@ -417,7 +417,7 @@
 
   // Navigation/TraineeNav
   {
-    addLabel(organismsPage, 'Navigation/TraineeNav', orgX, orgY - 24, 16, true);
+    addLabel(organismsPage, 'Navigation/TraineeNav', orgX, orgY - 28, 16, true);
     const c = figma.createComponent();
     c.resize(1200, 64);
     c.name = 'Navigation/TraineeNav';
@@ -431,7 +431,7 @@
 
   // DataDisplay/Table
   {
-    addLabel(organismsPage, 'DataDisplay/Table', orgX, orgY - 24, 16, true);
+    addLabel(organismsPage, 'DataDisplay/Table', orgX, orgY - 28, 16, true);
     const c = figma.createComponent();
     c.resize(800, 240);
     c.name = 'DataDisplay/Table';
@@ -455,7 +455,7 @@
 
   // DataDisplay/EmptyState
   {
-    addLabel(organismsPage, 'DataDisplay/EmptyState', orgX, orgY - 24, 16, true);
+    addLabel(organismsPage, 'DataDisplay/EmptyState', orgX, orgY - 28, 16, true);
     const c = figma.createComponent();
     c.resize(320, 240);
     c.name = 'DataDisplay/EmptyState';
@@ -489,7 +489,7 @@
 
   // Exercise/Card
   {
-    addLabel(phase2Page, 'Exercise/Card', p2X, p2Y - 24, 16, true);
+    addLabel(phase2Page, 'Exercise/Card', p2X, p2Y - 28, 16, true);
     const c = figma.createComponent();
     c.resize(320, 120);
     c.name = 'Exercise/Card';
@@ -504,7 +504,7 @@
 
   // Exercise/SearchBar (exercise-specific — different from Search/SearchBar)
   {
-    addLabel(phase2Page, 'Exercise/SearchBar', p2X, p2Y - 24, 16, true);
+    addLabel(phase2Page, 'Exercise/SearchBar', p2X, p2Y - 28, 16, true);
     const c = figma.createComponent();
     c.resize(480, 52);
     c.name = 'Exercise/SearchBar';
@@ -542,7 +542,7 @@
 
   // Exercise/CreateForm
   {
-    addLabel(phase2Page, 'Exercise/CreateForm', p2X, p2Y - 24, 16, true);
+    addLabel(phase2Page, 'Exercise/CreateForm', p2X, p2Y - 28, 16, true);
     const c = figma.createComponent();
     c.resize(480, 320);
     c.name = 'Exercise/CreateForm';
@@ -556,7 +556,7 @@
 
   // Exercise/DetailView
   {
-    addLabel(phase2Page, 'Exercise/DetailView', p2X, p2Y - 24, 16, true);
+    addLabel(phase2Page, 'Exercise/DetailView', p2X, p2Y - 28, 16, true);
     const c = figma.createComponent();
     c.resize(480, 400);
     c.name = 'Exercise/DetailView';
