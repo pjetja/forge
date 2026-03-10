@@ -1,3 +1,16 @@
+---
+gsd_state_version: 1.0
+milestone: v1.0
+milestone_name: milestone
+status: unknown
+last_updated: "2026-03-10T09:10:00.913Z"
+progress:
+  total_phases: 8
+  completed_phases: 1
+  total_plans: 8
+  completed_plans: 6
+---
+
 # Project State
 
 ## Project Reference
@@ -9,18 +22,18 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 
 ## Current Position
 
-Phase: 1 of 5 (Foundation)
-Plan: 5 of 5 in current phase — PHASE COMPLETE
-Status: Phase 01 Foundation complete — all 5 plans executed, CONN-01 through CONN-04 satisfied
-Last activity: 2026-03-09 — Plan 05 (Invite Claim Page + Live Trainer Roster) executed
+Phase: 01.1-ui-design-system (UI Design System)
+Plan: 1 of 3 in current phase — IN PROGRESS
+Status: Phase 01 Foundation complete; Phase 01.1 UI Design System started — Plan 01 (design token foundation) executed
+Last activity: 2026-03-10 — Plan 01 (Design Token Foundation: globals.css, Lato font, auth layout) executed
 
 Progress: [████░░░░░░] 28%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 5
-- Average duration: 9.2 min
+- Total plans completed: 6
+- Average duration: 8 min
 - Total execution time: 0.8 hours
 
 **By Phase:**
@@ -28,10 +41,11 @@ Progress: [████░░░░░░] 28%
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-foundation | 5/5 | 46 min | 9.2 min |
+| 01.1-ui-design-system | 1/3 | 2 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (13 min), 01-02 (4 min), 01-03 (25 min), 01-04 (2 min), 01-05 (2 min)
-- Trend: gap-closure plans fast when patterns already established
+- Last 5 plans: 01-02 (4 min), 01-03 (25 min), 01-04 (2 min), 01-05 (2 min), 01.1-01 (2 min)
+- Trend: token/config plans very fast; foundation work establishing patterns for UI phases
 
 *Updated after each plan completion*
 
@@ -61,6 +75,9 @@ Recent decisions affecting current work:
 - [01-04]: Server Action returns relative /join/[token] path; client prepends window.location.origin to avoid hardcoding host
 - [01-05]: PostgREST join returns users as array[] not single object — TraineeRow.users typed as array, first element extracted via [0] ?? null
 - [01-05]: Race condition on simultaneous invite claim — unique constraint violation (23505) treated as idempotent success, redirects to /trainee
+- [Phase 01.1-01]: @theme inline used (not plain @theme) because --font-sans references var(--font-lato) — plain @theme breaks chained CSS variable resolution
+- [Phase 01.1-01]: lato.variable class applied to <html> element so @theme inline can resolve var(--font-lato) at root scope
+- [Phase 01.1-01]: weight: ['400', '700'] explicitly specified — Lato is not a variable font, omitting weight causes Next.js build error
 
 ### Roadmap Evolution
 
@@ -84,6 +101,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-03-09
-Stopped at: Completed 01-foundation/05-PLAN.md — invite claim page (/join/[token]) and live trainer roster, CONN-03 and CONN-04 satisfied. Phase 01 Foundation complete.
+Last session: 2026-03-10
+Stopped at: Completed 01.1-ui-design-system/01-PLAN.md — design token foundation, Lato font, auth layout dark background. Plan 1 of 3 in Phase 01.1 complete.
 Resume file: None
