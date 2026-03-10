@@ -37,10 +37,11 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Goal:** Build a Figma component library matching the dark navy/emerald design system — tokens, atoms, molecules, organisms, and Phase 2 patterns — to serve as the design source for all future UI sub-phases
 **Requirements**: TBD
 **Depends on:** Phase 1
-**Plans:** 1/1 plans complete
+**Plans:** 2/2 plans complete
 
 Plans:
 - [x] 01.3-01-PLAN.md — Generate design-tokens.md, FIGMA-WORKFLOW.md, figma-bootstrap.js, update ROADMAP.md goals
+- [x] 01.3-02-PLAN.md — Create Figma file, run bootstrap script, visual review and approval; FIGMA-WORKFLOW.md updated with real link
 
 ### Phase 01.2: Logo Generation (INSERTED)
 
@@ -148,7 +149,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 1. Foundation | 5/5 | Complete   | 2026-03-10 |
 | 01.1. UI Design System | 3/3 | Complete    | 2026-03-10 |
 | 01.2. Logo Generation | 2/2 | Complete    | 2026-03-10 |
-| 01.3. Figma UI Library | 1/1 | Complete    | 2026-03-10 |
+| 01.3. Figma UI Library | 2/2 | Complete   | 2026-03-10 |
 | 2. Exercise Library | 0/TBD | Not started | - |
 | 3. Plan Builder | 0/TBD | Not started | - |
 | 4. Trainee Workout Logging | 0/TBD | Not started | - |
