@@ -44,14 +44,15 @@ export function ForgeLogo({ variant = 'horizontal', className = 'h-7 w-auto' }: 
       {/* Base */}
       <path d="M10 19 L24 19 L24 23 L10 23 Z" fill="#10b981" />
 
-      {/* Wordmark "Forge" */}
+      {/* Wordmark "Forge" — dominantBaseline="central" centers text on y=16 (mid of 32px viewBox) */}
       <text
         x="33"
-        y="23"
+        y="16"
         fontFamily="system-ui, sans-serif"
         fontWeight="700"
         fontSize="18"
         fill="#e2e8f0"
+        dominantBaseline="central"
       >
         Forge
       </text>
