@@ -44,13 +44,14 @@ Plans:
 
 ### Phase 01.2: Logo Generation (INSERTED)
 
-**Goal:** [Urgent work - to be planned]
+**Goal:** Design and integrate a custom SVG logo for Forge — replacing the ⚡ Forge emoji placeholder in nav layouts and auth pages, with a favicon
 **Requirements**: TBD
-**Depends on:** Phase 1
-**Plans:** 0 plans
+**Depends on:** Phase 01.1
+**Plans:** 2 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 01.2 to break down)
+- [ ] 01.2-01-PLAN.md — Author ForgeLogo component (horizontal + icon variants) + icon.svg favicon + visual review checkpoint
+- [ ] 01.2-02-PLAN.md — Integrate logo into trainer/trainee nav layouts and all three auth pages
 
 ### Phase 01.1: UI Design System (INSERTED)
 
@@ -146,6 +147,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 |-------|----------------|--------|-----------|
 | 1. Foundation | 5/5 | Complete | 2026-03-09 |
 | 01.1. UI Design System | 3/3 | Complete    | 2026-03-10 |
+| 01.2. Logo Generation | 0/2 | Not started | - |
 | 2. Exercise Library | 0/TBD | Not started | - |
 | 3. Plan Builder | 0/TBD | Not started | - |
 | 4. Trainee Workout Logging | 0/TBD | Not started | - |
