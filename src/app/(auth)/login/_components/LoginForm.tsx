@@ -21,7 +21,7 @@ export function LoginForm() {
       <button
         type="button"
         onClick={handleGoogleLogin}
-        className="w-full flex items-center justify-center gap-2 border border-gray-300 rounded-lg px-4 py-2 text-sm font-medium hover:bg-gray-50 transition-colors"
+        className="w-full flex items-center justify-center gap-2 border border-border rounded-sm px-4 py-2 text-sm font-medium text-text-primary hover:border-accent transition-colors"
       >
         <svg className="w-5 h-5" viewBox="0 0 24 24">
           <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -34,16 +34,16 @@ export function LoginForm() {
 
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-gray-200" />
+          <div className="w-full border-t border-border" />
         </div>
-        <div className="relative flex justify-center text-xs text-gray-400">
-          <span className="bg-white px-2">or</span>
+        <div className="relative flex justify-center text-xs text-text-primary">
+          <span className="bg-bg-surface px-2">or</span>
         </div>
       </div>
 
       <form action={formAction} className="space-y-4">
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="email" className="block text-sm font-medium text-text-primary mb-1">
             Email
           </label>
           <input
@@ -52,11 +52,11 @@ export function LoginForm() {
             type="email"
             required
             autoComplete="email"
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="bg-bg-surface border border-border rounded-sm px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent transition-colors w-full"
           />
         </div>
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="password" className="block text-sm font-medium text-text-primary mb-1">
             Password
           </label>
           <input
@@ -65,18 +65,18 @@ export function LoginForm() {
             type="password"
             required
             autoComplete="current-password"
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="bg-bg-surface border border-border rounded-sm px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent transition-colors w-full"
           />
         </div>
 
         {state?.error && (
-          <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{state.error}</p>
+          <p className="text-sm text-error bg-error/10 border border-error/30 rounded-sm px-3 py-2">{state.error}</p>
         )}
 
         <button
           type="submit"
           disabled={isPending}
-          className="w-full bg-blue-600 text-white rounded-lg px-4 py-2 text-sm font-medium hover:bg-blue-700 disabled:opacity-50 transition-colors"
+          className="bg-accent hover:bg-accent-hover text-white rounded-sm px-4 py-2 text-sm font-medium transition-colors disabled:opacity-50 w-full"
         >
           {isPending ? 'Signing in...' : 'Sign in'}
         </button>
