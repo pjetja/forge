@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-10T09:12:15Z"
+last_updated: "2026-03-10T09:15:51.395Z"
 progress:
   total_phases: 8
   completed_phases: 1
   total_plans: 8
-  completed_plans: 6
+  completed_plans: 7
 ---
 
 # Project State
@@ -41,11 +41,11 @@ Progress: [████░░░░░░] 28%
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-foundation | 5/5 | 46 min | 9.2 min |
-| 01.1-ui-design-system | 1/3 | 2 min | 2 min |
+| 01.1-ui-design-system | 2/3 | 4 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-02 (4 min), 01-03 (25 min), 01-04 (2 min), 01-05 (2 min), 01.1-01 (2 min)
-- Trend: token/config plans very fast; foundation work establishing patterns for UI phases
+- Last 5 plans: 01-03 (25 min), 01-04 (2 min), 01-05 (2 min), 01.1-01 (2 min), 01.1-02 (2 min)
+- Trend: token/config plans very fast; UI restyling plans are also fast given design tokens established in 01.1-01
 
 *Updated after each plan completion*
 
@@ -78,6 +78,9 @@ Recent decisions affecting current work:
 - [Phase 01.1-01]: @theme inline used (not plain @theme) because --font-sans references var(--font-lato) — plain @theme breaks chained CSS variable resolution
 - [Phase 01.1-01]: lato.variable class applied to <html> element so @theme inline can resolve var(--font-lato) at root scope
 - [Phase 01.1-01]: weight: ['400', '700'] explicitly specified — Lato is not a variable font, omitting weight causes Next.js build error
+- [Phase 01.1-02]: 'or' divider span uses bg-bg-surface (card surface) not bg-bg-page — sits on card so must match card background
+- [Phase 01.1-02]: Google OAuth button uses ghost style (border only, no background fill) — secondary action pattern for dark cards
+- [Phase 01.1-02]: Input focus uses focus:border-accent focus:outline-none — clean emerald border highlight with no blue glow ring
 
 ### Roadmap Evolution
 

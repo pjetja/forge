@@ -57,7 +57,7 @@ Plans:
 **Goal:** Replace light theme with dark navy design system (Tailwind tokens, Lato font, emerald accents) across all existing auth and app pages
 **Requirements**: TBD
 **Depends on:** Phase 1
-**Plans:** 1/3 plans executed
+**Plans:** 2/3 plans executed
 
 Plans:
 - [ ] 01.1-01-PLAN.md — Design tokens (globals.css @theme) + Lato font (root layout) + dark auth layout
@@ -145,7 +145,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 5/5 | Complete | 2026-03-09 |
-| 01.1. UI Design System | 1/3 | In Progress|  |
+| 01.1. UI Design System | 2/3 | In Progress|  |
 | 2. Exercise Library | 0/TBD | Not started | - |
 | 3. Plan Builder | 0/TBD | Not started | - |
 | 4. Trainee Workout Logging | 0/TBD | Not started | - |
