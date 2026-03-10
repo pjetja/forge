@@ -74,7 +74,12 @@ Plans:
   1. A trainer can create a named exercise with muscle group and description, and it immediately appears in their library
   2. An exercise created by one trainer is not visible to any other trainer
   3. A trainer can search their exercise library by name and filter by muscle group to find exercises quickly
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — DB migration (exercises table + RLS) + Drizzle schema update + Server Actions (create/update/delete)
+- [ ] 02-02-PLAN.md — Exercise UI components (ExerciseCard, ExerciseGrid, ExerciseDetailModal, ExerciseFormModal)
+- [ ] 02-03-PLAN.md — ExercisesPage + ExerciseFilterBar (search + muscle group chips) + nav link + human verify
 
 ### Phase 02.1: UI Polish (INSERTED)
 
@@ -150,7 +155,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 01.1. UI Design System | 3/3 | Complete    | 2026-03-10 |
 | 01.2. Logo Generation | 2/2 | Complete    | 2026-03-10 |
 | 01.3. Figma UI Library | 2/2 | Complete    | 2026-03-10 |
-| 2. Exercise Library | 0/TBD | Not started | - |
+| 2. Exercise Library | 0/3 | Not started | - |
 | 3. Plan Builder | 0/TBD | Not started | - |
 | 4. Trainee Workout Logging | 0/TBD | Not started | - |
 | 5. Trainer Progress Visibility | 0/TBD | Not started | - |
