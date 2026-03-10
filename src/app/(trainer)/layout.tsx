@@ -9,6 +9,16 @@ export default function TrainerLayout({ children }: { children: React.ReactNode 
         <Link href="/trainer" aria-label="Forge home">
           <ForgeLogo variant="horizontal" className="h-7" />
         </Link>
+
+        <nav className="flex items-center gap-6">
+          <Link
+            href="/trainer/exercises"
+            className="text-sm text-text-primary hover:text-accent transition-colors"
+          >
+            Exercises
+          </Link>
+        </nav>
+
         <form action={signOut}>
           <button
             type="submit"
