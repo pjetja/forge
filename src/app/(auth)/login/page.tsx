@@ -2,17 +2,17 @@ import { LoginForm } from './_components/LoginForm';
 
 export default function LoginPage() {
   return (
-    <div className="bg-white shadow-sm rounded-xl p-8 space-y-6">
+    <div className="bg-bg-surface border border-border rounded-sm p-8 space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Sign in</h1>
-        <p className="text-sm text-gray-500 mt-1">Welcome back</p>
+        <h1 className="text-2xl font-bold text-text-primary">Sign in</h1>
+        <p className="text-sm text-text-primary mt-1">Welcome back</p>
       </div>
       <LoginForm />
-      <p className="text-center text-sm text-gray-500">
+      <p className="text-center text-sm text-text-primary">
         New here?{' '}
-        <a href="/signup/trainer" className="text-blue-600 hover:underline">Trainer signup</a>
+        <a href="/signup/trainer" className="text-accent hover:text-accent-hover">Trainer signup</a>
         {' '}·{' '}
-        <a href="/signup/trainee" className="text-blue-600 hover:underline">Trainee signup</a>
+        <a href="/signup/trainee" className="text-accent hover:text-accent-hover">Trainee signup</a>
       </p>
     </div>
   );

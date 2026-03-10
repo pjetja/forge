@@ -20,17 +20,17 @@ async function TraineeSignupContent({
   const inviteToken = params.invite;
 
   return (
-    <div className="bg-white shadow-sm rounded-xl p-8 space-y-6">
+    <div className="bg-bg-surface border border-border rounded-sm p-8 space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Create trainee account</h1>
-        <p className="text-sm text-gray-500 mt-1">
+        <h1 className="text-2xl font-bold text-text-primary">Create trainee account</h1>
+        <p className="text-sm text-text-primary mt-1">
           Track your workouts and stay connected with your trainer
         </p>
       </div>
       <SignupForm role="trainee" action={signUpTrainee} inviteToken={inviteToken} />
-      <p className="text-center text-sm text-gray-500">
+      <p className="text-center text-sm text-text-primary">
         Already have an account?{' '}
-        <a href="/login" className="text-blue-600 hover:underline">Sign in</a>
+        <a href="/login" className="text-accent hover:text-accent-hover">Sign in</a>
       </p>
     </div>
   );
