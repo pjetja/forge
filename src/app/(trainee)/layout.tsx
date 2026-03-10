@@ -1,12 +1,13 @@
 import Link from 'next/link';
 import { signOut } from '@/app/(auth)/login/actions';
+import { ForgeLogo } from '@/components/ForgeLogo';
 
 export default function TraineeLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-bg-page">
       <header className="bg-bg-page border-b border-border px-4 py-3 flex items-center justify-between">
-        <Link href="/trainee" className="font-bold text-accent text-lg hover:text-accent-hover transition-colors">
-          ⚡ Forge
+        <Link href="/trainee" aria-label="Forge home">
+          <ForgeLogo variant="horizontal" className="h-7" />
         </Link>
         <form action={signOut}>
           <button
