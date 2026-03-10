@@ -54,13 +54,15 @@ Plans:
 
 ### Phase 01.1: UI Design System (INSERTED)
 
-**Goal:** [Urgent work - to be planned]
+**Goal:** Replace light theme with dark navy design system (Tailwind tokens, Lato font, emerald accents) across all existing auth and app pages
 **Requirements**: TBD
 **Depends on:** Phase 1
-**Plans:** 0 plans
+**Plans:** 3 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 01.1 to break down)
+- [ ] 01.1-01-PLAN.md — Design tokens (globals.css @theme) + Lato font (root layout) + dark auth layout
+- [ ] 01.1-02-PLAN.md — Restyle auth pages (login, signup x2, verify-email) and form components (LoginForm, SignupForm)
+- [ ] 01.1-03-PLAN.md — Restyle app shells (trainer/trainee layouts + pages, InviteDialog, join page) + human verify checkpoint
 
 ### Phase 2: Exercise Library
 **Goal**: Trainers can build and maintain a reusable library of exercises that feeds into all their workout plans
@@ -143,6 +145,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 5/5 | Complete | 2026-03-09 |
+| 01.1. UI Design System | 0/3 | Not started | - |
 | 2. Exercise Library | 0/TBD | Not started | - |
 | 3. Plan Builder | 0/TBD | Not started | - |
 | 4. Trainee Workout Logging | 0/TBD | Not started | - |
