@@ -21,8 +21,8 @@
 
 ### Exercise Library
 
-- [ ] **EXLIB-01**: Trainer can create named exercises (name, muscle group, description)
-- [ ] **EXLIB-02**: Exercise library is shared across all of a trainer's plans
+- [x] **EXLIB-01**: Trainer can create named exercises (name, muscle group, description)
+- [x] **EXLIB-02**: Exercise library is shared across all of a trainer's plans
 - [ ] **EXLIB-03**: Trainer can search and filter the exercise library
 
 ### Plan Builder
@@ -93,8 +93,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CONN-02 | Phase 1 (Plan 04: invite link generation) | Complete |
 | CONN-03 | Phase 1 (Plan 05: invite claim page) | Complete |
 | CONN-04 | Phase 1 (Plan 05: live trainer roster) | Complete |
-| EXLIB-01 | Phase 2 | Pending |
-| EXLIB-02 | Phase 2 | Pending |
+| EXLIB-01 | Phase 2 | Complete |
+| EXLIB-02 | Phase 2 | Complete |
 | EXLIB-03 | Phase 2 | Pending |
 | PLAN-01 | Phase 3 | Pending |
 | PLAN-02 | Phase 3 | Pending |

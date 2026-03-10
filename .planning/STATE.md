@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: unknown
-last_updated: "2026-03-10T21:57:45.019Z"
+status: in-progress
+last_updated: "2026-03-11T00:00:00.000Z"
 progress:
   total_phases: 8
   completed_phases: 4
-  total_plans: 12
-  completed_plans: 12
+  total_plans: 13
+  completed_plans: 13
 ---
 
 # Project State
@@ -22,12 +22,12 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 
 ## Current Position
 
-Phase: 01.3-figma-ui-library (Figma UI Library) — COMPLETE
-Plan: 01.3-02 complete (2/2 plans done for this phase)
-Status: Phase 01.3 COMPLETE — Figma file "Forge UI Library" live at https://www.figma.com/design/hTbhUu5ow4BhAatBTLjxNe/Forge-UI-Library; 5 pages + 16 components bootstrapped; visual review approved; FIGMA-WORKFLOW.md updated with real link
-Last activity: 2026-03-10 — Plan 02 complete; user ran bootstrap script in Figma, performed visual review, approved library; all Phase 01.3 done criteria met
+Phase: 02-exercise-library (Exercise Library) — IN PROGRESS
+Plan: 02-01 complete (1/3 plans done for this phase)
+Status: Plan 02-01 COMPLETE — exercises table migration SQL ready, Drizzle schema updated with Exercise types, three Server Actions (createExercise, updateExercise, deleteExercise) implemented
+Last activity: 2026-03-11 — Plan 01 complete; migration SQL and schema created, Server Actions implemented, TypeScript compiles; user must apply 0002_exercises.sql migration via Supabase SQL Editor
 
-Progress: [█████░░░░░] 40%
+Progress: [█████░░░░░] 43%
 
 ## Performance Metrics
 
@@ -43,6 +43,7 @@ Progress: [█████░░░░░] 40%
 | 01-foundation | 5/5 | 46 min | 9.2 min |
 | 01.1-ui-design-system | 3/3 | 19 min | 6.3 min |
 | 01.3-figma-ui-library | 2/2 | 34 min | 17 min |
+| 02-exercise-library | 1/3 | 5 min | 5 min |
 
 **Recent Trend:**
 - Last 5 plans: 01-05 (2 min), 01.1-01 (2 min), 01.1-02 (2 min), 01.1-03 tasks 1-2 (2 min), 01.1-03 task 3 fixes (15 min)
@@ -52,6 +53,7 @@ Progress: [█████░░░░░] 40%
 | Phase 01.2-logo-generation P02 | 5 | 2 tasks | 5 files |
 | Phase 01.3-figma-ui-library P01 | 4 | 2 tasks (T2+T3) | 4 files |
 | Phase 01.3-figma-ui-library P02 | 30min | 2 tasks | 1 files |
+| Phase 02-exercise-library P01 | 5min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -97,6 +99,10 @@ Recent decisions affecting current work:
 - [Phase 01.3-01]: figma-bootstrap.js uses setCurrentPageAsync (async) not deprecated figma.currentPage = (sync) for page switching
 - [Phase 01.3-01]: generate_figma_design MCP tool noted as potentially useful for importing live app screens in future UI sub-phases
 - [Phase 01.3]: Figma file 'Forge UI Library' created in personal Drafts and approved — shareable URL: https://www.figma.com/design/hTbhUu5ow4BhAatBTLjxNe/Forge-UI-Library
+- [02-01]: createClient() (not adminClient) used for exercise CRUD — RLS policy enforces trainer ownership, no service role bypass needed
+- [02-01]: muscle_group stored as TEXT not PostgreSQL ENUM — TEXT + MUSCLE_GROUPS const + Zod validation avoids DDL migrations for new values
+- [02-01]: RLS WITH CHECK required alongside USING for INSERT to work in all Postgres versions (FOR ALL USING alone is insufficient for inserts)
+- [02-01]: updated_at set via new Date().toISOString() in Server Action — consistent with existing Phase 1 patterns, no DB trigger needed
 
 ### Roadmap Evolution
 
@@ -111,6 +117,7 @@ Recent decisions affecting current work:
 ### Pending Todos
 
 - [01-01]: Apply database migration via Supabase SQL Editor — paste src/lib/db/migrations/0001_initial.sql into SQL Editor and run
+- [02-01]: Apply exercises migration via Supabase SQL Editor — paste src/lib/db/migrations/0002_exercises.sql into SQL Editor and run (required before exercises UI can be tested)
 
 ### Blockers/Concerns
 
@@ -120,6 +127,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-03-10
-Stopped at: Completed 01.3-02-PLAN.md — Figma file created and approved by user, FIGMA-WORKFLOW.md updated with real link. Phase 01.3 fully complete. Next: Phase 2 Exercise Library.
+Last session: 2026-03-11
+Stopped at: Completed 02-01-PLAN.md — exercises migration SQL and Drizzle schema created, three Server Actions implemented; TypeScript clean. Next: Phase 2 Plan 02 (exercise list/search UI).
 Resume file: None
