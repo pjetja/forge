@@ -1,0 +1,85 @@
+import Link from 'next/link';
+import { createClient } from '@/lib/supabase/server';
+import { Exercise } from '@/lib/db/schema';
+import { ExerciseGrid } from '../_components/ExerciseGrid';
+import { ExerciseFilterBar } from '../_components/ExerciseFilterBar';
+
+export default async function ExercisesPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ q?: string; muscles?: string }>;
+}) {
+  const params = await searchParams;
+  const query = params?.q?.trim() ?? '';
+  const muscleFilter = params?.muscles?.split(',').filter(Boolean) ?? [];
+
+  const supabase = await createClient();
+  let dbQuery = supabase
+    .from('exercises')
+    .select('id, name, muscle_group, description, notes, video_url, created_at, updated_at, trainer_auth_uid')
+    .order('name', { ascending: true });
+
+  if (query) dbQuery = dbQuery.ilike('name', `%${query}%`);
+  if (muscleFilter.length > 0) dbQuery = dbQuery.in('muscle_group', muscleFilter);
+
+  const { data, error } = await dbQuery;
+
+  // Map snake_case DB columns to camelCase Exercise type
+  const exercises: Exercise[] = (data ?? []).map((row) => ({
+    id: row.id,
+    trainerAuthUid: row.trainer_auth_uid,
+    name: row.name,
+    muscleGroup: row.muscle_group,
+    description: row.description,
+    notes: row.notes,
+    videoUrl: row.video_url,
+    createdAt: row.created_at ? new Date(row.created_at) : null,
+    updatedAt: row.updated_at ? new Date(row.updated_at) : null,
+  }));
+
+  const isFiltered = query.length > 0 || muscleFilter.length > 0;
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-text-primary">Exercise Library</h1>
+      </div>
+
+      {error && (
+        <div className="bg-red-950 border border-red-800 rounded-sm p-4 text-sm text-red-400">
+          Failed to load exercises. Please refresh the page.
+        </div>
+      )}
+
+      {!error && (
+        <>
+          <ExerciseFilterBar initialQuery={query} initialMuscles={muscleFilter} />
+
+          {exercises.length === 0 && !isFiltered && (
+            <div className="bg-bg-surface border border-border rounded-sm p-12 text-center space-y-3">
+              <div className="text-4xl">🏋️</div>
+              <h2 className="font-medium text-text-primary">Your exercise library is empty</h2>
+              <p className="text-sm text-text-primary max-w-sm mx-auto">
+                Add exercises to build your library and reuse them across all your workout plans.
+              </p>
+            </div>
+          )}
+
+          {exercises.length === 0 && isFiltered && (
+            <div className="bg-bg-surface border border-border rounded-sm p-12 text-center space-y-3">
+              <p className="text-text-primary font-medium">No exercises found</p>
+              <Link
+                href="/trainer/exercises"
+                className="inline-block bg-bg-surface hover:bg-bg-page border border-border rounded-sm px-4 py-2 text-sm text-text-primary transition-colors"
+              >
+                Clear filters
+              </Link>
+            </div>
+          )}
+
+          <ExerciseGrid exercises={exercises} />
+        </>
+      )}
+    </div>
+  );
+}
