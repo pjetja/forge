@@ -66,6 +66,7 @@ Recent decisions affecting current work:
 
 - Phase 01.1 inserted after Phase 1: UI Design System — dark color scheme, improved contrast, consistent visual language across all auth and app pages (URGENT)
 - Phase 01.2 inserted after Phase 1.1: Logo Generation — design and generate the Forge app logo
+- Phase 01.3 inserted after Phase 1.2: Figma UI Library — build component library in Figma matching the dark navy/green design system, used as design source for all future phases
 - Phase 02.1 inserted after Phase 2: UI Polish — visual review and polish after Exercise Library is built
 - Phase 03.1 inserted after Phase 3: UI Polish — visual review and polish after Plan Builder is built
 - Phase 04.1 inserted after Phase 4: UI Polish — visual review and polish after Trainee Workout Logging is built
