@@ -3,10 +3,8 @@
 ## Figma File
 
 ```
-Link: FIGMA_LINK_PLACEHOLDER
+Link: https://www.figma.com/design/hTbhUu5ow4BhAatBTLjxNe/Forge-UI-Library?node-id=3-2&t=m1S8VDseuw5X2qek-1
 ```
-
-Replace this placeholder with the shareable Figma link after creating the file in Plan 02 (copy via Share → Copy link).
 
 ---
 
