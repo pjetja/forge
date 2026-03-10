@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-10T09:35:13.792Z"
+last_updated: "2026-03-10T14:28:29.844Z"
 progress:
   total_phases: 8
-  completed_phases: 2
-  total_plans: 8
-  completed_plans: 8
+  completed_phases: 3
+  total_plans: 10
+  completed_plans: 10
 ---
 
 # Project State
@@ -23,9 +23,9 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 ## Current Position
 
 Phase: 01.2-logo-generation (Logo Generation)
-Plan: 01.2-01 complete (1/1 plans done)
-Status: Phase 01.2 Logo Generation COMPLETE — ForgeLogo component (horizontal + icon variants) and icon.svg favicon authored and visually approved; ready for Plan 02 integration
-Last activity: 2026-03-10 — Plan 01 complete; logo design approved after two alignment fixes (dominantBaseline → flexbox items-center)
+Plan: 01.2-02 complete (2/2 plans done)
+Status: Phase 01.2 Logo Generation COMPLETE — ForgeLogo integrated in trainer/trainee nav layouts and all 3 auth pages; no ⚡ Forge emoji remains in codebase
+Last activity: 2026-03-10 — Plan 02 complete; ForgeLogo (h-7 nav, h-10 auth) integrated into 5 files; TypeScript compiles clean
 
 Progress: [█████░░░░░] 38%
 
@@ -48,6 +48,7 @@ Progress: [█████░░░░░] 38%
 - Trend: human-verify checkpoints add time for visual review and polish cycles; core restyling remains fast
 
 *Updated after each plan completion*
+| Phase 01.2-logo-generation P02 | 5 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -87,6 +88,8 @@ Recent decisions affecting current work:
 - [Phase 01.2-01]: ForgeLogo horizontal variant uses inline-flex items-center + h-full SVG icon + text-xl span — SVG dominantBaseline="central" unreliable cross-browser
 - [Phase 01.2-01]: Hard-coded hex fills in ForgeLogo (#10b981 emerald, #e2e8f0 slate) — brand constants, not theme-switchable
 - [Phase 01.2-01]: icon.svg placed in src/app/ (Next.js file convention) — auto-generates favicon link, no layout.tsx changes needed
+- [Phase 01.2-logo-generation]: ForgeLogo uses h-7 (not h-7 w-auto) in nav — w-auto redundant; h-10 on auth pages for more visual breathing room
+- [Phase 01.2-logo-generation]: React fragment used on auth pages — auth layout already handles centering, extra div wrapper would double-center
 
 ### Roadmap Evolution
 
