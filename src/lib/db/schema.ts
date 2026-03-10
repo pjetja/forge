@@ -37,3 +37,25 @@ export const trainerTraineeConnections = pgTable('trainer_trainee_connections', 
   // Race conditions cannot produce two connections for the same trainee
   uniqueTrainee: unique('trainee_unique_connection').on(table.traineeAuthUid),
 }));
+
+export const MUSCLE_GROUPS = [
+  'Chest', 'Upper Back', 'Lats', 'Front Delts', 'Side Delts', 'Rear Delts',
+  'Biceps', 'Triceps', 'Quads', 'Hamstrings', 'Glutes', 'Calves', 'Core',
+] as const;
+
+export type MuscleGroup = typeof MUSCLE_GROUPS[number];
+
+export const exercises = pgTable('exercises', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  trainerAuthUid: uuid('trainer_auth_uid').notNull(),
+  name: text('name').notNull(),
+  muscleGroup: text('muscle_group').notNull(),
+  description: text('description'),
+  notes: text('notes'),
+  videoUrl: text('video_url'),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
+});
+
+export type Exercise = typeof exercises.$inferSelect;
+export type NewExercise = typeof exercises.$inferInsert;
