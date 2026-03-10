@@ -21,11 +21,11 @@ export default async function JoinPage({ params }: PageProps) {
 
   if (inviteError || !invite || invite.revoked_at) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-        <div className="bg-white rounded-xl border border-gray-200 p-8 max-w-sm w-full text-center space-y-3">
-          <div className="text-4xl">🔗</div>
-          <h1 className="text-lg font-semibold text-gray-900">Invalid invite link</h1>
-          <p className="text-sm text-gray-500">
+      <div className="min-h-screen flex items-center justify-center bg-bg-page p-4">
+        <div className="bg-bg-surface border border-border rounded-sm p-8 max-w-md w-full space-y-4">
+          <div className="text-4xl text-center">🔗</div>
+          <h1 className="text-xl font-bold text-text-primary text-center">Invalid invite link</h1>
+          <p className="text-sm text-text-primary text-center">
             This invite link is invalid or has been revoked. Ask your trainer to send a new one.
           </p>
         </div>
@@ -65,20 +65,22 @@ export default async function JoinPage({ params }: PageProps) {
     }
     // Connected to a DIFFERENT trainer — show conflict screen
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-        <div className="bg-white rounded-xl border border-gray-200 p-8 max-w-sm w-full text-center space-y-3">
-          <div className="text-4xl">⚠️</div>
-          <h1 className="text-lg font-semibold text-gray-900">Already connected</h1>
-          <p className="text-sm text-gray-500">
+      <div className="min-h-screen flex items-center justify-center bg-bg-page p-4">
+        <div className="bg-bg-surface border border-border rounded-sm p-8 max-w-md w-full space-y-4">
+          <div className="text-4xl text-center">⚠️</div>
+          <h1 className="text-xl font-bold text-text-primary text-center">Already connected</h1>
+          <p className="text-sm text-text-primary text-center">
             You are already connected to a trainer. You must disconnect from your current trainer
             before joining a new one.
           </p>
-          <a
-            href="/trainee"
-            className="inline-block mt-2 text-sm font-medium text-blue-600 hover:underline"
-          >
-            Go to your dashboard
-          </a>
+          <div className="text-center">
+            <a
+              href="/trainee"
+              className="inline-block mt-2 text-sm font-medium text-accent hover:text-accent-hover transition-colors"
+            >
+              Go to your dashboard
+            </a>
+          </div>
         </div>
       </div>
     );
@@ -99,11 +101,11 @@ export default async function JoinPage({ params }: PageProps) {
     const isUniqueViolation = insertError.code === '23505';
     if (!isUniqueViolation) {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-          <div className="bg-white rounded-xl border border-gray-200 p-8 max-w-sm w-full text-center space-y-3">
-            <div className="text-4xl">❌</div>
-            <h1 className="text-lg font-semibold text-gray-900">Connection failed</h1>
-            <p className="text-sm text-gray-500">
+        <div className="min-h-screen flex items-center justify-center bg-bg-page p-4">
+          <div className="bg-bg-surface border border-border rounded-sm p-8 max-w-md w-full space-y-4">
+            <div className="text-4xl text-center">❌</div>
+            <h1 className="text-xl font-bold text-text-primary text-center">Connection failed</h1>
+            <p className="text-sm text-text-primary text-center">
               Something went wrong while connecting you to your trainer. Please try the link again.
             </p>
           </div>

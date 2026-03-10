@@ -38,46 +38,46 @@ export function InviteDialog() {
     <>
       <button
         onClick={handleOpen}
-        className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+        className="bg-accent hover:bg-accent-hover text-white rounded-sm px-4 py-2 text-sm font-medium transition-colors"
       >
         + Invite trainee
       </button>
 
       {open && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-lg w-full max-w-md p-6 space-y-4">
+          <div className="bg-bg-surface border border-border rounded-sm w-full max-w-md p-6 space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-900">Invite a trainee</h2>
+              <h2 className="text-xl font-bold text-text-primary">Invite a trainee</h2>
               <button
                 onClick={() => setOpen(false)}
-                className="text-gray-400 hover:text-gray-600 text-xl leading-none"
+                className="text-text-primary hover:text-accent transition-colors text-xl leading-none"
                 aria-label="Close"
               >
                 &times;
               </button>
             </div>
 
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-text-primary">
               Share this link with your trainee. They&apos;ll be connected to your roster after
               signing up or logging in.
             </p>
 
             {isPending && (
-              <div className="text-sm text-gray-400 animate-pulse">Generating link&hellip;</div>
+              <div className="text-sm text-text-primary animate-pulse">Generating link&hellip;</div>
             )}
 
             {error && (
-              <p className="text-sm text-red-600">{error}</p>
+              <p className="text-sm text-red-400">{error}</p>
             )}
 
             {link && (
               <div className="space-y-3">
-                <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2">
-                  <span className="text-sm text-gray-700 truncate flex-1 font-mono">{link}</span>
+                <div className="bg-bg-page border border-border rounded-sm px-3 py-2 text-sm text-text-primary font-mono break-all">
+                  {link}
                 </div>
                 <button
                   onClick={handleCopy}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 rounded-lg transition-colors"
+                  className="w-full bg-accent hover:bg-accent-hover text-white text-sm font-medium py-2 rounded-sm transition-colors"
                 >
                   {copied ? 'Copied!' : 'Copy link'}
                 </button>
