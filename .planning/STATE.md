@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-10T09:15:51.395Z"
+last_updated: "2026-03-10T09:22:10.369Z"
 progress:
   total_phases: 8
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 8
-  completed_plans: 7
+  completed_plans: 8
 ---
 
 # Project State
@@ -22,12 +22,12 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 
 ## Current Position
 
-Phase: 01.1-ui-design-system (UI Design System)
-Plan: 3 of 3 in current phase — AWAITING HUMAN VERIFICATION (Task 3 checkpoint)
-Status: Phase 01 Foundation complete; Phase 01.1 UI Design System Plan 03 Tasks 1-2 executed — awaiting human visual confirmation at Task 3 checkpoint
-Last activity: 2026-03-10 — Plan 03 Tasks 1-2 executed (app shells, trainer/trainee home, InviteDialog, join page restyled dark)
+Phase: 01.2-logo-generation (Logo Generation) — next phase
+Plan: Phase 01.1 complete (3/3 plans done)
+Status: Phase 01 Foundation complete; Phase 01.1 UI Design System COMPLETE — all 3 plans done, dark design system applied across all auth and app pages
+Last activity: 2026-03-10 — Plan 03 Task 3 visual fixes applied (cursor-pointer, sign-out icon, logo Link) and phase marked complete
 
-Progress: [████░░░░░░] 28%
+Progress: [█████░░░░░] 38%
 
 ## Performance Metrics
 
@@ -41,11 +41,11 @@ Progress: [████░░░░░░] 28%
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-foundation | 5/5 | 46 min | 9.2 min |
-| 01.1-ui-design-system | 2/3 | 4 min | 2 min |
+| 01.1-ui-design-system | 3/3 | 19 min | 6.3 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-03 (25 min), 01-04 (2 min), 01-05 (2 min), 01.1-01 (2 min), 01.1-02 (2 min)
-- Trend: token/config plans very fast; UI restyling plans are also fast given design tokens established in 01.1-01
+- Last 5 plans: 01-05 (2 min), 01.1-01 (2 min), 01.1-02 (2 min), 01.1-03 tasks 1-2 (2 min), 01.1-03 task 3 fixes (15 min)
+- Trend: human-verify checkpoints add time for visual review and polish cycles; core restyling remains fast
 
 *Updated after each plan completion*
 
@@ -81,6 +81,9 @@ Recent decisions affecting current work:
 - [Phase 01.1-02]: 'or' divider span uses bg-bg-surface (card surface) not bg-bg-page — sits on card so must match card background
 - [Phase 01.1-02]: Google OAuth button uses ghost style (border only, no background fill) — secondary action pattern for dark cards
 - [Phase 01.1-02]: Input focus uses focus:border-accent focus:outline-none — clean emerald border highlight with no blue glow ring
+- [Phase 01.1-03]: Inline SVG used for sign-out icon — avoided adding lucide-react dependency for single icon; uses currentColor for hover inheritance
+- [Phase 01.1-03]: Logo wrapped in Next.js Link (not <a>) to /trainer and /trainee respectively — client-side navigation with prefetching
+- [Phase 01.1-03]: cursor-pointer required explicitly on all button elements — browser default is not always pointer (OS/browser variation)
 
 ### Roadmap Evolution
 
@@ -105,5 +108,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-03-10
-Stopped at: 01.1-03-PLAN.md Task 3 checkpoint:human-verify — Tasks 1 and 2 complete (commits 0fd8dc6, 52eb936). Awaiting human visual verification of dark design system across all pages.
+Stopped at: Phase 01.1 UI Design System complete — all 3 plans done. Ready to begin Phase 01.2 Logo Generation.
 Resume file: None
