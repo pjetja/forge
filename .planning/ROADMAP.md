@@ -86,7 +86,7 @@ Plans:
 **Goal:** Visual review and polish of Exercise Library UI — Figma screens reviewed against built components, spacing/typography/interaction states refined before Phase 3
 **Requirements**: TBD
 **Depends on:** Phase 2
-**Plans:** 1/3 plans executed
+**Plans:** 2/3 plans executed
 
 Plans:
 - [ ] TBD (run /gsd:plan-phase 02.1 to break down)

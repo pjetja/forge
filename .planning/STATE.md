@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: in-progress
-last_updated: "2026-03-11T00:00:00.000Z"
+status: unknown
+last_updated: "2026-03-10T23:53:39.487Z"
 progress:
-  total_phases: 8
+  total_phases: 9
   completed_phases: 4
-  total_plans: 13
-  completed_plans: 13
+  total_plans: 15
+  completed_plans: 14
 ---
 
 # Project State
@@ -23,11 +23,11 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 ## Current Position
 
 Phase: 02-exercise-library (Exercise Library) — IN PROGRESS
-Plan: 02-01 complete (1/3 plans done for this phase)
-Status: Plan 02-01 COMPLETE — exercises table migration SQL ready, Drizzle schema updated with Exercise types, three Server Actions (createExercise, updateExercise, deleteExercise) implemented
-Last activity: 2026-03-11 — Plan 01 complete; migration SQL and schema created, Server Actions implemented, TypeScript compiles; user must apply 0002_exercises.sql migration via Supabase SQL Editor
+Plan: 02-02 complete (2/3 plans done for this phase)
+Status: Plan 02-02 COMPLETE — four exercise UI components created: ExerciseCard, ExerciseGrid, ExerciseDetailModal, ExerciseFormModal; TypeScript clean
+Last activity: 2026-03-10 — Plan 02 complete; all four exercise UI components implemented with React Hook Form + Zod v4, YouTube embed, two-step delete confirmation; router.refresh() pattern for Server Action mutations
 
-Progress: [█████░░░░░] 43%
+Progress: [█████░░░░░] 47%
 
 ## Performance Metrics
 
@@ -54,6 +54,7 @@ Progress: [█████░░░░░] 43%
 | Phase 01.3-figma-ui-library P01 | 4 | 2 tasks (T2+T3) | 4 files |
 | Phase 01.3-figma-ui-library P02 | 30min | 2 tasks | 1 files |
 | Phase 02-exercise-library P01 | 5min | 2 tasks | 3 files |
+| Phase 02-exercise-library P02 | 2 | 3 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -103,6 +104,8 @@ Recent decisions affecting current work:
 - [02-01]: muscle_group stored as TEXT not PostgreSQL ENUM — TEXT + MUSCLE_GROUPS const + Zod validation avoids DDL migrations for new values
 - [02-01]: RLS WITH CHECK required alongside USING for INSERT to work in all Postgres versions (FOR ALL USING alone is insufficient for inserts)
 - [02-01]: updated_at set via new Date().toISOString() in Server Action — consistent with existing Phase 1 patterns, no DB trigger needed
+- [Phase 02-02]: ExerciseGrid manages editExercise state separately from selectedExercise to cleanly coordinate detail->edit transition
+- [Phase 02-02]: extractYouTubeId defined as module-level utility in both files that need it, not shared to avoid coupling
 
 ### Roadmap Evolution
 
@@ -127,6 +130,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-03-11
-Stopped at: Completed 02-01-PLAN.md — exercises migration SQL and Drizzle schema created, three Server Actions implemented; TypeScript clean. Next: Phase 2 Plan 02 (exercise list/search UI).
+Last session: 2026-03-10
+Stopped at: Completed 02-02-PLAN.md — four exercise UI components created (ExerciseCard, ExerciseGrid, ExerciseDetailModal, ExerciseFormModal); TypeScript clean. Next: Phase 2 Plan 03 (exercises page).
 Resume file: None
