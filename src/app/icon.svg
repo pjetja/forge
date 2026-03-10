@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Anvil-inspired mark: the Forge icon -->
+  <!-- Horn — tapered triangle pointing left -->
+  <path d="M2 13 L10 10 L10 14 Z" fill="#10b981" />
+  <!-- Main anvil body — flat top rectangle -->
+  <path d="M9 8 L27 8 L27 16 L9 16 Z" fill="#10b981" />
+  <!-- Waist — narrow trapezoid connector -->
+  <path d="M13 16 L21 16 L22 19 L12 19 Z" fill="#10b981" />
+  <!-- Base — wide stable rectangle -->
+  <path d="M10 19 L24 19 L24 23 L10 23 Z" fill="#10b981" />
+</svg>
