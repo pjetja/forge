@@ -70,7 +70,7 @@ export function LoginForm() {
         </div>
 
         {state?.error && (
-          <p className="text-sm text-error bg-error/10 border border-error/30 rounded-sm px-3 py-2">{state.error}</p>
+          <p className="text-sm text-white bg-error/10 border border-error/30 rounded-sm px-3 py-2">{state.error}</p>
         )}
 
         <button

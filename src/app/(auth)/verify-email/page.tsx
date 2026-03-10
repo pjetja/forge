@@ -27,7 +27,7 @@ function VerifyEmailContent() {
             <p className="text-sm text-accent mb-2">Verification email resent!</p>
           )}
           {state && 'error' in state && state.error && (
-            <p className="text-sm text-error bg-error/10 border border-error/30 rounded-sm px-3 py-2 mb-2">{state.error}</p>
+            <p className="text-sm text-white bg-error/10 border border-error/30 rounded-sm px-3 py-2 mb-2">{state.error}</p>
           )}
           <button
             type="submit"
