@@ -1,4 +1,4 @@
-# Requirements: GYM AI Assistant
+# Requirements: Forge
 
 **Defined:** 2026-02-28
 **Core Value:** A trainee can open the app mid-workout, see exactly what they did last week on each exercise, and log today's results in under a minute.
