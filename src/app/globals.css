@@ -1,26 +1,23 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Font — next/font injects --font-lato onto <html> via className={lato.variable} */
+  --font-sans: var(--font-lato);
+
+  /* Design system colors */
+  --color-bg-page:      #0f172a;
+  --color-bg-surface:   #1e293b;
+  --color-border:       #334155;
+  --color-accent:       #10b981;
+  --color-accent-hover: #34d399;
+  --color-text-primary: #e2e8f0;
+  --color-error:        #ef4444;
+  --color-error-light:  #f87171;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  body {
+    background-color: #0f172a;
+    color: #e2e8f0;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
 }
