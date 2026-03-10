@@ -34,7 +34,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 ### Phase 01.3: Figma UI Library (INSERTED)
 
-**Goal:** [Urgent work - to be planned]
+**Goal:** Build a Figma component library matching the dark navy/emerald design system — tokens, atoms, molecules, organisms, and Phase 2 patterns — to serve as the design source for all future UI sub-phases
 **Requirements**: TBD
 **Depends on:** Phase 1
 **Plans:** 5/5 plans complete
@@ -77,7 +77,7 @@ Plans:
 
 ### Phase 02.1: UI Polish (INSERTED)
 
-**Goal:** [Urgent work - to be planned]
+**Goal:** Visual review and polish of Exercise Library UI — Figma screens reviewed against built components, spacing/typography/interaction states refined before Phase 3
 **Requirements**: TBD
 **Depends on:** Phase 2
 **Plans:** 0 plans
@@ -99,7 +99,7 @@ Plans:
 
 ### Phase 03.1: UI Polish (INSERTED)
 
-**Goal:** [Urgent work - to be planned]
+**Goal:** Visual review and polish of Plan Builder UI — Figma screens reviewed against built components, multi-week calendar and schema editor interactions refined before Phase 4
 **Requirements**: TBD
 **Depends on:** Phase 3
 **Plans:** 0 plans
@@ -121,7 +121,7 @@ Plans:
 
 ### Phase 04.1: UI Polish (INSERTED)
 
-**Goal:** [Urgent work - to be planned]
+**Goal:** Visual review and polish of Trainee Workout Logging UI — Figma screens reviewed against built components, inline last-week results display and set logging flow refined before Phase 5
 **Requirements**: TBD
 **Depends on:** Phase 4
 **Plans:** 0 plans
@@ -155,7 +155,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 ### Phase 05.1: UI Polish (INSERTED)
 
-**Goal:** [Urgent work - to be planned]
+**Goal:** Visual review and polish of Trainer Progress Visibility UI — Figma screens reviewed against built workout history views, data density and trainer dashboard interactions finalized
 **Requirements**: TBD
 **Depends on:** Phase 5
 **Plans:** 0 plans
