@@ -13,7 +13,7 @@ Five phases deliver a complete trainer-trainee workout tracking platform. The bu
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation** - Auth, roles, multi-tenant isolation, and trainer-trainee connections (COMPLETE)
-- [ ] **Phase 2: Exercise Library** - Trainer-scoped exercise library with search and filtering
+- [x] **Phase 2: Exercise Library** - Trainer-scoped exercise library with search and filtering (completed 2026-03-10)
 - [ ] **Phase 3: Plan Builder** - Multi-week workout plan creation, assignment, and editing
 - [ ] **Phase 4: Trainee Workout Logging** - The core value loop — log sets mid-session with last week's results inline
 - [ ] **Phase 5: Trainer Progress Visibility** - Trainer views trainee workout logs and progress over time
@@ -86,7 +86,7 @@ Plans:
 **Goal:** Visual review and polish of Exercise Library UI — Figma screens reviewed against built components, spacing/typography/interaction states refined before Phase 3
 **Requirements**: TBD
 **Depends on:** Phase 2
-**Plans:** 2/3 plans executed
+**Plans:** 3/3 plans complete
 
 Plans:
 - [ ] TBD (run /gsd:plan-phase 02.1 to break down)
@@ -155,7 +155,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 01.1. UI Design System | 3/3 | Complete    | 2026-03-10 |
 | 01.2. Logo Generation | 2/2 | Complete    | 2026-03-10 |
 | 01.3. Figma UI Library | 2/2 | Complete    | 2026-03-10 |
-| 2. Exercise Library | 1/3 | In Progress|  |
+| 2. Exercise Library | 3/3 | Complete   | 2026-03-10 |
 | 3. Plan Builder | 0/TBD | Not started | - |
 | 4. Trainee Workout Logging | 0/TBD | Not started | - |
 | 5. Trainer Progress Visibility | 0/TBD | Not started | - |

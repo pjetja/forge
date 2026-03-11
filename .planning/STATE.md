@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-10T23:53:39.487Z"
+last_updated: "2026-03-10T23:58:03.021Z"
 progress:
   total_phases: 9
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 15
-  completed_plans: 14
+  completed_plans: 15
 ---
 
 # Project State
@@ -22,12 +22,12 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 
 ## Current Position
 
-Phase: 02-exercise-library (Exercise Library) — IN PROGRESS
-Plan: 02-02 complete (2/3 plans done for this phase)
-Status: Plan 02-02 COMPLETE — four exercise UI components created: ExerciseCard, ExerciseGrid, ExerciseDetailModal, ExerciseFormModal; TypeScript clean
-Last activity: 2026-03-10 — Plan 02 complete; all four exercise UI components implemented with React Hook Form + Zod v4, YouTube embed, two-step delete confirmation; router.refresh() pattern for Server Action mutations
+Phase: 02-exercise-library (Exercise Library) — AWAITING HUMAN VERIFY
+Plan: 02-03 tasks 1-2 complete; paused at Task 3 checkpoint:human-verify
+Status: Plan 02-03 PAUSED at checkpoint — ExercisesPage + ExerciseFilterBar created, Exercises nav link added to trainer layout; awaiting end-to-end human verification of Exercise Library feature
+Last activity: 2026-03-11 — Plan 03 tasks 1-2 complete; /trainer/exercises page wired with URL-param filtering, filter bar with search+muscle chips, trainer nav link added
 
-Progress: [█████░░░░░] 47%
+Progress: [██████░░░░] 53%
 
 ## Performance Metrics
 
@@ -106,6 +106,9 @@ Recent decisions affecting current work:
 - [02-01]: updated_at set via new Date().toISOString() in Server Action — consistent with existing Phase 1 patterns, no DB trigger needed
 - [Phase 02-02]: ExerciseGrid manages editExercise state separately from selectedExercise to cleanly coordinate detail->edit transition
 - [Phase 02-02]: extractYouTubeId defined as module-level utility in both files that need it, not shared to avoid coupling
+- [Phase 02-03]: ExerciseGrid rendered in all states so 'Add exercise' button is always accessible; empty library illustration appears above grid
+- [Phase 02-03]: Active chip state read from useSearchParams() (not initialMuscles prop) — client-side URL is single source of truth after hydration
+- [Phase 02-03]: Snake_case to camelCase mapping done in page.tsx — keeps downstream Exercise components clean with typed interface
 
 ### Roadmap Evolution
 
@@ -130,6 +133,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-03-10
-Stopped at: Completed 02-02-PLAN.md — four exercise UI components created (ExerciseCard, ExerciseGrid, ExerciseDetailModal, ExerciseFormModal); TypeScript clean. Next: Phase 2 Plan 03 (exercises page).
+Last session: 2026-03-11
+Stopped at: 02-03 Task 3 checkpoint:human-verify — Exercise Library feature complete; awaiting end-to-end human verification before phase closes.
 Resume file: None
