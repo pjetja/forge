@@ -77,9 +77,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — DB migration (exercises table + RLS) + Drizzle schema update + Server Actions (create/update/delete)
-- [ ] 02-02-PLAN.md — Exercise UI components (ExerciseCard, ExerciseGrid, ExerciseDetailModal, ExerciseFormModal)
-- [ ] 02-03-PLAN.md — ExercisesPage + ExerciseFilterBar (search + muscle group chips) + nav link + human verify
+- [x] 02-01-PLAN.md — DB migration (exercises table + RLS) + Drizzle schema update + Server Actions (create/update/delete)
+- [x] 02-02-PLAN.md — Exercise UI components (ExerciseCard, ExerciseGrid, ExerciseDetailModal, ExerciseFormModal)
+- [x] 02-03-PLAN.md — ExercisesPage + ExerciseFilterBar (search + muscle group chips) + nav link + human verify
 
 ### Phase 02.1: UI Polish (INSERTED)
 
@@ -155,7 +155,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 01.1. UI Design System | 3/3 | Complete    | 2026-03-10 |
 | 01.2. Logo Generation | 2/2 | Complete    | 2026-03-10 |
 | 01.3. Figma UI Library | 2/2 | Complete    | 2026-03-10 |
-| 2. Exercise Library | 3/3 | Complete   | 2026-03-10 |
+| 2. Exercise Library | 3/3 | Complete   | 2026-03-11 |
 | 3. Plan Builder | 0/TBD | Not started | - |
 | 4. Trainee Workout Logging | 0/TBD | Not started | - |
 | 5. Trainer Progress Visibility | 0/TBD | Not started | - |
