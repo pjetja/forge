@@ -27,13 +27,13 @@
 
 ### Plan Builder
 
-- [ ] **PLAN-01**: Trainer can create a named workout plan spanning multiple weeks
-- [ ] **PLAN-02**: Trainer can define named workout schemas within a plan (e.g. "Push Day", "Pull Day")
-- [ ] **PLAN-03**: Trainer can assign workout schemas to specific days within each week
+- [x] **PLAN-01**: Trainer can create a named workout plan spanning multiple weeks
+- [x] **PLAN-02**: Trainer can define named workout schemas within a plan (e.g. "Push Day", "Pull Day")
+- [x] **PLAN-03**: Trainer can assign workout schemas to specific days within each week
 - [ ] **PLAN-04**: Trainer can add exercises to a schema with sets, reps, and target weight
-- [ ] **PLAN-05**: Trainer can assign a plan to a connected trainee
+- [x] **PLAN-05**: Trainer can assign a plan to a connected trainee
 - [ ] **PLAN-06**: Trainer can duplicate (template) an existing plan to reuse for another trainee
-- [ ] **PLAN-07**: Trainer can edit a plan that is currently assigned to an active trainee
+- [x] **PLAN-07**: Trainer can edit a plan that is currently assigned to an active trainee
 
 ### Trainee Workout Tracking
 
@@ -96,13 +96,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 | EXLIB-01 | Phase 2 | Complete |
 | EXLIB-02 | Phase 2 | Complete |
 | EXLIB-03 | Phase 2 | Complete |
-| PLAN-01 | Phase 3 | Pending |
-| PLAN-02 | Phase 3 | Pending |
-| PLAN-03 | Phase 3 | Pending |
+| PLAN-01 | Phase 3 | Complete |
+| PLAN-02 | Phase 3 | Complete |
+| PLAN-03 | Phase 3 | Complete |
 | PLAN-04 | Phase 3 | Pending |
-| PLAN-05 | Phase 3 | Pending |
+| PLAN-05 | Phase 3 | Complete |
 | PLAN-06 | Phase 3 | Pending |
-| PLAN-07 | Phase 3 | Pending |
+| PLAN-07 | Phase 3 | Complete |
 | TRACK-01 | Phase 4 | Pending |
 | TRACK-02 | Phase 4 | Pending |
 | TRACK-03 | Phase 4 | Pending |
