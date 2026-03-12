@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-11T00:29:23.654Z"
+last_updated: "2026-03-12T18:58:38.768Z"
 progress:
-  total_phases: 9
+  total_phases: 12
   completed_phases: 5
-  total_plans: 15
-  completed_plans: 15
+  total_plans: 21
+  completed_plans: 18
 ---
 
 # Project State
@@ -23,9 +23,9 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 ## Current Position
 
 Phase: 03-plan-builder (Plan Builder) — In progress
-Plan: 03-01 complete (Tasks 1 + 2 done; migration file + Drizzle types + Server Actions)
-Status: Phase 03-plan-builder in progress — plan 1/6 done; DB schema and Server Action layer complete; awaiting 03-02 (UI)
-Last activity: 2026-03-12 — Plan 03-01 complete; 6-table migration + 14 Server Actions; TypeScript compiles clean
+Plan: 03-02 complete (Tasks 1 + 2 done; NavHeader 3-tab nav + trainees landing page + trainee detail page)
+Status: Phase 03-plan-builder in progress — plan 2/6 done; DB schema + Server Actions + NavHeader + Trainees UI complete; awaiting 03-03 (Plans library page)
+Last activity: 2026-03-12 — Plan 03-02 complete; 3-tab NavHeader + clickable trainee roster with plan context + trainee detail page; TypeScript compiles clean
 
 Progress: [██████░░░░] 56%
 
@@ -56,6 +56,8 @@ Progress: [██████░░░░] 56%
 | Phase 02-exercise-library P01 | 5min | 2 tasks | 3 files |
 | Phase 02-exercise-library P02 | 2 | 3 tasks | 4 files |
 | Phase 03-plan-builder P01 | 25min | 2 tasks | 4 files |
+| Phase 03-plan-builder P02 | 8 | 2 tasks | 3 files |
+| Phase 03-plan-builder P03 | 2 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -113,6 +115,10 @@ Recent decisions affecting current work:
 - [03-01]: snapshot-at-assignment chosen — assigned_plans/schemas/exercises are full copies; trainer edits live in assigned_schema_exercises directly; plan_updated_at bumped to signal trainee
 - [03-01]: per_set_weights stored as JSONB number array — supports per-set weight variation (e.g., [80, 82.5, 85]); NULL = single-weight mode; avoids separate table
 - [03-01]: assign_plan and duplicate_plan are SECURITY DEFINER RPC functions — atomic multi-table inserts cannot be done safely client-side through RLS
+- [Phase 03-02]: per-link isActive() function used in navLinks (not pathname.startsWith(href)) — prevents /trainer matching all trainer/* routes simultaneously
+- [Phase 03-02]: Separate Supabase query for assigned_plans (not JOIN) — in-memory Map used to map one plan per trainee
+- [Phase 03-03]: [03-03]: PlanWeekView week tabs are UI-only — all tabs show same schema template; week_count is display metadata, no per-week DB copies
+- [Phase 03-03]: [03-03]: AddSchemaButton is a separate client component to keep PlanEditorPage (server component) clean
 
 ### Roadmap Evolution
 
@@ -141,5 +147,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-03-12
-Stopped at: Completed 03-01-PLAN.md — Phase 3 data layer complete; 6-table migration + Drizzle types + 14 Server Actions; next is 03-02 (UI).
+Stopped at: Completed 03-02-PLAN.md — NavHeader 3-tab nav + trainees landing page with plan context + trainee detail page; next is 03-03 (Plans library page).
 Resume file: None
