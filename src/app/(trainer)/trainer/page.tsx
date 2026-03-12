@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
+import Link from 'next/link';
 import { InviteDialog } from './_components/InviteDialog';
 
 interface TraineeRow {
@@ -28,6 +29,30 @@ export default async function TrainerHomePage() {
     .order('connected_at', { ascending: false });
 
   const trainees = (connections ?? []) as TraineeRow[];
+
+  // Fetch assigned plans (active or pending) for all connected trainees
+  const traineeIds = trainees.map((t) => t.trainee_auth_uid);
+  let assignedPlansByTrainee: Record<string, { id: string; name: string; status: string } | null> = {};
+
+  if (traineeIds.length > 0) {
+    const { data: assignedPlans } = await supabase
+      .from('assigned_plans')
+      .select('id, trainee_auth_uid, name, status')
+      .in('trainee_auth_uid', traineeIds)
+      .in('status', ['pending', 'active'])
+      .order('created_at', { ascending: false });
+
+    // Map: one per trainee (first = most recent active/pending)
+    for (const ap of assignedPlans ?? []) {
+      if (!assignedPlansByTrainee[ap.trainee_auth_uid]) {
+        assignedPlansByTrainee[ap.trainee_auth_uid] = {
+          id: ap.id,
+          name: ap.name,
+          status: ap.status,
+        };
+      }
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -65,16 +90,13 @@ export default async function TrainerHomePage() {
                   .toUpperCase()
                   .slice(0, 2)
               : '?';
-            const connectedDate = new Date(connection.connected_at).toLocaleDateString('en-GB', {
-              day: 'numeric',
-              month: 'short',
-              year: 'numeric',
-            });
+            const currentPlan = assignedPlansByTrainee[connection.trainee_auth_uid] ?? null;
 
             return (
-              <div
+              <Link
                 key={connection.trainee_auth_uid}
-                className="bg-bg-surface border border-border rounded-sm p-4 flex items-center gap-4"
+                href={`/trainer/trainees/${connection.trainee_auth_uid}`}
+                className="bg-bg-surface border border-border rounded-sm p-4 flex items-center gap-4 hover:border-accent transition-colors"
               >
                 {/* Avatar */}
                 <div className="w-10 h-10 rounded-full bg-accent/20 text-accent flex items-center justify-center text-sm font-semibold flex-shrink-0">
@@ -85,15 +107,24 @@ export default async function TrainerHomePage() {
                   <p className="font-medium text-text-primary truncate">
                     {trainee?.name ?? 'Unknown trainee'}
                   </p>
-                  <p className="text-sm text-text-primary truncate">
-                    {trainee?.email ?? connection.trainee_auth_uid}
-                  </p>
+                  {currentPlan ? (
+                    <p className="text-sm text-text-primary truncate">
+                      <span
+                        className={
+                          currentPlan.status === 'active' ? 'text-accent' : 'text-text-primary'
+                        }
+                      >
+                        {currentPlan.status === 'active' ? 'Active' : 'Pending'}:
+                      </span>{' '}
+                      {currentPlan.name}
+                    </p>
+                  ) : (
+                    <p className="text-sm text-text-primary">No plan assigned</p>
+                  )}
                 </div>
-                {/* Connected date */}
-                <div className="text-xs text-text-primary flex-shrink-0">
-                  Joined {connectedDate}
-                </div>
-              </div>
+                {/* Chevron */}
+                <span className="text-text-primary flex-shrink-0">&rsaquo;</span>
+              </Link>
             );
           })}
         </div>
