@@ -104,7 +104,7 @@ Plans:
 **Plans**: 6 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — DB migration (6 tables + 2 RPC functions + RLS) + Drizzle schema types + Server Actions (plan/schema/exercise/assign CRUD)
+- [x] 03-01-PLAN.md — DB migration (6 tables + 2 RPC functions + RLS) + Drizzle schema types + Server Actions (plan/schema/exercise/assign CRUD)
 - [ ] 03-02-PLAN.md — NavHeader 3-tab update + Trainees landing page (plan context per trainee) + Trainee detail page
 - [ ] 03-03-PLAN.md — Plans list + Plan creation form + Plan template editor (week tabs + workout slot cards) + AddSchemaButton
 - [ ] 03-04-PLAN.md — Schema editor page + SchemaExerciseList (DnD) + SchemaExerciseRow + ExercisePickerModal
@@ -164,7 +164,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 01.2. Logo Generation | 2/2 | Complete    | 2026-03-10 |
 | 01.3. Figma UI Library | 2/2 | Complete    | 2026-03-10 |
 | 2. Exercise Library | 3/3 | Complete   | 2026-03-11 |
-| 3. Plan Builder | 0/6 | In progress | - |
+| 3. Plan Builder | 1/6 | In progress | - |
 | 4. Trainee Workout Logging | 0/TBD | Not started | - |
 | 5. Trainer Progress Visibility | 0/TBD | Not started | - |
 
@@ -177,3 +177,23 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 Plans:
 - [ ] TBD (run /gsd:plan-phase 05.1 to break down)
+
+### Phase 6: trainee and trainer profile pages
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 5
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 6 to break down)
+
+### Phase 7: main page / landing page with teasers to drive app adoption
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 6
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 7 to break down)

@@ -22,12 +22,12 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 
 ## Current Position
 
-Phase: 02-exercise-library (Exercise Library) — COMPLETE
-Plan: 02-03 complete (all 3 tasks including human verification approved)
-Status: Phase 02-exercise-library COMPLETE — all plans 01-03 done; Exercise Library feature fully built and human-verified
-Last activity: 2026-03-11 — Plan 02-03 Task 3 human verification approved; Exercise Library feature complete
+Phase: 03-plan-builder (Plan Builder) — In progress
+Plan: 03-01 complete (Tasks 1 + 2 done; migration file + Drizzle types + Server Actions)
+Status: Phase 03-plan-builder in progress — plan 1/6 done; DB schema and Server Action layer complete; awaiting 03-02 (UI)
+Last activity: 2026-03-12 — Plan 03-01 complete; 6-table migration + 14 Server Actions; TypeScript compiles clean
 
-Progress: [██████░░░░] 53%
+Progress: [██████░░░░] 56%
 
 ## Performance Metrics
 
@@ -55,6 +55,7 @@ Progress: [██████░░░░] 53%
 | Phase 01.3-figma-ui-library P02 | 30min | 2 tasks | 1 files |
 | Phase 02-exercise-library P01 | 5min | 2 tasks | 3 files |
 | Phase 02-exercise-library P02 | 2 | 3 tasks | 4 files |
+| Phase 03-plan-builder P01 | 25min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -109,6 +110,9 @@ Recent decisions affecting current work:
 - [Phase 02-03]: ExerciseGrid rendered in all states so 'Add exercise' button is always accessible; empty library illustration appears above grid
 - [Phase 02-03]: Active chip state read from useSearchParams() (not initialMuscles prop) — client-side URL is single source of truth after hydration
 - [Phase 02-03]: Snake_case to camelCase mapping done in page.tsx — keeps downstream Exercise components clean with typed interface
+- [03-01]: snapshot-at-assignment chosen — assigned_plans/schemas/exercises are full copies; trainer edits live in assigned_schema_exercises directly; plan_updated_at bumped to signal trainee
+- [03-01]: per_set_weights stored as JSONB number array — supports per-set weight variation (e.g., [80, 82.5, 85]); NULL = single-weight mode; avoids separate table
+- [03-01]: assign_plan and duplicate_plan are SECURITY DEFINER RPC functions — atomic multi-table inserts cannot be done safely client-side through RLS
 
 ### Roadmap Evolution
 
@@ -119,20 +123,23 @@ Recent decisions affecting current work:
 - Phase 03.1 inserted after Phase 3: UI Polish — visual review and polish after Plan Builder is built
 - Phase 04.1 inserted after Phase 4: UI Polish — visual review and polish after Trainee Workout Logging is built
 - Phase 05.1 inserted after Phase 5: UI Polish — visual review and polish after Trainer Progress Visibility is built
+- Phase 6 added: trainee and trainer profile pages
+- Phase 7 added: main page / landing page with teasers to drive app adoption
 
 ### Pending Todos
 
 - [01-01]: Apply database migration via Supabase SQL Editor — paste src/lib/db/migrations/0001_initial.sql into SQL Editor and run
 - [02-01]: Apply exercises migration via Supabase SQL Editor — paste src/lib/db/migrations/0002_exercises.sql into SQL Editor and run (required before exercises UI can be tested)
+- [03-01]: Apply plans migration via Supabase SQL Editor — paste src/lib/db/migrations/0003_plans.sql into SQL Editor and run (required before Plan Builder UI can be tested end-to-end)
 
 ### Blockers/Concerns
 
 - [01-01 Pending]: Migration not yet applied to Supabase — database tables don't exist yet; user must apply via SQL Editor before Plan 02 auth flows can be tested
-- [Pre-Phase 3]: Plan edit behavior for active trainees is an unresolved product decision (snapshot-at-assignment vs. versioned plans) — must be resolved before Phase 3 planning begins
+- [Pre-Phase 3 RESOLVED]: Plan edit behavior resolved — snapshot-at-assignment chosen; trainer edits assigned_schema_exercises directly; plan_updated_at signals changes to trainee
 - [Pre-Phase 4]: Week calculation timezone strategy (start_date is a date type, no timezone) must be defined before Phase 4 implementation
 
 ## Session Continuity
 
-Last session: 2026-03-11
-Stopped at: Completed 02-03-PLAN.md — Exercise Library phase complete; all 3 plans done; human verification approved.
+Last session: 2026-03-12
+Stopped at: Completed 03-01-PLAN.md — Phase 3 data layer complete; 6-table migration + Drizzle types + 14 Server Actions; next is 03-02 (UI).
 Resume file: None
