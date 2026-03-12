@@ -23,9 +23,9 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 ## Current Position
 
 Phase: 03-plan-builder (Plan Builder) — In progress
-Plan: 03-02 complete (Tasks 1 + 2 done; NavHeader 3-tab nav + trainees landing page + trainee detail page)
-Status: Phase 03-plan-builder in progress — plan 2/6 done; DB schema + Server Actions + NavHeader + Trainees UI complete; awaiting 03-03 (Plans library page)
-Last activity: 2026-03-12 — Plan 03-02 complete; 3-tab NavHeader + clickable trainee roster with plan context + trainee detail page; TypeScript compiles clean
+Plan: 03-03 complete (Plans list, creation form, plan template editor with week tabs and schema slots)
+Status: Phase 03-plan-builder in progress — plan 3/6 done; Plans list + creation + template editor UI complete; awaiting 03-04 (Schema editor)
+Last activity: 2026-03-12 — Plan 03-03 complete; Plans list page, PlanCard, PlanWeekView, AddSchemaButton, creation form; TypeScript compiles clean
 
 Progress: [██████░░░░] 56%
 
@@ -147,5 +147,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-03-12
-Stopped at: Completed 03-02-PLAN.md — NavHeader 3-tab nav + trainees landing page with plan context + trainee detail page; next is 03-03 (Plans library page).
+Stopped at: Completed 03-03-PLAN.md — Plans list + creation form + plan template editor (week tabs, schema slots, AddSchemaButton); next is 03-04 (Schema editor).
 Resume file: None
