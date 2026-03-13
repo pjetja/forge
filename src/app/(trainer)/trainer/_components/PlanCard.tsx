@@ -79,7 +79,7 @@ export function PlanCard({ id, name, weekCount, workoutsPerWeek, assignedCount, 
       <div className="min-w-0 flex-1">
         <p className="font-medium text-text-primary truncate">{name}</p>
         <p className="text-sm text-text-primary opacity-60 mt-0.5">
-          {weekCount}w &middot; {workoutsPerWeek}x/week
+          {weekCount} {weekCount === 1 ? 'week' : 'weeks'} &middot; {workoutsPerWeek} {workoutsPerWeek === 1 ? 'workout' : 'workouts'} per week
           {assignedCount > 0 && <> &middot; {assignedCount} trainee{assignedCount !== 1 ? 's' : ''}</>}
         </p>
         {tags.length > 0 && (

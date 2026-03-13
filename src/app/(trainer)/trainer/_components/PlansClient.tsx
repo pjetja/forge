@@ -43,9 +43,8 @@ export function PlansClient({ plans, allTags, migrationPending }: PlansClientPro
         </Link>
       </div>
 
-      {/* Tag filter bar — only shown when there are tags */}
-      {allTags.length > 0 && (
-        <div className="flex flex-wrap gap-2">
+      {/* Tag filter bar — always shown */}
+      <div className="flex flex-wrap gap-2">
           <button
             type="button"
             onClick={() => setSelectedTag(null)}
@@ -71,8 +70,7 @@ export function PlansClient({ plans, allTags, migrationPending }: PlansClientPro
               {tag}
             </button>
           ))}
-        </div>
-      )}
+      </div>
 
       {plans.length === 0 && (
         <div className="bg-bg-surface border border-border rounded-sm p-12 text-center space-y-3">

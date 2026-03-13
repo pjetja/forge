@@ -5,6 +5,7 @@ import { PlanWeekView } from '../../_components/PlanWeekView';
 import { AddSchemaButton } from '../../_components/AddSchemaButton';
 import { PlanNotesEditor } from '../../_components/PlanNotesEditor';
 import { PlanDetailHeader } from '../../_components/PlanDetailHeader';
+import { PlanTagsEditor } from '../../_components/PlanTagsEditor';
 
 interface SchemaRow { id: string; name: string; slot_index: number; sort_order: number; }
 interface ActiveTrainee { traineeAuthUid: string; traineeName: string; status: string; }
@@ -56,28 +57,44 @@ export default async function PlanEditorPage({ params }: { params: Promise<{ pla
 
   return (
     <div className="space-y-6">
+      {/* Section 1: Header — name, actions, weeks/workouts */}
       <PlanDetailHeader
         planId={planId}
         initialName={planData.name}
         weekCount={planData.week_count}
         workoutsPerWeek={planData.workouts_per_week}
-        initialTags={tags}
         assignedCount={activeTrainees.length}
-        hasMeta={hasMeta}
       />
 
-      {/* Assign button */}
-      <Link
-        href={`/trainer/plans/${planId}/assign`}
-        className="block w-full bg-accent hover:bg-accent-hover text-white rounded-sm px-4 py-2 text-sm font-medium transition-colors text-center"
-      >
-        Assign to trainee
-      </Link>
+      {/* Section 2: Tags + Notes (only when migration 0004 applied) */}
+      {hasMeta && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <PlanTagsEditor planId={planId} initialTags={tags} />
+          <PlanNotesEditor planId={planId} initialNotes={planData.notes ?? ''} />
+        </div>
+      )}
 
-      {/* Trainees section — always visible */}
-      <div className="bg-bg-surface border border-border rounded-sm p-4">
-        <p className="text-sm font-medium text-text-primary mb-3">
-          Trainees using this plan ({activeTrainees.length})
+      {/* Section 3: Workouts */}
+      <div className="space-y-3">
+        <p className="text-sm font-medium text-text-primary">Workouts</p>
+        <PlanWeekView
+          planId={planId}
+          workoutsPerWeek={planData.workouts_per_week}
+          schemas={schemas.map((s) => ({ id: s.id, name: s.name, slotIndex: s.slot_index, sortOrder: s.sort_order }))}
+        />
+        {unassignedSlots.length > 0 && (
+          <div className="space-y-2 pt-1">
+            {unassignedSlots.map((slot) => (
+              <AddSchemaButton key={slot} planId={planId} slotIndex={slot} sortOrder={slot - 1} />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Section 4: Trainees + Assign button */}
+      <div className="bg-bg-surface border border-border rounded-sm p-4 space-y-3">
+        <p className="text-sm font-medium text-text-primary">
+          Trainees ({activeTrainees.length})
         </p>
         {activeTrainees.length === 0 ? (
           <p className="text-sm text-text-primary opacity-50">No trainees assigned yet.</p>
@@ -96,27 +113,13 @@ export default async function PlanEditorPage({ params }: { params: Promise<{ pla
             ))}
           </div>
         )}
+        <Link
+          href={`/trainer/plans/${planId}/assign`}
+          className="block w-full bg-accent hover:bg-accent-hover text-white rounded-sm px-4 py-2 text-sm font-medium transition-colors text-center"
+        >
+          Assign to trainee
+        </Link>
       </div>
-
-      {/* Notes */}
-      {hasMeta && <PlanNotesEditor planId={planId} initialNotes={planData.notes ?? ''} />}
-
-      {/* Week view */}
-      <PlanWeekView
-        planId={planId}
-        weekCount={planData.week_count}
-        workoutsPerWeek={planData.workouts_per_week}
-        schemas={schemas.map((s) => ({ id: s.id, name: s.name, slotIndex: s.slot_index, sortOrder: s.sort_order }))}
-      />
-
-      {unassignedSlots.length > 0 && (
-        <div className="space-y-2">
-          <p className="text-sm font-medium text-text-primary">Add workouts:</p>
-          {unassignedSlots.map((slot) => (
-            <AddSchemaButton key={slot} planId={planId} slotIndex={slot} sortOrder={slot - 1} />
-          ))}
-        </div>
-      )}
     </div>
   );
 }

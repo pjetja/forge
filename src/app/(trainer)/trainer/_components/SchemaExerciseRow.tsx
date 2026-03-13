@@ -22,6 +22,11 @@ interface SchemaExerciseRowProps {
   onRemoved: (id: string) => void;
 }
 
+function numStr(n: number | null | undefined): string {
+  if (n == null || n === 0) return '';
+  return String(n);
+}
+
 export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaExerciseRowProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: item.id,
@@ -35,11 +40,14 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
 
   const [sets, setSets] = useState(item.sets);
   const [reps, setReps] = useState(item.reps);
-  const [targetWeight, setTargetWeight] = useState(item.targetWeightKg ?? 0);
+  const [targetWeight, setTargetWeight] = useState<string>(numStr(item.targetWeightKg));
   const [perSetMode, setPerSetMode] = useState(item.perSetWeights !== null);
-  const [perSetWeights, setPerSetWeights] = useState<number[]>(
-    item.perSetWeights ?? Array(item.sets).fill(item.targetWeightKg ?? 0)
+  const [perSetWeights, setPerSetWeights] = useState<string[]>(
+    item.perSetWeights
+      ? item.perSetWeights.map(numStr)
+      : Array(item.sets).fill(numStr(item.targetWeightKg))
   );
+  const [confirmRemove, setConfirmRemove] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   function saveField(updates: Parameters<typeof updateSchemaExercise>[3]) {
@@ -54,7 +62,7 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
     if (perSetMode) {
       setPerSetWeights((prev) => {
         const copy = [...prev];
-        while (copy.length < validated) copy.push(copy[copy.length - 1] ?? 0);
+        while (copy.length < validated) copy.push(copy[copy.length - 1] ?? '');
         return copy.slice(0, validated);
       });
     }
@@ -67,15 +75,13 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
     saveField({ reps: validated });
   }
 
-  function handleWeightBlur(newWeight: number) {
-    setTargetWeight(newWeight);
-    saveField({ targetWeightKg: newWeight || null });
+  function handleWeightBlur() {
+    const val = parseFloat(targetWeight) || null;
+    saveField({ targetWeightKg: val });
   }
 
-  function handlePerSetWeightBlur(index: number, val: number) {
-    const updated = [...perSetWeights];
-    updated[index] = val;
-    setPerSetWeights(updated);
+  function handlePerSetWeightBlur(index: number) {
+    const updated = perSetWeights.map((w) => parseFloat(w) || 0);
     saveField({ perSetWeights: updated });
   }
 
@@ -83,19 +89,21 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
     const newMode = !perSetMode;
     setPerSetMode(newMode);
     if (newMode) {
-      const weights = Array(sets).fill(targetWeight);
-      setPerSetWeights(weights);
+      const w = parseFloat(targetWeight) || 0;
+      const weights = Array(sets).fill(w);
+      setPerSetWeights(weights.map(numStr));
       saveField({ perSetWeights: weights });
     } else {
-      const avg = perSetWeights.reduce((a, b) => a + b, 0) / (perSetWeights.length || 1);
+      const parsed = perSetWeights.map((w) => parseFloat(w) || 0);
+      const avg = parsed.reduce((a, b) => a + b, 0) / (parsed.length || 1);
       const single = Math.round(avg * 4) / 4;
-      setTargetWeight(single);
-      saveField({ perSetWeights: null, targetWeightKg: single });
+      setTargetWeight(numStr(single));
+      saveField({ perSetWeights: null, targetWeightKg: single || null });
     }
   }
 
-  function handleRemove() {
-    if (!confirm(`Remove "${item.exerciseName}" from this workout?`)) return;
+  function handleRemoveConfirm() {
+    setConfirmRemove(false);
     startTransition(async () => {
       const result = await removeExerciseFromSchema(item.id, schemaId, planId);
       if (!('error' in result)) onRemoved(item.id);
@@ -126,15 +134,35 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
           <p className="text-xs text-text-primary opacity-60">{item.muscleGroup}</p>
         </div>
 
-        <button
-          type="button"
-          onClick={handleRemove}
-          disabled={isPending}
-          className="text-text-primary opacity-40 hover:opacity-100 hover:text-red-400 transition-opacity flex-shrink-0 text-lg leading-none cursor-pointer"
-          aria-label="Remove exercise"
-        >
-          &times;
-        </button>
+        {confirmRemove ? (
+          <div className="flex items-center gap-1 flex-shrink-0">
+            <button
+              type="button"
+              onClick={handleRemoveConfirm}
+              disabled={isPending}
+              className="text-xs text-red-400 hover:text-red-300 px-2 py-1 cursor-pointer disabled:opacity-30"
+            >
+              Remove
+            </button>
+            <button
+              type="button"
+              onClick={() => setConfirmRemove(false)}
+              className="text-xs text-text-primary opacity-50 hover:opacity-100 px-2 py-1 cursor-pointer"
+            >
+              Cancel
+            </button>
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setConfirmRemove(true)}
+            disabled={isPending}
+            className="text-text-primary opacity-40 hover:opacity-100 hover:text-red-400 transition-opacity flex-shrink-0 text-lg leading-none cursor-pointer p-1"
+            aria-label="Remove exercise"
+          >
+            &times;
+          </button>
+        )}
       </div>
 
       {/* Inputs: sets | reps | weight + per-set toggle */}
@@ -170,14 +198,14 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
           <div className="flex items-center gap-1">
             <label className="text-xs text-text-primary opacity-60">kg</label>
             <input
-              type="number"
+              type="text"
+              inputMode="decimal"
               className={inputClass}
               value={targetWeight}
-              min={0}
-              step={0.5}
+              placeholder="0"
               onFocus={(e) => e.target.select()}
-              onChange={(e) => setTargetWeight(parseFloat(e.target.value) || 0)}
-              onBlur={(e) => handleWeightBlur(parseFloat(e.target.value) || 0)}
+              onChange={(e) => setTargetWeight(e.target.value)}
+              onBlur={handleWeightBlur}
             />
           </div>
         )}
@@ -198,18 +226,18 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
             <div key={i} className="flex items-center gap-1">
               <label className="text-xs text-text-primary opacity-60">S{i + 1}</label>
               <input
-                type="number"
+                type="text"
+                inputMode="decimal"
                 className={inputClass}
                 value={w}
-                min={0}
-                step={0.5}
+                placeholder="0"
                 onFocus={(e) => e.target.select()}
                 onChange={(e) => {
                   const updated = [...perSetWeights];
-                  updated[i] = parseFloat(e.target.value) || 0;
+                  updated[i] = e.target.value;
                   setPerSetWeights(updated);
                 }}
-                onBlur={(e) => handlePerSetWeightBlur(i, parseFloat(e.target.value) || 0)}
+                onBlur={() => handlePerSetWeightBlur(i)}
               />
               <span className="text-xs text-text-primary opacity-60">kg</span>
             </div>
