@@ -93,9 +93,17 @@ export default async function PlanEditorPage({ params }: { params: Promise<{ pla
 
       {/* Section 4: Trainees + Assign button */}
       <div className="space-y-3">
-        <p className="text-sm font-medium text-text-primary">
-          Trainees ({activeTrainees.length})
-        </p>
+        <div className="flex items-center justify-between gap-3">
+          <p className="text-sm font-medium text-text-primary">
+            Trainees ({activeTrainees.length})
+          </p>
+          <Link
+            href={`/trainer/plans/${planId}/assign`}
+            className="bg-accent hover:bg-accent-hover text-white rounded-sm px-3 py-1.5 text-sm font-medium transition-colors flex-shrink-0"
+          >
+            + Assign trainee
+          </Link>
+        </div>
         {activeTrainees.length === 0 ? (
           <p className="text-sm text-text-primary opacity-50">No trainees assigned yet.</p>
         ) : (
@@ -113,12 +121,6 @@ export default async function PlanEditorPage({ params }: { params: Promise<{ pla
             ))}
           </div>
         )}
-        <Link
-          href={`/trainer/plans/${planId}/assign`}
-          className="block w-full bg-accent hover:bg-accent-hover text-white rounded-sm px-4 py-2 text-sm font-medium transition-colors text-center"
-        >
-          Assign to trainee
-        </Link>
       </div>
     </div>
   );
