@@ -15,10 +15,11 @@ A trainee can open the app at the gym, see this week's assigned workouts, pick a
 
 ### Navigation hierarchy
 - 4-level drill-down:
-  1. **Plans list** — current and past workout plans assigned to the trainee
+  1. **Plans list** — three sections: active plan (current), future plans (assigned but not yet started, read-only/preview), and past plans (completed, read-only history)
   2. **Active plan** — this week's workouts (e.g., "Workout A", "Workout B"), each showing done/remaining status
   3. **Single workout view** — list of exercises with completion status, plus workout metadata (workout number, week number)
   4. **Exercise detail panel/page** — full set logging UI; back button returns to single workout view
+- Future/inactive plans are visible on the plans list but cannot be started — trainee can preview the plan structure
 
 ### Week-based scheduling (not day-specific)
 - Plans are "X workouts per week", not tied to specific days (no Monday/Tuesday assignment)
