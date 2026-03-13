@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-12T18:58:38.768Z"
+last_updated: "2026-03-13T08:24:44.337Z"
 progress:
   total_phases: 12
   completed_phases: 5
   total_plans: 21
-  completed_plans: 18
+  completed_plans: 19
 ---
 
 # Project State
@@ -23,9 +23,9 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 ## Current Position
 
 Phase: 03-plan-builder (Plan Builder) — In progress
-Plan: 03-03 complete (Plans list, creation form, plan template editor with week tabs and schema slots)
-Status: Phase 03-plan-builder in progress — plan 3/6 done; Plans list + creation + template editor UI complete; awaiting 03-04 (Schema editor)
-Last activity: 2026-03-12 — Plan 03-03 complete; Plans list page, PlanCard, PlanWeekView, AddSchemaButton, creation form; TypeScript compiles clean
+Plan: 03-04 complete (Schema editor — DnD exercise list, inline inputs, per-set weights, exercise picker modal)
+Status: Phase 03-plan-builder in progress — plan 4/6 done; schema editor fully built with @dnd-kit; awaiting 03-05 (Plan assignment)
+Last activity: 2026-03-13 — Plan 03-04 complete; SchemaExerciseList + Row + ExercisePickerModal + SchemaEditorAddButton + schema editor page; TypeScript compiles clean
 
 Progress: [██████░░░░] 56%
 
@@ -58,6 +58,7 @@ Progress: [██████░░░░] 56%
 | Phase 03-plan-builder P01 | 25min | 2 tasks | 4 files |
 | Phase 03-plan-builder P02 | 8 | 2 tasks | 3 files |
 | Phase 03-plan-builder P03 | 2 | 2 tasks | 6 files |
+| Phase 03-plan-builder P04 | 3 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -119,6 +120,8 @@ Recent decisions affecting current work:
 - [Phase 03-02]: Separate Supabase query for assigned_plans (not JOIN) — in-memory Map used to map one plan per trainee
 - [Phase 03-03]: [03-03]: PlanWeekView week tabs are UI-only — all tabs show same schema template; week_count is display metadata, no per-week DB copies
 - [Phase 03-03]: [03-03]: AddSchemaButton is a separate client component to keep PlanEditorPage (server component) clean
+- [Phase 03-04]: [03-04]: DnD listeners on handle button only — prevents input clicks triggering drag; PointerSensor activationConstraint distance:8 adds second protection layer
+- [Phase 03-04]: [03-04]: PostgREST exercises join uses Array.isArray guard — join can return object or array; guard ensures name/muscle_group extracted correctly
 
 ### Roadmap Evolution
 
@@ -146,6 +149,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-03-12
-Stopped at: Completed 03-03-PLAN.md — Plans list + creation form + plan template editor (week tabs, schema slots, AddSchemaButton); next is 03-04 (Schema editor).
+Last session: 2026-03-13
+Stopped at: Completed 03-04-PLAN.md — Schema editor with DnD reordering, inline inputs, per-set weights, exercise picker; next is 03-05 (Plan assignment).
 Resume file: None

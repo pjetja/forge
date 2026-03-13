@@ -30,7 +30,7 @@
 - [x] **PLAN-01**: Trainer can create a named workout plan spanning multiple weeks
 - [x] **PLAN-02**: Trainer can define named workout schemas within a plan (e.g. "Push Day", "Pull Day")
 - [x] **PLAN-03**: Trainer can assign workout schemas to specific days within each week
-- [ ] **PLAN-04**: Trainer can add exercises to a schema with sets, reps, and target weight
+- [x] **PLAN-04**: Trainer can add exercises to a schema with sets, reps, and target weight
 - [x] **PLAN-05**: Trainer can assign a plan to a connected trainee
 - [ ] **PLAN-06**: Trainer can duplicate (template) an existing plan to reuse for another trainee
 - [x] **PLAN-07**: Trainer can edit a plan that is currently assigned to an active trainee
@@ -99,7 +99,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PLAN-01 | Phase 3 | Complete |
 | PLAN-02 | Phase 3 | Complete |
 | PLAN-03 | Phase 3 | Complete |
-| PLAN-04 | Phase 3 | Pending |
+| PLAN-04 | Phase 3 | Complete |
 | PLAN-05 | Phase 3 | Complete |
 | PLAN-06 | Phase 3 | Pending |
 | PLAN-07 | Phase 3 | Complete |
