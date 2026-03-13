@@ -121,8 +121,8 @@ export function ExercisePickerModal({
           <p className="px-4 py-2 text-sm text-red-400 border-b border-border flex-shrink-0">{error}</p>
         )}
 
-        {/* Exercise list */}
-        <div className="overflow-y-auto flex-1">
+        {/* Exercise list — min-h prevents layout shift when filter reduces results */}
+        <div className="overflow-y-auto flex-1 min-h-[120px]">
           {filtered.length === 0 ? (
             <p className="p-4 text-sm text-text-primary opacity-60 text-center">No exercises found.</p>
           ) : (

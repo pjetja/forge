@@ -68,6 +68,9 @@ export const plans = pgTable('plans', {
   name: text('name').notNull(),
   weekCount: integer('week_count').notNull(),
   workoutsPerWeek: integer('workouts_per_week').notNull(),
+  status: text('status', { enum: ['active', 'archived'] }).notNull().default('active'),
+  tags: text('tags').array().notNull().default([]),
+  notes: text('notes'),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
 });

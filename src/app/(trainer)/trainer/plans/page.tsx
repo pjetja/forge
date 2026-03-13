@@ -1,23 +1,24 @@
 import { createClient } from '@/lib/supabase/server';
-import Link from 'next/link';
-import { PlanCard } from '../_components/PlanCard';
-
-interface PlanRow {
-  id: string;
-  name: string;
-  week_count: number;
-  workouts_per_week: number;
-}
+import { PlansClient } from '../_components/PlansClient';
 
 export default async function PlansPage() {
   const supabase = await createClient();
 
   const { data: plansData, error } = await supabase
     .from('plans')
-    .select('id, name, week_count, workouts_per_week')
+    .select('id, name, week_count, workouts_per_week, tags')
+    .eq('status', 'active')
     .order('created_at', { ascending: false });
 
-  const plans = (plansData ?? []) as PlanRow[];
+  if (error) {
+    return (
+      <div className="bg-red-950 border border-red-800 rounded-sm p-4 text-sm text-red-400">
+        Failed to load plans. Please refresh.
+      </div>
+    );
+  }
+
+  const plans = plansData ?? [];
 
   // Count active/pending assigned plans per template plan
   const { data: assignedCounts } = await supabase
@@ -33,54 +34,23 @@ export default async function PlansPage() {
     }
   }
 
-  return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-text-primary">Plans</h1>
-        <Link
-          href="/trainer/plans/new"
-          className="bg-accent hover:bg-accent-hover text-white rounded-sm px-4 py-2 text-sm font-medium transition-colors"
-        >
-          + New plan
-        </Link>
-      </div>
+  // Collect all unique tags across plans (sorted alphabetically)
+  const allTagsSet = new Set<string>();
+  for (const plan of plans) {
+    for (const tag of (plan.tags as string[] | null) ?? []) {
+      allTagsSet.add(tag);
+    }
+  }
+  const allTags = Array.from(allTagsSet).sort();
 
-      {error && (
-        <div className="bg-red-950 border border-red-800 rounded-sm p-4 text-sm text-red-400">
-          Failed to load plans. Please refresh.
-        </div>
-      )}
+  const planItems = plans.map((plan) => ({
+    id: plan.id,
+    name: plan.name,
+    weekCount: plan.week_count,
+    workoutsPerWeek: plan.workouts_per_week,
+    assignedCount: countByPlan[plan.id] ?? 0,
+    tags: (plan.tags as string[] | null) ?? [],
+  }));
 
-      {!error && plans.length === 0 && (
-        <div className="bg-bg-surface border border-border rounded-sm p-12 text-center space-y-3">
-          <div className="text-4xl">📋</div>
-          <h2 className="font-medium text-text-primary">No plans yet</h2>
-          <p className="text-sm text-text-primary max-w-sm mx-auto">
-            Create your first workout plan template. You can assign it to trainees after building it.
-          </p>
-          <Link
-            href="/trainer/plans/new"
-            className="inline-block mt-2 bg-accent hover:bg-accent-hover text-white rounded-sm px-4 py-2 text-sm font-medium transition-colors"
-          >
-            Create a plan
-          </Link>
-        </div>
-      )}
-
-      {!error && plans.length > 0 && (
-        <div className="space-y-3">
-          {plans.map((plan) => (
-            <PlanCard
-              key={plan.id}
-              id={plan.id}
-              name={plan.name}
-              weekCount={plan.week_count}
-              workoutsPerWeek={plan.workouts_per_week}
-              assignedCount={countByPlan[plan.id] ?? 0}
-            />
-          ))}
-        </div>
-      )}
-    </div>
-  );
+  return <PlansClient plans={planItems} allTags={allTags} />;
 }

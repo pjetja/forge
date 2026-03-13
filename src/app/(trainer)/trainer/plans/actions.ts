@@ -8,6 +8,8 @@ export type PlanFormData = {
   name: string;
   weekCount: number;
   workoutsPerWeek: number;
+  tags?: string[];
+  notes?: string;
 };
 
 export async function createPlan(
@@ -25,6 +27,8 @@ export async function createPlan(
       name: data.name,
       week_count: data.weekCount,
       workouts_per_week: data.workoutsPerWeek,
+      tags: data.tags ?? [],
+      notes: data.notes ?? null,
     })
     .select('id')
     .single();
@@ -37,7 +41,7 @@ export async function createPlan(
 
 export async function updatePlan(
   planId: string,
-  data: Partial<PlanFormData>
+  data: Partial<PlanFormData & { notes: string | null }>
 ): Promise<{ success: true } | { error: string }> {
   const supabase = await createClient();
   const claimsResult = await supabase.auth.getClaims();
@@ -48,6 +52,8 @@ export async function updatePlan(
   if (data.name !== undefined) updates.name = data.name;
   if (data.weekCount !== undefined) updates.week_count = data.weekCount;
   if (data.workoutsPerWeek !== undefined) updates.workouts_per_week = data.workoutsPerWeek;
+  if (data.tags !== undefined) updates.tags = data.tags;
+  if ('notes' in data) updates.notes = data.notes ?? null;
 
   const { error } = await supabase.from('plans').update(updates).eq('id', planId);
   if (error) return { error: 'Failed to update plan.' };
@@ -57,19 +63,37 @@ export async function updatePlan(
   return { success: true };
 }
 
+/**
+ * Smart delete:
+ * - Active/pending assigned trainees → archive the plan (hide from list, trainees keep access)
+ * - No active trainees → hard delete
+ */
 export async function deletePlan(
   planId: string
-): Promise<{ success: true } | { error: string }> {
+): Promise<{ success: true; archived: boolean } | { error: string }> {
   const supabase = await createClient();
   const claimsResult = await supabase.auth.getClaims();
   const claims = claimsResult.data?.claims;
   if (!claims) return { error: 'Not authenticated' };
 
+  const { count } = await supabase
+    .from('assigned_plans')
+    .select('id', { count: 'exact', head: true })
+    .eq('source_plan_id', planId)
+    .in('status', ['pending', 'active']);
+
+  if (count && count > 0) {
+    const { error } = await supabase.from('plans').update({ status: 'archived' }).eq('id', planId);
+    if (error) return { error: 'Failed to archive plan.' };
+    revalidatePath('/trainer/plans');
+    return { success: true, archived: true };
+  }
+
   const { error } = await supabase.from('plans').delete().eq('id', planId);
   if (error) return { error: 'Failed to delete plan.' };
 
   revalidatePath('/trainer/plans');
-  return { success: true };
+  return { success: true, archived: false };
 }
 
 export async function duplicatePlan(
