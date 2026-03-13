@@ -22,10 +22,10 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 
 ## Current Position
 
-Phase: 03-plan-builder (Plan Builder) — Awaiting human verification
-Plan: 03-06 reached checkpoint (human-verify — all 8 Plan Builder test scenarios)
-Status: Phase 03-plan-builder all 6 plans complete; awaiting trainer walkthrough approval (03-06 checkpoint) before phase marked done
-Last activity: 2026-03-13 — Plan 03-06 checkpoint reached; full Plan Builder feature built (DB migration, nav, plans CRUD, schema editor DnD, assignment flow, edit assigned plan, duplicate plan)
+Phase: 04-trainee-workout-logging (Trainee Workout Logging) — Ready to plan
+Plan: N/A
+Status: Phase 03 + 03.1 complete. Next: Phase 4.
+Last activity: 2026-03-13 — Phase 03.1 UI Polish complete (UAT rounds 1–3, all polish committed)
 
 Progress: [███████░░░] 62%
 
@@ -154,5 +154,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-03-13
-Stopped at: Reached checkpoint 03-06 — human-verify for complete Plan Builder feature; awaiting trainer walkthrough approval.
+Stopped at: Phase 03 + 03.1 marked complete. Ready for Phase 4 (Trainee Workout Logging).
 Resume file: None

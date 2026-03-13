@@ -116,10 +116,10 @@ Plans:
 **Goal:** Visual review and polish of Plan Builder UI — Figma screens reviewed against built components, multi-week calendar and schema editor interactions refined before Phase 4
 **Requirements**: TBD
 **Depends on:** Phase 3
-**Plans:** 6/6 plans complete
+**Plans:** Complete
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 03.1 to break down)
+- [x] UAT iteration rounds 1–3: inline tags, trainees layout, hover titles, section headings, vertical spacing, clickable workout rows (completed 2026-03-13)
 
 ### Phase 4: Trainee Workout Logging
 **Goal**: A trainee can open the app at the gym, see today's workout with last week's results, and log their sets in under a minute
@@ -164,7 +164,8 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 01.2. Logo Generation | 2/2 | Complete    | 2026-03-10 |
 | 01.3. Figma UI Library | 2/2 | Complete    | 2026-03-10 |
 | 2. Exercise Library | 3/3 | Complete   | 2026-03-11 |
-| 3. Plan Builder | 5/6 | In Progress|  |
+| 3. Plan Builder | 6/6 | Complete | 2026-03-13 |
+| 03.1. UI Polish | Complete | Complete | 2026-03-13 |
 | 4. Trainee Workout Logging | 0/TBD | Not started | - |
 | 5. Trainer Progress Visibility | 0/TBD | Not started | - |
 
