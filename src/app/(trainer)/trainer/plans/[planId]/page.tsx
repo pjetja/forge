@@ -56,7 +56,7 @@ export default async function PlanEditorPage({ params }: { params: Promise<{ pla
   const tags = (planData.tags as string[] | null) ?? [];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-10">
       {/* Section 1: Header — name, actions, weeks/workouts */}
       <PlanDetailHeader
         planId={planId}
@@ -76,7 +76,7 @@ export default async function PlanEditorPage({ params }: { params: Promise<{ pla
 
       {/* Section 3: Workouts */}
       <div className="space-y-3">
-        <p className="text-sm font-medium text-text-primary">Workouts</p>
+        <p className="text-base font-medium text-text-primary">Workouts</p>
         <PlanWeekView
           planId={planId}
           workoutsPerWeek={planData.workouts_per_week}
@@ -94,7 +94,7 @@ export default async function PlanEditorPage({ params }: { params: Promise<{ pla
       {/* Section 4: Trainees + Assign button */}
       <div className="space-y-3">
         <div className="flex items-center justify-between gap-3">
-          <p className="text-sm font-medium text-text-primary">
+          <p className="text-base font-medium text-text-primary">
             Trainees ({activeTrainees.length})
           </p>
           <Link
