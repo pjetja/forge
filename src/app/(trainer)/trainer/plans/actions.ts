@@ -20,20 +20,34 @@ export async function createPlan(
   const claims = claimsResult.data?.claims;
   if (!claims) return { error: 'Not authenticated' };
 
-  const { data: plan, error } = await supabase
+  // Try with metadata columns (migration 0004). Fall back to base columns if not applied.
+  let plan: { id: string } | null = null;
+  const baseInsert = {
+    trainer_auth_uid: claims.sub,
+    name: data.name,
+    week_count: data.weekCount,
+    workouts_per_week: data.workoutsPerWeek,
+  };
+
+  const { data: fullPlan, error: fullError } = await supabase
     .from('plans')
-    .insert({
-      trainer_auth_uid: claims.sub,
-      name: data.name,
-      week_count: data.weekCount,
-      workouts_per_week: data.workoutsPerWeek,
-      tags: data.tags ?? [],
-      notes: data.notes ?? null,
-    })
+    .insert({ ...baseInsert, tags: data.tags ?? [], notes: data.notes ?? null })
     .select('id')
     .single();
 
-  if (error || !plan) return { error: 'Failed to create plan. Please try again.' };
+  if (!fullError) {
+    plan = fullPlan;
+  } else {
+    const { data: basePlan, error: baseError } = await supabase
+      .from('plans')
+      .insert(baseInsert)
+      .select('id')
+      .single();
+    if (baseError || !basePlan) return { error: 'Failed to create plan. Please try again.' };
+    plan = basePlan;
+  }
+
+  if (!plan) return { error: 'Failed to create plan. Please try again.' };
 
   revalidatePath('/trainer/plans');
   return { planId: plan.id };
@@ -48,15 +62,27 @@ export async function updatePlan(
   const claims = claimsResult.data?.claims;
   if (!claims) return { error: 'Not authenticated' };
 
-  const updates: Record<string, unknown> = { updated_at: new Date().toISOString() };
-  if (data.name !== undefined) updates.name = data.name;
-  if (data.weekCount !== undefined) updates.week_count = data.weekCount;
-  if (data.workoutsPerWeek !== undefined) updates.workouts_per_week = data.workoutsPerWeek;
-  if (data.tags !== undefined) updates.tags = data.tags;
-  if ('notes' in data) updates.notes = data.notes ?? null;
+  const baseUpdates: Record<string, unknown> = { updated_at: new Date().toISOString() };
+  if (data.name !== undefined) baseUpdates.name = data.name;
+  if (data.weekCount !== undefined) baseUpdates.week_count = data.weekCount;
+  if (data.workoutsPerWeek !== undefined) baseUpdates.workouts_per_week = data.workoutsPerWeek;
+
+  const metaUpdates: Record<string, unknown> = {};
+  if (data.tags !== undefined) metaUpdates.tags = data.tags;
+  if ('notes' in data) metaUpdates.notes = data.notes ?? null;
+
+  const updates = { ...baseUpdates, ...metaUpdates };
 
   const { error } = await supabase.from('plans').update(updates).eq('id', planId);
-  if (error) return { error: 'Failed to update plan.' };
+  if (error) {
+    // Fall back without metadata columns if migration 0004 not applied
+    if (Object.keys(metaUpdates).length > 0 && Object.keys(baseUpdates).length > 1) {
+      const { error: baseError } = await supabase.from('plans').update(baseUpdates).eq('id', planId);
+      if (baseError) return { error: 'Failed to update plan.' };
+    } else {
+      return { error: 'Failed to update plan.' };
+    }
+  }
 
   revalidatePath('/trainer/plans');
   revalidatePath(`/trainer/plans/${planId}`);

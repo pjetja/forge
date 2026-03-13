@@ -26,11 +26,28 @@ export default async function PlanEditorPage({
   const { planId } = await params;
   const supabase = await createClient();
 
-  const { data: planData } = await supabase
+  // Try with metadata columns; fall back to base columns if migration 0004 not applied
+  let planData: {
+    id: string; name: string; week_count: number; workouts_per_week: number;
+    notes?: string | null; tags?: string[] | null;
+  } | null = null;
+
+  const { data: fullPlan } = await supabase
     .from('plans')
     .select('id, name, week_count, workouts_per_week, notes, tags')
     .eq('id', planId)
     .single();
+
+  if (fullPlan) {
+    planData = fullPlan;
+  } else {
+    const { data: basePlan } = await supabase
+      .from('plans')
+      .select('id, name, week_count, workouts_per_week')
+      .eq('id', planId)
+      .single();
+    planData = basePlan;
+  }
 
   if (!planData) notFound();
 

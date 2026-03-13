@@ -4,18 +4,31 @@ import { PlansClient } from '../_components/PlansClient';
 export default async function PlansPage() {
   const supabase = await createClient();
 
-  const { data: plansData, error } = await supabase
+  // Try with Phase 4 metadata columns (status, tags). Fall back to base columns
+  // if migration 0004 hasn't been applied yet.
+  let plansData: Array<{
+    id: string;
+    name: string;
+    week_count: number;
+    workouts_per_week: number;
+    tags?: string[] | null;
+  }> | null = null;
+
+  const { data: full, error: fullError } = await supabase
     .from('plans')
     .select('id, name, week_count, workouts_per_week, tags')
     .eq('status', 'active')
     .order('created_at', { ascending: false });
 
-  if (error) {
-    return (
-      <div className="bg-red-950 border border-red-800 rounded-sm p-4 text-sm text-red-400">
-        Failed to load plans. Please refresh.
-      </div>
-    );
+  if (!fullError) {
+    plansData = full;
+  } else {
+    // Migration 0004 not applied — fall back to base columns, show all plans
+    const { data: base } = await supabase
+      .from('plans')
+      .select('id, name, week_count, workouts_per_week')
+      .order('created_at', { ascending: false });
+    plansData = base;
   }
 
   const plans = plansData ?? [];
@@ -37,7 +50,7 @@ export default async function PlansPage() {
   // Collect all unique tags across plans (sorted alphabetically)
   const allTagsSet = new Set<string>();
   for (const plan of plans) {
-    for (const tag of (plan.tags as string[] | null) ?? []) {
+    for (const tag of plan.tags ?? []) {
       allTagsSet.add(tag);
     }
   }
@@ -49,8 +62,8 @@ export default async function PlansPage() {
     weekCount: plan.week_count,
     workoutsPerWeek: plan.workouts_per_week,
     assignedCount: countByPlan[plan.id] ?? 0,
-    tags: (plan.tags as string[] | null) ?? [],
+    tags: plan.tags ?? [],
   }));
 
-  return <PlansClient plans={planItems} allTags={allTags} />;
+  return <PlansClient plans={planItems} allTags={allTags} migrationPending={!!fullError} />;
 }

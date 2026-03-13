@@ -15,9 +15,10 @@ interface Plan {
 interface PlansClientProps {
   plans: Plan[];
   allTags: string[];
+  migrationPending?: boolean;
 }
 
-export function PlansClient({ plans, allTags }: PlansClientProps) {
+export function PlansClient({ plans, allTags, migrationPending }: PlansClientProps) {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
   const filtered = selectedTag
@@ -26,6 +27,12 @@ export function PlansClient({ plans, allTags }: PlansClientProps) {
 
   return (
     <div className="space-y-6">
+      {migrationPending && (
+        <div className="bg-yellow-950 border border-yellow-700 rounded-sm p-3 text-sm text-yellow-300">
+          Apply <strong>migration 0004</strong> in Supabase SQL Editor to enable tags, notes, and archive features.
+          Plans are shown without filtering until then.
+        </div>
+      )}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-text-primary">Plans</h1>
         <Link
