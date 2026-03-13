@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-13T08:24:44.337Z"
+last_updated: "2026-03-13T08:30:18.694Z"
 progress:
   total_phases: 12
   completed_phases: 5
   total_plans: 21
-  completed_plans: 19
+  completed_plans: 20
 ---
 
 # Project State
@@ -59,6 +59,7 @@ Progress: [██████░░░░] 56%
 | Phase 03-plan-builder P02 | 8 | 2 tasks | 3 files |
 | Phase 03-plan-builder P03 | 2 | 2 tasks | 6 files |
 | Phase 03-plan-builder P04 | 3 | 2 tasks | 5 files |
+| Phase 03-plan-builder P05 | 3min | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -122,6 +123,8 @@ Recent decisions affecting current work:
 - [Phase 03-03]: [03-03]: AddSchemaButton is a separate client component to keep PlanEditorPage (server component) clean
 - [Phase 03-04]: [03-04]: DnD listeners on handle button only — prevents input clicks triggering drag; PointerSensor activationConstraint distance:8 adds second protection layer
 - [Phase 03-04]: [03-04]: PostgREST exercises join uses Array.isArray guard — join can return object or array; guard ensures name/muscle_group extracted correctly
+- [Phase 03-05]: AssignPlanModal accepts exerciseHistory prop typed as Record<exerciseId, { lastWeight: number } | null> — Phase 3 passes {} (all-null); Phase 4 will inject real history data
+- [Phase 03-05]: PlanCard converted to 'use client' component to support inline Duplicate button; stopPropagation prevents Link navigation on duplicate click
 
 ### Roadmap Evolution
 

@@ -116,7 +116,7 @@ Plans:
 **Goal:** Visual review and polish of Plan Builder UI — Figma screens reviewed against built components, multi-week calendar and schema editor interactions refined before Phase 4
 **Requirements**: TBD
 **Depends on:** Phase 3
-**Plans:** 4/6 plans executed
+**Plans:** 5/6 plans executed
 
 Plans:
 - [ ] TBD (run /gsd:plan-phase 03.1 to break down)
@@ -164,7 +164,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 01.2. Logo Generation | 2/2 | Complete    | 2026-03-10 |
 | 01.3. Figma UI Library | 2/2 | Complete    | 2026-03-10 |
 | 2. Exercise Library | 3/3 | Complete   | 2026-03-11 |
-| 3. Plan Builder | 3/6 | In Progress|  |
+| 3. Plan Builder | 5/6 | In Progress|  |
 | 4. Trainee Workout Logging | 0/TBD | Not started | - |
 | 5. Trainer Progress Visibility | 0/TBD | Not started | - |
 
