@@ -131,7 +131,14 @@ Plans:
   3. While logging a set, the trainee can see what they actually did for that exercise in the previous week's session, displayed inline next to the input fields
   4. A trainee can log actual sets, reps, and weight for each exercise with minimal taps, and the data is saved to their history
   5. A trainee can mark a workout session as complete and the session is recorded with a timestamp
-**Plans**: TBD
+**Plans**: 5 plans
+
+Plans:
+- [ ] 04-01-PLAN.md — DB migration (workout_sessions + session_sets tables + RLS) + Drizzle schema types
+- [ ] 04-02-PLAN.md — Week boundary utility + Server Actions (startWorkout, completeSet, addSet, finishWorkout, abandonWorkout)
+- [ ] 04-03-PLAN.md — Plans list page (three sections + in-progress banner) + Active plan page (weekly workout list)
+- [ ] 04-04-PLAN.md — Workout session page (exercise list + set completion status) + FinishWorkoutButton (summary confirmation)
+- [ ] 04-05-PLAN.md — Exercise detail page (set logging inputs + last-week results inline) + SetList (useOptimistic auto-save) + human verify
 
 ### Phase 04.1: UI Polish (INSERTED)
 
@@ -166,7 +173,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 2. Exercise Library | 3/3 | Complete   | 2026-03-11 |
 | 3. Plan Builder | 6/6 | Complete | 2026-03-13 |
 | 03.1. UI Polish | Complete | Complete | 2026-03-13 |
-| 4. Trainee Workout Logging | 0/TBD | Not started | - |
+| 4. Trainee Workout Logging | 0/5 | Not started | - |
 | 5. Trainer Progress Visibility | 0/TBD | Not started | - |
 
 ### Phase 05.1: UI Polish (INSERTED)
