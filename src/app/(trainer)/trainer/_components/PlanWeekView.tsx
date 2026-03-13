@@ -33,28 +33,30 @@ export function PlanWeekView({ planId, workoutsPerWeek, schemas }: PlanWeekViewP
     <div className="space-y-2">
       {slots.map((slot) => {
         const schema = schemaBySlot[slot];
-        return (
+        return schema ? (
+          <Link
+            key={slot}
+            href={`/trainer/plans/${planId}/schemas/${schema.id}`}
+            className="bg-bg-surface border border-border rounded-sm p-4 flex items-center justify-between hover:border-accent transition-colors cursor-pointer"
+          >
+            <div>
+              <p className="text-xs text-text-primary opacity-60 mb-0.5">Workout {slot}</p>
+              <p className="font-medium text-text-primary">{schema.name}</p>
+            </div>
+            <span className="p-2 text-text-primary opacity-40 flex-shrink-0 ml-3">
+              <IconPencil />
+            </span>
+          </Link>
+        ) : (
           <div
             key={slot}
             className="bg-bg-surface border border-border rounded-sm p-4 flex items-center justify-between"
           >
             <div>
               <p className="text-xs text-text-primary opacity-60 mb-0.5">Workout {slot}</p>
-              <p className={`font-medium ${schema ? 'text-text-primary' : 'text-text-primary opacity-50'}`}>
-                {schema ? schema.name : 'Unassigned'}
-              </p>
+              <p className="font-medium text-text-primary opacity-50">Unassigned</p>
             </div>
-            {schema ? (
-              <Link
-                href={`/trainer/plans/${planId}/schemas/${schema.id}`}
-                className="p-2 text-text-primary opacity-50 hover:opacity-100 hover:text-accent transition-opacity flex-shrink-0 ml-3"
-                title="Edit exercises"
-              >
-                <IconPencil />
-              </Link>
-            ) : (
-              <span className="text-xs text-text-primary opacity-40 flex-shrink-0 ml-3">No schema yet</span>
-            )}
+            <span className="text-xs text-text-primary opacity-40 flex-shrink-0 ml-3">No schema yet</span>
           </div>
         );
       })}
