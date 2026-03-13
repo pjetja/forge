@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, timestamp, unique, integer, numeric, jsonb } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, text, timestamp, unique, integer, numeric, jsonb, boolean } from 'drizzle-orm/pg-core';
 
 export const trainers = pgTable('trainers', {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -150,3 +150,43 @@ export type AssignedPlanWithSchemas = AssignedPlan & {
     exercises: (AssignedSchemaExercise & { exercise: Exercise })[];
   })[];
 };
+
+// ── Phase 4: Trainee Workout Logging ─────────────────────────────────────────
+
+export const workoutSessions = pgTable('workout_sessions', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  assignedSchemaId: uuid('assigned_schema_id').notNull()
+    .references(() => assignedSchemas.id, { onDelete: 'restrict' }),
+  traineeAuthUid: uuid('trainee_auth_uid').notNull(),
+  status: text('status', { enum: ['in_progress', 'completed', 'abandoned'] }).notNull().default('in_progress'),
+  startedAt: timestamp('started_at', { withTimezone: true }).notNull().defaultNow(),
+  completedAt: timestamp('completed_at', { withTimezone: true }),
+  notes: text('notes'),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+});
+
+export const sessionSets = pgTable('session_sets', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  sessionId: uuid('session_id').notNull()
+    .references(() => workoutSessions.id, { onDelete: 'cascade' }),
+  assignedSchemaExerciseId: uuid('assigned_schema_exercise_id').notNull()
+    .references(() => assignedSchemaExercises.id, { onDelete: 'restrict' }),
+  setNumber: integer('set_number').notNull(),
+  actualReps: integer('actual_reps').notNull(),
+  actualWeightKg: numeric('actual_weight_kg', { precision: 6, scale: 2 }),
+  muscleFailure: boolean('muscle_failure').notNull().default(false),
+  notes: text('notes'),
+  completedAt: timestamp('completed_at', { withTimezone: true }).notNull().defaultNow(),
+}, (table) => ({
+  uniqueSetPerSession: unique('session_set_unique').on(
+    table.sessionId, table.assignedSchemaExerciseId, table.setNumber
+  ),
+}));
+
+export type WorkoutSession = typeof workoutSessions.$inferSelect;
+export type NewWorkoutSession = typeof workoutSessions.$inferInsert;
+export type SessionSet = typeof sessionSets.$inferSelect;
+export type NewSessionSet = typeof sessionSets.$inferInsert;
+
+// Composite type for UI use
+export type SessionWithSets = WorkoutSession & { sets: SessionSet[] };
