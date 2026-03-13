@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-13T08:32:22.799Z"
+last_updated: "2026-03-13T14:19:40.836Z"
 progress:
-  total_phases: 12
+  total_phases: 13
   completed_phases: 6
-  total_plans: 21
-  completed_plans: 21
+  total_plans: 26
+  completed_plans: 22
 ---
 
 # Project State
@@ -22,10 +22,10 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 
 ## Current Position
 
-Phase: 04-trainee-workout-logging (Trainee Workout Logging) — Ready to plan
-Plan: N/A
-Status: Phase 03 + 03.1 complete. Next: Phase 4.
-Last activity: 2026-03-13 — Phase 03.1 UI Polish complete (UAT rounds 1–3, all polish committed)
+Phase: 04-trainee-workout-logging (Trainee Workout Logging) — In Progress
+Plan: 1 of 5
+Status: Plan 04-01 complete. Database migration and Drizzle types for workout sessions.
+Last activity: 2026-03-13 — Plan 04-01 complete (workout_sessions + session_sets migration + Drizzle types)
 
 Progress: [███████░░░] 62%
 
@@ -61,6 +61,7 @@ Progress: [███████░░░] 62%
 | Phase 03-plan-builder P04 | 3 | 2 tasks | 5 files |
 | Phase 03-plan-builder P05 | 3min | 2 tasks | 6 files |
 | Phase 03 P06 | 1 | 0 tasks | 0 files |
+| Phase 04-trainee-workout-logging P01 | 2 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -126,6 +127,8 @@ Recent decisions affecting current work:
 - [Phase 03-04]: [03-04]: PostgREST exercises join uses Array.isArray guard — join can return object or array; guard ensures name/muscle_group extracted correctly
 - [Phase 03-05]: AssignPlanModal accepts exerciseHistory prop typed as Record<exerciseId, { lastWeight: number } | null> — Phase 3 passes {} (all-null); Phase 4 will inject real history data
 - [Phase 03-05]: PlanCard converted to 'use client' component to support inline Duplicate button; stopPropagation prevents Link navigation on duplicate click
+- [Phase 04-trainee-workout-logging]: [04-01]: status CHECK constraint includes 'abandoned' — resolves RESEARCH.md open question; needed for abandon-session flow
+- [Phase 04-trainee-workout-logging]: [04-01]: Trainer RLS SELECT policies added in same migration as trainee write policies — Phase 5 prep, avoids future migration
 
 ### Roadmap Evolution
 
@@ -144,6 +147,7 @@ Recent decisions affecting current work:
 - [01-01]: Apply database migration via Supabase SQL Editor — paste src/lib/db/migrations/0001_initial.sql into SQL Editor and run
 - [02-01]: Apply exercises migration via Supabase SQL Editor — paste src/lib/db/migrations/0002_exercises.sql into SQL Editor and run (required before exercises UI can be tested)
 - [03-01]: Apply plans migration via Supabase SQL Editor — paste src/lib/db/migrations/0003_plans.sql into SQL Editor and run (required before Plan Builder UI can be tested end-to-end)
+- [04-01]: Apply workout sessions migration via Supabase SQL Editor — paste src/lib/db/migrations/0005_workout_sessions.sql into SQL Editor and run (required before Phase 4 UI can be tested)
 
 ### Blockers/Concerns
 
@@ -154,5 +158,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-03-13
-Stopped at: Phase 03 + 03.1 marked complete. Ready for Phase 4 (Trainee Workout Logging).
+Stopped at: Completed 04-01-PLAN.md (workout_sessions + session_sets migration + Drizzle types). Ready for 04-02.
 Resume file: None

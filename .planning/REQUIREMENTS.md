@@ -32,16 +32,16 @@
 - [x] **PLAN-03**: Trainer can assign workout schemas to specific days within each week
 - [x] **PLAN-04**: Trainer can add exercises to a schema with sets, reps, and target weight
 - [x] **PLAN-05**: Trainer can assign a plan to a connected trainee
-- [ ] **PLAN-06**: Trainer can duplicate (template) an existing plan to reuse for another trainee
+- [x] **PLAN-06**: Trainer can duplicate (template) an existing plan to reuse for another trainee
 - [x] **PLAN-07**: Trainer can edit a plan that is currently assigned to an active trainee
 
 ### Trainee Workout Tracking
 
-- [ ] **TRACK-01**: Trainee can view their current week's scheduled workout schemas
-- [ ] **TRACK-02**: Trainee can open a workout session and see all exercises with sets, reps, and target weight
-- [ ] **TRACK-03**: Trainee can log actual sets/reps/weight for each exercise in a session
-- [ ] **TRACK-04**: Trainee sees last week's actual results inline for each exercise while logging
-- [ ] **TRACK-05**: Trainee can mark a workout session as complete
+- [x] **TRACK-01**: Trainee can view their current week's scheduled workout schemas
+- [x] **TRACK-02**: Trainee can open a workout session and see all exercises with sets, reps, and target weight
+- [x] **TRACK-03**: Trainee can log actual sets/reps/weight for each exercise in a session
+- [x] **TRACK-04**: Trainee sees last week's actual results inline for each exercise while logging
+- [x] **TRACK-05**: Trainee can mark a workout session as complete
 
 ### Trainer Progress Visibility
 
@@ -101,13 +101,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PLAN-03 | Phase 3 | Complete |
 | PLAN-04 | Phase 3 | Complete |
 | PLAN-05 | Phase 3 | Complete |
-| PLAN-06 | Phase 3 | Pending |
+| PLAN-06 | Phase 3 | Complete |
 | PLAN-07 | Phase 3 | Complete |
-| TRACK-01 | Phase 4 | Pending |
-| TRACK-02 | Phase 4 | Pending |
-| TRACK-03 | Phase 4 | Pending |
-| TRACK-04 | Phase 4 | Pending |
-| TRACK-05 | Phase 4 | Pending |
+| TRACK-01 | Phase 4 | Complete |
+| TRACK-02 | Phase 4 | Complete |
+| TRACK-03 | Phase 4 | Complete |
+| TRACK-04 | Phase 4 | Complete |
+| TRACK-05 | Phase 4 | Complete |
 | PROG-01 | Phase 5 | Pending |
 | PROG-02 | Phase 5 | Pending |
 
