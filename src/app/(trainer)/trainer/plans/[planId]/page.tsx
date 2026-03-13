@@ -92,14 +92,14 @@ export default async function PlanEditorPage({ params }: { params: Promise<{ pla
       </div>
 
       {/* Section 4: Trainees + Assign button */}
-      <div className="bg-bg-surface border border-border rounded-sm p-4 space-y-3">
+      <div className="space-y-3">
         <p className="text-sm font-medium text-text-primary">
           Trainees ({activeTrainees.length})
         </p>
         {activeTrainees.length === 0 ? (
           <p className="text-sm text-text-primary opacity-50">No trainees assigned yet.</p>
         ) : (
-          <div className="space-y-2">
+          <div className="bg-bg-surface border border-border rounded-sm p-4 space-y-2">
             {activeTrainees.map((t) => (
               <div key={t.traineeAuthUid} className="flex items-center justify-between">
                 <Link href={`/trainer/trainees/${t.traineeAuthUid}`}

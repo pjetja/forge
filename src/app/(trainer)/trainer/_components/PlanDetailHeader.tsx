@@ -93,6 +93,7 @@ export function PlanDetailHeader({ planId, initialName, weekCount, workoutsPerWe
         />
       ) : (
         <button type="button" onClick={() => { setNameDraft(name); setEditingName(true); }}
+          title="Click to rename"
           className="text-left text-2xl font-bold text-text-primary hover:text-accent transition-colors cursor-text w-full">
           {name}
         </button>

@@ -74,26 +74,24 @@ export function PlanCard({ id, name, weekCount, workoutsPerWeek, assignedCount, 
   return (
     <Link
       href={`/trainer/plans/${id}`}
-      className="bg-bg-surface border border-border rounded-sm p-4 flex items-start justify-between hover:border-accent transition-colors"
+      className="bg-bg-surface border border-border rounded-sm p-4 flex items-center justify-between hover:border-accent transition-colors cursor-pointer"
     >
       <div className="min-w-0 flex-1">
         <p className="font-medium text-text-primary truncate">{name}</p>
-        <p className="text-sm text-text-primary opacity-60 mt-0.5">
-          {weekCount} {weekCount === 1 ? 'week' : 'weeks'} &middot; {workoutsPerWeek} {workoutsPerWeek === 1 ? 'workout' : 'workouts'} per week
-          {assignedCount > 0 && <> &middot; {assignedCount} trainee{assignedCount !== 1 ? 's' : ''}</>}
-        </p>
-        {tags.length > 0 && (
-          <div className="flex flex-wrap gap-1 mt-2">
-            {tags.map((tag) => (
-              <span key={tag} className="px-2 py-0.5 rounded-full text-xs bg-bg-page border border-border text-text-primary">
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
+        <div className="flex items-center flex-wrap gap-x-2 gap-y-1 mt-0.5">
+          <span className="text-sm text-text-primary opacity-60 whitespace-nowrap">
+            {weekCount} {weekCount === 1 ? 'week' : 'weeks'} &middot; {workoutsPerWeek} {workoutsPerWeek === 1 ? 'workout' : 'workouts'} per week
+            {assignedCount > 0 && <> &middot; {assignedCount} trainee{assignedCount !== 1 ? 's' : ''}</>}
+          </span>
+          {tags.map((tag) => (
+            <span key={tag} className="px-1.5 py-0.5 rounded-full text-xs bg-bg-page border border-border text-text-primary flex-shrink-0">
+              {tag}
+            </span>
+          ))}
+        </div>
       </div>
 
-      <div className="flex items-center gap-1 flex-shrink-0 ml-3 mt-0.5">
+      <div className="flex items-center gap-1 flex-shrink-0 ml-3">
         {confirmDelete ? (
           <>
             <button type="button" onClick={handleDeleteConfirm} disabled={isPending}

@@ -52,6 +52,7 @@ export function PlanTagsEditor({ planId, initialTags }: PlanTagsEditorProps) {
             <button
               type="button"
               onClick={() => removeTag(tag)}
+              title={`Remove tag "${tag}"`}
               className="text-text-primary opacity-50 hover:opacity-100 cursor-pointer leading-none"
               aria-label={`Remove tag ${tag}`}
             >

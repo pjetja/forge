@@ -157,6 +157,7 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
             type="button"
             onClick={() => setConfirmRemove(true)}
             disabled={isPending}
+            title="Remove exercise"
             className="text-text-primary opacity-40 hover:opacity-100 hover:text-red-400 transition-opacity flex-shrink-0 text-lg leading-none cursor-pointer p-1"
             aria-label="Remove exercise"
           >
