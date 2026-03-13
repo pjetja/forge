@@ -114,7 +114,8 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
           type="button"
           {...attributes}
           {...listeners}
-          className="cursor-grab active:cursor-grabbing text-text-primary opacity-40 hover:opacity-100 transition-opacity flex-shrink-0"
+          style={{ touchAction: 'none' }}
+          className="cursor-grab active:cursor-grabbing text-text-primary opacity-40 hover:opacity-100 transition-opacity flex-shrink-0 p-1"
           aria-label="Drag to reorder"
         >
           ⠿
