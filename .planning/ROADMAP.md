@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation** - Auth, roles, multi-tenant isolation, and trainer-trainee connections (COMPLETE)
 - [x] **Phase 2: Exercise Library** - Trainer-scoped exercise library with search and filtering (completed 2026-03-10)
 - [ ] **Phase 3: Plan Builder** - Multi-week workout plan creation, assignment, and editing
-- [ ] **Phase 4: Trainee Workout Logging** - The core value loop — log sets mid-session with last week's results inline
+- [x] **Phase 4: Trainee Workout Logging** - The core value loop — log sets mid-session with last week's results inline (completed 2026-03-13)
 - [ ] **Phase 5: Trainer Progress Visibility** - Trainer views trainee workout logs and progress over time
 
 ## Phase Details
@@ -145,7 +145,7 @@ Plans:
 **Goal:** Visual review and polish of Trainee Workout Logging UI — Figma screens reviewed against built components, inline last-week results display and set logging flow refined before Phase 5
 **Requirements**: TBD
 **Depends on:** Phase 4
-**Plans:** 4/5 plans executed
+**Plans:** 5/5 plans complete
 
 Plans:
 - [ ] TBD (run /gsd:plan-phase 04.1 to break down)
@@ -173,7 +173,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 2. Exercise Library | 3/3 | Complete   | 2026-03-11 |
 | 3. Plan Builder | 6/6 | Complete | 2026-03-13 |
 | 03.1. UI Polish | Complete | Complete | 2026-03-13 |
-| 4. Trainee Workout Logging | 3/5 | In Progress|  |
+| 4. Trainee Workout Logging | 5/5 | Complete   | 2026-03-13 |
 | 5. Trainer Progress Visibility | 0/TBD | Not started | - |
 
 ### Phase 05.1: UI Polish (INSERTED)

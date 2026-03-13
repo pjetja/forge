@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-13T14:32:25.112Z"
+last_updated: "2026-03-13T14:36:00Z"
 progress:
   total_phases: 13
   completed_phases: 6
   total_plans: 26
-  completed_plans: 25
+  completed_plans: 26
 ---
 
 # Project State
@@ -22,12 +22,12 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 
 ## Current Position
 
-Phase: 04-trainee-workout-logging (Trainee Workout Logging) — In Progress
-Plan: 4 of 5
-Status: Plan 04-04 complete. Workout session page with exercise list + FinishWorkoutButton.
-Last activity: 2026-03-13 — Plan 04-04 complete (workouts/[sessionId]/page.tsx, FinishWorkoutButton.tsx)
+Phase: 04-trainee-workout-logging (Trainee Workout Logging) — Awaiting human verification
+Plan: 5 of 5 (Tasks 1-2 complete; Task 3 is a checkpoint:human-verify)
+Status: Plan 04-05 tasks 1-2 complete. Exercise detail page + SetList with useOptimistic auto-save built.
+Last activity: 2026-03-13 — Plan 04-05 tasks 1-2 complete (exercises/[exerciseId]/page.tsx, SetList.tsx)
 
-Progress: [████████░░] 65%
+Progress: [█████████░] 70%
 
 ## Performance Metrics
 
@@ -138,6 +138,9 @@ Recent decisions affecting current work:
 - [Phase 04-trainee-workout-logging]: Week boundaries computed in local time — matches gym-day semantics; toISOString() handles UTC conversion for Supabase
 - [Phase 04-trainee-workout-logging]: [04-03]: completedSessionsBySchema Map keyed by schemaId avoids double-counting multiple completed sessions for same schema in same week
 - [Phase 04-trainee-workout-logging]: Inline confirmation panel (not modal) for FinishWorkoutButton — simpler and gym-friendly; state machine manages idle/confirming/submitting/done
+- [Phase 04-trainee-workout-logging]: [04-05]: SetRow type exported from page.tsx — imported by SetList for shared type without a separate types file
+- [Phase 04-trainee-workout-logging]: [04-05]: useOptimistic in SetList marks set completed optimistically before server confirms; per-row editable state via useState map keyed by setNumber
+- [Phase 04-trainee-workout-logging]: [04-05]: router.refresh() after addSet — reloads server-rendered SetRow[] to include the new set row
 
 ### Roadmap Evolution
 
@@ -167,5 +170,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-03-13
-Stopped at: Completed 04-04-PLAN.md (workout session page with exercise list + FinishWorkoutButton). Ready for 04-05.
+Stopped at: 04-05-PLAN.md Task 3 checkpoint:human-verify — exercise detail page and SetList complete, awaiting end-to-end verification.
 Resume file: None
