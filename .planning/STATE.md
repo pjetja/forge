@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-13T14:19:40.836Z"
+last_updated: "2026-03-13T14:23:30.881Z"
 progress:
   total_phases: 13
   completed_phases: 6
   total_plans: 26
-  completed_plans: 22
+  completed_plans: 23
 ---
 
 # Project State
@@ -23,9 +23,9 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 ## Current Position
 
 Phase: 04-trainee-workout-logging (Trainee Workout Logging) — In Progress
-Plan: 1 of 5
-Status: Plan 04-01 complete. Database migration and Drizzle types for workout sessions.
-Last activity: 2026-03-13 — Plan 04-01 complete (workout_sessions + session_sets migration + Drizzle types)
+Plan: 2 of 5
+Status: Plan 04-02 complete. Week boundary utility + 5 Server Actions for trainee workout logging.
+Last activity: 2026-03-13 — Plan 04-02 complete (getCurrentWeekBounds, getPreviousWeekBounds, startWorkout, completeSet, addSet, finishWorkout, abandonWorkout)
 
 Progress: [███████░░░] 62%
 
@@ -62,6 +62,7 @@ Progress: [███████░░░] 62%
 | Phase 03-plan-builder P05 | 3min | 2 tasks | 6 files |
 | Phase 03 P06 | 1 | 0 tasks | 0 files |
 | Phase 04-trainee-workout-logging P01 | 2 | 2 tasks | 2 files |
+| Phase 04-trainee-workout-logging P02 | 5 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -129,6 +130,9 @@ Recent decisions affecting current work:
 - [Phase 03-05]: PlanCard converted to 'use client' component to support inline Duplicate button; stopPropagation prevents Link navigation on duplicate click
 - [Phase 04-trainee-workout-logging]: [04-01]: status CHECK constraint includes 'abandoned' — resolves RESEARCH.md open question; needed for abandon-session flow
 - [Phase 04-trainee-workout-logging]: [04-01]: Trainer RLS SELECT policies added in same migration as trainee write policies — Phase 5 prep, avoids future migration
+- [Phase 04-trainee-workout-logging]: completeSet omits revalidatePath — optimistic UI handles display; revalidate on page navigation only
+- [Phase 04-trainee-workout-logging]: Plan activation (pending→active) is inline in startWorkout — atomic with session creation, fewer round trips
+- [Phase 04-trainee-workout-logging]: Week boundaries computed in local time — matches gym-day semantics; toISOString() handles UTC conversion for Supabase
 
 ### Roadmap Evolution
 
@@ -153,10 +157,10 @@ Recent decisions affecting current work:
 
 - [01-01 Pending]: Migration not yet applied to Supabase — database tables don't exist yet; user must apply via SQL Editor before Plan 02 auth flows can be tested
 - [Pre-Phase 3 RESOLVED]: Plan edit behavior resolved — snapshot-at-assignment chosen; trainer edits assigned_schema_exercises directly; plan_updated_at signals changes to trainee
-- [Pre-Phase 4]: Week calculation timezone strategy (start_date is a date type, no timezone) must be defined before Phase 4 implementation
+- [Pre-Phase 4 RESOLVED]: Week calculation timezone strategy resolved — boundaries computed in local time (not UTC) to match gym-day semantics; .toISOString() handles UTC conversion for Supabase
 
 ## Session Continuity
 
 Last session: 2026-03-13
-Stopped at: Completed 04-01-PLAN.md (workout_sessions + session_sets migration + Drizzle types). Ready for 04-02.
+Stopped at: Completed 04-02-PLAN.md (week boundary utility + 5 Server Actions for trainee workout logging). Ready for 04-03.
 Resume file: None
