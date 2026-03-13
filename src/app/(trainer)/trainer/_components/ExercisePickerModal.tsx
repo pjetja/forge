@@ -1,6 +1,7 @@
 'use client';
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
+import { MUSCLE_GROUPS } from '@/lib/db/schema';
 import { addExerciseToSchema } from '../plans/actions';
 
 interface ExerciseOption {
@@ -26,14 +27,18 @@ export function ExercisePickerModal({
 }: ExercisePickerModalProps) {
   const router = useRouter();
   const [search, setSearch] = useState('');
+  const [selectedMuscle, setSelectedMuscle] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
-  const filtered = allExercises.filter(
-    (e) =>
+  const filtered = allExercises.filter((e) => {
+    const matchesSearch =
+      search === '' ||
       e.name.toLowerCase().includes(search.toLowerCase()) ||
-      e.muscleGroup.toLowerCase().includes(search.toLowerCase())
-  );
+      e.muscleGroup.toLowerCase().includes(search.toLowerCase());
+    const matchesMuscle = selectedMuscle === null || e.muscleGroup === selectedMuscle;
+    return matchesSearch && matchesMuscle;
+  });
 
   function handleSelect(exercise: ExerciseOption) {
     startTransition(async () => {
@@ -55,9 +60,10 @@ export function ExercisePickerModal({
   }
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-end sm:items-center justify-center z-50 p-4">
-      <div className="bg-bg-surface border border-border rounded-sm w-full max-w-md flex flex-col max-h-[70vh]">
-        <div className="flex items-center justify-between p-4 border-b border-border">
+    <div className="fixed inset-0 bg-black/40 flex items-end sm:items-center justify-center z-50 sm:p-4">
+      <div className="bg-bg-surface border-t sm:border border-border rounded-t-lg sm:rounded-sm w-full sm:max-w-md flex flex-col h-[92vh] sm:h-auto sm:max-h-[80vh]">
+        {/* Header */}
+        <div className="flex items-center justify-between p-4 border-b border-border flex-shrink-0">
           <h2 className="font-semibold text-text-primary">Add exercise</h2>
           <button
             type="button"
@@ -68,7 +74,8 @@ export function ExercisePickerModal({
           </button>
         </div>
 
-        <div className="p-4 border-b border-border">
+        {/* Search */}
+        <div className="p-4 pb-3 border-b border-border flex-shrink-0">
           <input
             autoFocus
             type="text"
@@ -79,10 +86,42 @@ export function ExercisePickerModal({
           />
         </div>
 
+        {/* Muscle group filter chips */}
+        <div className="px-4 py-2 border-b border-border flex-shrink-0 overflow-x-auto">
+          <div className="flex gap-2 w-max">
+            <button
+              type="button"
+              onClick={() => setSelectedMuscle(null)}
+              className={`px-3 py-1 rounded-full text-xs border transition-colors cursor-pointer whitespace-nowrap ${
+                selectedMuscle === null
+                  ? 'bg-accent text-white border-accent'
+                  : 'bg-bg-surface text-text-primary border-border hover:border-accent'
+              }`}
+            >
+              All
+            </button>
+            {MUSCLE_GROUPS.map((g) => (
+              <button
+                key={g}
+                type="button"
+                onClick={() => setSelectedMuscle(selectedMuscle === g ? null : g)}
+                className={`px-3 py-1 rounded-full text-xs border transition-colors cursor-pointer whitespace-nowrap ${
+                  selectedMuscle === g
+                    ? 'bg-accent text-white border-accent'
+                    : 'bg-bg-surface text-text-primary border-border hover:border-accent'
+                }`}
+              >
+                {g}
+              </button>
+            ))}
+          </div>
+        </div>
+
         {error && (
-          <p className="px-4 py-2 text-sm text-red-400 border-b border-border">{error}</p>
+          <p className="px-4 py-2 text-sm text-red-400 border-b border-border flex-shrink-0">{error}</p>
         )}
 
+        {/* Exercise list */}
         <div className="overflow-y-auto flex-1">
           {filtered.length === 0 ? (
             <p className="p-4 text-sm text-text-primary opacity-60 text-center">No exercises found.</p>

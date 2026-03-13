@@ -95,6 +95,7 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
   }
 
   function handleRemove() {
+    if (!confirm(`Remove "${item.exerciseName}" from this workout?`)) return;
     startTransition(async () => {
       const result = await removeExerciseFromSchema(item.id, schemaId, planId);
       if (!('error' in result)) onRemoved(item.id);
@@ -145,6 +146,7 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
             value={sets}
             min={1}
             max={99}
+            onFocus={(e) => e.target.select()}
             onChange={(e) => setSets(parseInt(e.target.value, 10) || 1)}
             onBlur={(e) => handleSetsBlur(parseInt(e.target.value, 10) || 1)}
           />
@@ -157,6 +159,7 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
             value={reps}
             min={1}
             max={999}
+            onFocus={(e) => e.target.select()}
             onChange={(e) => setReps(parseInt(e.target.value, 10) || 1)}
             onBlur={(e) => handleRepsBlur(parseInt(e.target.value, 10) || 1)}
           />
@@ -171,6 +174,7 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
               value={targetWeight}
               min={0}
               step={0.5}
+              onFocus={(e) => e.target.select()}
               onChange={(e) => setTargetWeight(parseFloat(e.target.value) || 0)}
               onBlur={(e) => handleWeightBlur(parseFloat(e.target.value) || 0)}
             />
@@ -198,6 +202,7 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
                 value={w}
                 min={0}
                 step={0.5}
+                onFocus={(e) => e.target.select()}
                 onChange={(e) => {
                   const updated = [...perSetWeights];
                   updated[i] = parseFloat(e.target.value) || 0;

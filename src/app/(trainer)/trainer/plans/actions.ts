@@ -186,7 +186,7 @@ export async function addExerciseToSchema(
       sets: data.sets,
       reps: data.reps,
       target_weight_kg: data.targetWeightKg ?? null,
-      per_set_weights: data.perSetWeights ? JSON.stringify(data.perSetWeights) : null,
+      per_set_weights: data.perSetWeights ?? null,
       sort_order: data.sortOrder,
     })
     .select('id')
@@ -213,7 +213,7 @@ export async function updateSchemaExercise(
   if (data.reps !== undefined) updates.reps = data.reps;
   if ('targetWeightKg' in data) updates.target_weight_kg = data.targetWeightKg ?? null;
   if ('perSetWeights' in data) {
-    updates.per_set_weights = data.perSetWeights ? JSON.stringify(data.perSetWeights) : null;
+    updates.per_set_weights = data.perSetWeights ?? null;
   }
 
   const { error } = await supabase.from('schema_exercises').update(updates).eq('id', exerciseRowId);

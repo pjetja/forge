@@ -1,5 +1,5 @@
 'use client';
-import { useState, useTransition } from 'react';
+import { useState, useTransition, useEffect } from 'react';
 import {
   DndContext,
   closestCenter,
@@ -27,12 +27,18 @@ export function SchemaExerciseList({ initialItems, schemaId, planId }: SchemaExe
   const [items, setItems] = useState(initialItems);
   const [, startTransition] = useTransition();
 
+  // Sync list when server re-renders with new items (e.g. after adding an exercise)
+  useEffect(() => {
+    setItems(initialItems);
+  }, [initialItems]);
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
-      // Require 8px movement before starting drag — prevents input clicks from triggering drag
       activationConstraint: { distance: 8 },
     }),
-    useSensor(TouchSensor)
+    useSensor(TouchSensor, {
+      activationConstraint: { delay: 250, tolerance: 5 },
+    })
   );
 
   function handleDragEnd(event: DragEndEvent) {
