@@ -1,6 +1,10 @@
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { NextPlanSection } from './_components/NextPlanSection';
+import { PlanPicker } from './_components/PlanPicker';
+import { TabSwitcher } from '@/components/TabSwitcher';
+import { ExercisesTab } from './_components/ExercisesTab';
 
 interface AssignedPlanRow {
   id: string;
@@ -15,10 +19,14 @@ interface AssignedPlanRow {
 
 export default async function TraineeDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ traineeId: string }>;
+  searchParams?: Promise<{ tab?: string; q?: string; muscles?: string }>;
 }) {
   const { traineeId } = await params;
+  const resolvedSearch = await searchParams;
+  const activeTab = resolvedSearch?.tab === 'exercises' ? 'exercises' : 'plans';
   const supabase = await createClient();
 
   // Fetch trainee profile
@@ -35,11 +43,20 @@ export default async function TraineeDetailPage({
     .from('assigned_plans')
     .select('id, name, week_count, workouts_per_week, status, started_at, plan_updated_at, created_at')
     .eq('trainee_auth_uid', traineeId)
-    .order('created_at', { ascending: false });
+    .order('sort_order', { ascending: true })
+    .order('created_at', { ascending: true });
 
   const plans = (assignedPlans ?? []) as AssignedPlanRow[];
-  const currentPlan = plans.find((p) => p.status === 'active' || p.status === 'pending') ?? null;
+  const activePlan = plans.find((p) => p.status === 'active') ?? null;
+  const pendingPlans = plans.filter((p) => p.status === 'pending');
   const pastPlans = plans.filter((p) => p.status === 'completed' || p.status === 'terminated');
+
+  // Fetch trainer's plan templates for the assign picker
+  const { data: planTemplates } = await supabase
+    .from('plans')
+    .select('id, name, week_count, workouts_per_week')
+    .eq('status', 'active')
+    .order('created_at', { ascending: false });
 
   return (
     <div className="space-y-6">
@@ -47,6 +64,8 @@ export default async function TraineeDetailPage({
       <Link href="/trainer" className="text-sm text-text-primary hover:text-accent transition-colors">
         &larr; All trainees
       </Link>
+
+      <div className="pt-4" />
 
       {/* Trainee header */}
       <div className="flex items-center gap-4">
@@ -64,70 +83,124 @@ export default async function TraineeDetailPage({
         </div>
       </div>
 
+      {/* Tab switcher */}
+      <TabSwitcher
+        tabs={[{ key: 'plans', label: 'Plans' }, { key: 'exercises', label: 'Exercises' }]}
+        activeTab={activeTab}
+      />
+
+      {/* Plans tab content */}
+      {activeTab === 'plans' && (
+      <>
       {/* Current plan */}
+      {(activePlan || pendingPlans.length === 0) && (
       <section>
         <h2 className="text-lg font-semibold text-text-primary mb-3">Current Plan</h2>
-        {currentPlan ? (
+        {activePlan ? (
           <div className="bg-bg-surface border border-border rounded-sm p-4 space-y-3">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <p className="font-medium text-text-primary">{currentPlan.name}</p>
+                <p className="font-medium text-text-primary">{activePlan.name}</p>
                 <p className="text-sm text-text-primary mt-1">
-                  {currentPlan.week_count} weeks &middot; {currentPlan.workouts_per_week} workouts/week
+                  {activePlan.week_count} weeks &middot; {activePlan.workouts_per_week} workouts/week
                 </p>
               </div>
-              <span
-                className={`text-xs px-2 py-1 rounded-full font-medium flex-shrink-0 ${
-                  currentPlan.status === 'active'
-                    ? 'bg-accent/20 text-accent'
-                    : 'bg-border text-text-primary'
-                }`}
-              >
-                {currentPlan.status === 'active' ? 'Active' : 'Pending'}
+              <span className="text-xs px-2 py-1 rounded-full font-medium bg-accent/20 text-accent flex-shrink-0">
+                Active
               </span>
             </div>
-            {/* Edit assigned plan link */}
-            <Link
-              href={`/trainer/trainees/${traineeId}/assigned-plans/${currentPlan.id}/edit`}
-              className="inline-block text-sm text-accent hover:underline"
-            >
-              Edit plan exercises
-            </Link>
+            <div className="flex items-center gap-4">
+              <Link
+                href={`/trainer/trainees/${traineeId}/plans/${activePlan.id}`}
+                className="inline-block text-sm text-accent hover:underline"
+              >
+                View plan
+              </Link>
+              <Link
+                href={`/trainer/trainees/${traineeId}/assigned-plans/${activePlan.id}/edit`}
+                className="inline-block text-sm text-text-primary opacity-60 hover:opacity-100 hover:underline"
+              >
+                Edit exercises
+              </Link>
+            </div>
           </div>
-        ) : (
-          <div className="bg-bg-surface border border-border rounded-sm p-8 text-center">
-            <p className="text-text-primary text-sm">No plan assigned yet.</p>
-            <Link
-              href="/trainer/plans"
-              className="mt-3 inline-block text-sm text-accent hover:underline"
-            >
-              Go to Plans to assign one
-            </Link>
+        ) : pendingPlans.length === 0 ? (
+          <div className="bg-bg-surface border border-border rounded-sm p-4 space-y-3">
+            <p className="text-sm text-text-primary opacity-60">No plan assigned yet. Pick a plan to assign:</p>
+            {(planTemplates ?? []).length === 0 ? (
+              <p className="text-sm text-text-primary">
+                No plans created yet.{' '}
+                <Link href="/trainer/plans/new" className="text-accent hover:underline">
+                  Create a plan first
+                </Link>
+              </p>
+            ) : (
+              <PlanPicker plans={planTemplates ?? []} traineeId={traineeId} />
+            )}
           </div>
-        )}
+        ) : null}
       </section>
+      )}
+
+      {/* Next plan(s) — pending queue */}
+      {(activePlan || pendingPlans.length > 0) && (
+        <NextPlanSection
+          traineeId={traineeId}
+          pendingPlans={pendingPlans}
+          planTemplates={planTemplates ?? []}
+          hasActivePlan={!!activePlan}
+        />
+      )}
 
       {/* Past plans */}
       {pastPlans.length > 0 && (
         <section>
           <h2 className="text-lg font-semibold text-text-primary mb-3">Past Plans</h2>
           <div className="space-y-2">
-            {pastPlans.map((plan) => (
-              <div
-                key={plan.id}
-                className="bg-bg-surface border border-border rounded-sm p-4 flex items-center justify-between"
-              >
-                <div>
-                  <p className="font-medium text-text-primary">{plan.name}</p>
-                  <p className="text-xs text-text-primary mt-1">
-                    {plan.week_count} weeks &middot;{' '}
-                    {plan.status === 'completed' ? 'Completed' : 'Terminated'}
-                  </p>
+            {pastPlans.map((plan) =>
+              plan.status === 'completed' ? (
+                <Link
+                  key={plan.id}
+                  href={`/trainer/trainees/${traineeId}/plans/${plan.id}`}
+                  className="bg-bg-surface border border-border rounded-sm p-4 flex items-center justify-between hover:border-accent/50 transition-colors"
+                >
+                  <div>
+                    <p className="font-medium text-text-primary">{plan.name}</p>
+                    <p className="text-xs text-text-primary opacity-60 mt-1">
+                      {plan.week_count} weeks &middot; Completed
+                    </p>
+                  </div>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-text-primary opacity-40 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
+                </Link>
+              ) : (
+                <div
+                  key={plan.id}
+                  className="bg-bg-surface border border-border rounded-sm p-4 flex items-center justify-between"
+                >
+                  <div>
+                    <p className="font-medium text-text-primary">{plan.name}</p>
+                    <p className="text-xs text-text-primary opacity-60 mt-1">
+                      {plan.week_count} weeks &middot; Terminated
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              )
+            )}
           </div>
         </section>
+      )}
+      </>
+      )}
+
+      {/* Exercises tab content */}
+      {activeTab === 'exercises' && (
+        <ExercisesTab
+          traineeId={traineeId}
+          searchQuery={resolvedSearch?.q ?? ''}
+          muscleFilter={resolvedSearch?.muscles ?? ''}
+        />
       )}
     </div>
   );
