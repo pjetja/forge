@@ -1,7 +1,7 @@
 ---
 phase: 05
 slug: trainer-progress-visibility
-status: draft
+status: approved
 shadcn_initialized: false
 preset: none
 created: 2026-03-17
@@ -43,15 +43,21 @@ Exceptions: `py-3` (12px) appears on summary stat cards to give them breathing r
 
 ## Typography
 
+4 sizes, 2 weights only — aligned with Lato font declaration (weights 400 and 700).
+
 | Role | Size | Weight | Line Height |
 |------|------|--------|-------------|
 | Page heading (h1) | text-2xl (24px) | font-bold (700) | leading default (~1.35) |
-| Section heading (h2) | text-lg (18px) | font-semibold (600) | leading default |
-| Section label / eyebrow | text-sm (14px) + uppercase + tracking-wide | font-semibold (600) | leading default |
-| Body / card primary | text-base (16px) | font-medium or font-semibold | leading default |
-| Body secondary | text-sm (14px) | font-normal (400) | leading default |
-| Caption / metadata | text-xs (12px) | font-normal (400) | leading default |
-| Chart section label | text-sm (14px) + uppercase + tracking-wide | font-semibold (600) | leading default |
+| Section heading (h2) | text-lg (18px) | font-bold (700) | leading default |
+| Body / labels / card primary | text-sm (14px) | font-bold (700) for emphasis, font-normal (400) for secondary | leading-relaxed (1.625) |
+| Caption / metadata / chips | text-xs (12px) | font-normal (400) | leading default |
+
+Notes:
+- Section label / eyebrow: `text-xs uppercase tracking-wide font-bold` — uses caption size with bold weight + uppercase transform for visual distinction
+- Chart section label: same as section label / eyebrow pattern
+- Body emphasis (card title, exercise name): `text-sm font-bold`
+- Body secondary (plan name, metadata): `text-sm font-normal opacity-60`
+- No `text-base` (16px) — project body text consistently uses `text-sm`
 
 ---
 
@@ -153,11 +159,11 @@ No new npm packages needed. All dependencies (`recharts`, Tailwind CSS v4, Next.
 
 ## Checker Sign-Off
 
-- [ ] Dimension 1 Copywriting: PASS
-- [ ] Dimension 2 Visuals: PASS
-- [ ] Dimension 3 Color: PASS
-- [ ] Dimension 4 Typography: PASS
-- [ ] Dimension 5 Spacing: PASS
-- [ ] Dimension 6 Registry Safety: PASS
+- [x] Dimension 1 Copywriting: PASS
+- [x] Dimension 2 Visuals: PASS
+- [x] Dimension 3 Color: PASS
+- [x] Dimension 4 Typography: PASS (4 sizes, 2 weights)
+- [x] Dimension 5 Spacing: PASS (12px exceptions documented, multiples of 4)
+- [x] Dimension 6 Registry Safety: PASS
 
-**Approval:** pending
+**Approval:** approved 2026-03-17
