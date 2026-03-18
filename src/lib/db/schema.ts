@@ -5,6 +5,7 @@ export const trainers = pgTable('trainers', {
   authUid: uuid('auth_uid').notNull().unique(),
   name: text('name').notNull(),
   email: text('email').notNull(),
+  bio: text('bio'),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
 });
 
@@ -15,6 +16,10 @@ export const users = pgTable('users', {
   name: text('name').notNull(),
   email: text('email').notNull(),
   role: text('role', { enum: ['trainee'] }).notNull(),
+  goals: text('goals'),
+  heightCm: integer('height_cm'),
+  weightKg: numeric('weight_kg', { precision: 5, scale: 2 }),
+  dateOfBirth: text('date_of_birth'), // PostgreSQL date returned as string by PostgREST
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
 });
 
@@ -31,6 +36,7 @@ export const trainerTraineeConnections = pgTable('trainer_trainee_connections', 
   trainerAuthUid: uuid('trainer_auth_uid').notNull(),
   traineeAuthUid: uuid('trainee_auth_uid').notNull(),
   inviteLinkId: uuid('invite_link_id'),
+  trainerNotes: text('trainer_notes'),
   connectedAt: timestamp('connected_at', { withTimezone: true }).defaultNow(),
 }, (table) => ({
   // CRITICAL: enforces one trainer per trainee at the database level
@@ -109,6 +115,7 @@ export const assignedPlans = pgTable('assigned_plans', {
   startedAt: timestamp('started_at', { withTimezone: true }),
   planUpdatedAt: timestamp('plan_updated_at', { withTimezone: true }).defaultNow(),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+  sortOrder: integer('sort_order').notNull().default(0),
 });
 
 export const assignedSchemas = pgTable('assigned_schemas', {
