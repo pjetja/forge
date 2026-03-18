@@ -5,6 +5,10 @@ import { NextPlanSection } from './_components/NextPlanSection';
 import { PlanPicker } from './_components/PlanPicker';
 import { TabSwitcher } from '@/components/TabSwitcher';
 import { ExercisesTab } from './_components/ExercisesTab';
+import { PhysicalStatsRow } from './_components/PhysicalStatsRow';
+import { TrainerNotesEditor } from './_components/TrainerNotesEditor';
+import { gravatarUrl } from '@/lib/gravatar';
+import { GravatarAvatar } from '@/components/GravatarAvatar';
 
 interface AssignedPlanRow {
   id: string;
@@ -32,11 +36,21 @@ export default async function TraineeDetailPage({
   // Fetch trainee profile
   const { data: traineeProfile } = await supabase
     .from('users')
-    .select('name, email')
+    .select('name, email, goals, height_cm, weight_kg, date_of_birth')
     .eq('auth_uid', traineeId)
     .single();
 
   if (!traineeProfile) notFound();
+
+  const claimsResult = await supabase.auth.getClaims();
+  const claims = claimsResult.data?.claims;
+
+  const { data: connectionRow } = await supabase
+    .from('trainer_trainee_connections')
+    .select('trainer_notes')
+    .eq('trainer_auth_uid', claims?.sub ?? '')
+    .eq('trainee_auth_uid', traineeId)
+    .maybeSingle();
 
   // Fetch all assigned plans for this trainee (ordered newest first)
   const { data: assignedPlans } = await supabase
@@ -69,19 +83,33 @@ export default async function TraineeDetailPage({
 
       {/* Trainee header */}
       <div className="flex items-center gap-4">
-        <div className="w-12 h-12 rounded-full bg-accent/20 text-accent flex items-center justify-center text-lg font-semibold flex-shrink-0">
-          {traineeProfile.name
-            .split(' ')
-            .map((n: string) => n[0])
-            .join('')
-            .toUpperCase()
-            .slice(0, 2)}
-        </div>
+        <GravatarAvatar url={gravatarUrl(traineeProfile.email)} name={traineeProfile.name} size={48} />
         <div>
           <h1 className="text-2xl font-bold text-text-primary">{traineeProfile.name}</h1>
           <p className="text-sm text-text-primary">{traineeProfile.email}</p>
+          <PhysicalStatsRow
+            heightCm={traineeProfile.height_cm}
+            weightKg={traineeProfile.weight_kg ? Number(traineeProfile.weight_kg) : null}
+            dateOfBirth={traineeProfile.date_of_birth}
+          />
         </div>
       </div>
+
+      {/* Trainee goals */}
+      <section>
+        <h2 className="text-xl font-bold text-text-primary mb-2">Trainee goals</h2>
+        {traineeProfile.goals ? (
+          <p className="text-text-primary">{traineeProfile.goals}</p>
+        ) : (
+          <p className="text-text-primary opacity-50">No goals set.</p>
+        )}
+      </section>
+
+      {/* Trainer notes */}
+      <TrainerNotesEditor
+        traineeId={traineeId}
+        initialNotes={connectionRow?.trainer_notes ?? ''}
+      />
 
       {/* Tab switcher */}
       <TabSwitcher
