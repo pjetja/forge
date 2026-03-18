@@ -197,7 +197,7 @@ Plans:
 **Goal:** Both trainers and trainees can manage their own profiles (name, bio, goals, physical stats), trainers can write private notes per trainee, and compliance stats (last session + this-week count) appear on the trainer roster
 **Requirements**: PROF-SCHEMA, PROF-GRAVATAR, PROF-NAV-AVATAR, PROF-TRAINER-OWN, PROF-TRAINEE-OWN, PROF-TRAINER-CARD, PROF-TRAINER-NOTES, PROF-TRAINEE-ENRICHED, PROF-COMPLIANCE-STATS
 **Depends on:** Phase 5
-**Plans:** 4 plans
+**Plans:** 1/4 plans executed
 
 Plans:
 - [ ] 06-01-PLAN.md — DB migration (profile fields + RLS) + Gravatar utility + GravatarAvatar component + Drizzle schema update
