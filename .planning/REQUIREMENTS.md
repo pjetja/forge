@@ -45,8 +45,8 @@
 
 ### Trainer Progress Visibility
 
-- [ ] **PROG-01**: Trainer can view all trainees with their currently assigned plans
-- [ ] **PROG-02**: Trainer can view a trainee's full workout log history (sets, reps, weight per session)
+- [x] **PROG-01**: Trainer can view all trainees with their currently assigned plans
+- [x] **PROG-02**: Trainer can view a trainee's full workout log history (sets, reps, weight per session)
 
 ## v2 Requirements
 
@@ -108,8 +108,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | TRACK-03 | Phase 4 | Complete |
 | TRACK-04 | Phase 4 | Complete |
 | TRACK-05 | Phase 4 | Complete |
-| PROG-01 | Phase 5 | Pending |
-| PROG-02 | Phase 5 | Pending |
+| PROG-01 | Phase 5 | Complete |
+| PROG-02 | Phase 5 | Complete |
 
 **Coverage:**
 - v1 requirements: 25 total

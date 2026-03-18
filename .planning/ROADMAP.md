@@ -180,14 +180,14 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 03.1. UI Polish | Complete | Complete | 2026-03-13 |
 | 4. Trainee Workout Logging | 5/5 | Complete   | 2026-03-13 |
 | 04.1. UI Polish | Complete | Complete | 2026-03-14 |
-| 5. Trainer Progress Visibility | 0/2 | In progress | - |
+| 5. Trainer Progress Visibility | 1/2 | In Progress|  |
 
 ### Phase 05.1: UI Polish (INSERTED)
 
 **Goal:** Visual review and polish of Trainer Progress Visibility UI — Figma screens reviewed against built workout history views, data density and trainer dashboard interactions finalized
 **Requirements**: TBD
 **Depends on:** Phase 5
-**Plans:** 0 plans
+**Plans:** 1/2 plans executed
 
 Plans:
 - [ ] TBD (run /gsd:plan-phase 05.1 to break down)
