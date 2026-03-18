@@ -60,7 +60,7 @@ Exceptions:
 
 Notes:
 - Body (16px / 400 / 1.5): form field values, bio text, goals text, trainer notes textarea, read-only stats
-- Label (14px / 400 / 1.4): form field labels, section sub-labels, compliance stat lines ("Last workout: Mar 14"), physical stats chip row text
+- Label (14px / 400 / 1.4): form field labels, section sub-labels, compliance stat lines ("Last workout: Mar 14"), physical stats chip row text, helper text (e.g. avatar Gravatar hint, trainer notes privacy indicator)
 - Heading (20px / 700 / 1.2): profile page section headings ("Profile", "My Trainer"), trainee detail section headings
 - Display (28px / 700 / 1.2): profile page primary name display (above avatar area)
 
@@ -143,7 +143,7 @@ Decision (Claude's discretion): Sign-out goes on the profile page, not in a drop
 - **Save trigger:** Explicit "Save notes" button below the textarea — no autosave (avoids accidental saves, aligns with existing explicit-save pattern in the app)
 - **Idle with no notes:** Textarea placeholder "Add private notes about this trainee..."
 - **Saving/success/error:** Same inline feedback pattern as profile form
-- **Privacy indicator:** Small 12px helper text below label: "Only visible to you" in `text-text-primary opacity-50`
+- **Privacy indicator:** Small helper text below label: "Only visible to you" in 14px / 400 `text-text-primary opacity-50`
 
 Decision (Claude's discretion): Explicit Save button over autosave. Autosave creates ambiguity about whether a half-typed note was persisted. The app already uses explicit saves everywhere.
 
@@ -196,7 +196,7 @@ Decision (Claude's discretion): "My Trainer" is a section within `/trainee/profi
 | Compliance last session copy | "Last workout: {D Mon}" (e.g. "Last workout: 14 Mar") |
 | Compliance this-week copy | "{N} this week" (e.g. "2 this week") |
 | Compliance no-sessions state | "No sessions yet" |
-| Avatar non-editable helper | "Set your avatar at gravatar.com" — 12px `opacity-50` beneath avatar on profile pages |
+| Avatar non-editable helper | "Set your avatar at gravatar.com" — 14px `opacity-50` beneath avatar on profile pages |
 | Email non-editable helper | none — email displayed in a visually muted `opacity-50` field, no additional explanation needed |
 | Save success | "Changes saved." |
 | Save error — profile | "Failed to update profile. Please try again." |
@@ -210,10 +210,12 @@ Decision (Claude's discretion): "My Trainer" is a section within `/trainee/profi
 
 ### `/trainer/profile`
 
+Primary focal point: avatar + display name block at the top of the page — this is the identity anchor for the entire profile page.
+
 ```
-[Avatar 80px] [Display name — 28px/700]
-               [email — 14px/400/opacity-50]
-               [helper: "Set your avatar at gravatar.com" — 12px/opacity-50]
+[Avatar 80px — ring-accent] [Display name — 28px/700]
+                             [email — 14px/400/opacity-50]
+                             [helper: "Set your avatar at gravatar.com" — 14px/opacity-50]
 
 [Section: Profile]
   [Name field — editable]
@@ -226,10 +228,12 @@ Decision (Claude's discretion): "My Trainer" is a section within `/trainee/profi
 
 ### `/trainee/profile`
 
+Primary focal point: avatar + display name block at the top of the page — this is the identity anchor for the entire profile page.
+
 ```
-[Avatar 80px] [Display name — 28px/700]
-               [email — 14px/400/opacity-50]
-               [helper: "Set your avatar at gravatar.com" — 12px/opacity-50]
+[Avatar 80px — ring-accent] [Display name — 28px/700]
+                             [email — 14px/400/opacity-50]
+                             [helper: "Set your avatar at gravatar.com" — 14px/opacity-50]
 
 [Section: Profile]
   [Name field — editable]
