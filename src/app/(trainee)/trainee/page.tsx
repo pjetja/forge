@@ -3,17 +3,8 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { getCurrentWeekBounds } from '@/lib/utils/week';
 import AbandonSessionButton from './_components/AbandonSessionButton';
-import { TabSwitcher } from '@/components/TabSwitcher';
-import { TraineeExercisesTab } from './_components/TraineeExercisesTab';
 
-export default async function TraineeHomePage({
-  searchParams,
-}: {
-  searchParams?: Promise<{ tab?: string; q?: string; muscles?: string }>;
-}) {
-  const resolvedSearch = await searchParams;
-  const activeTab = resolvedSearch?.tab === 'exercises' ? 'exercises' : 'plans';
-
+export default async function TraineeHomePage() {
   const supabase = await createClient();
   const claimsResult = await supabase.auth.getClaims();
   const claims = claimsResult.data?.claims;
@@ -81,13 +72,6 @@ export default async function TraineeHomePage({
     <div className="space-y-8">
       <h1 className="text-2xl font-bold text-text-primary">Your Training</h1>
 
-      <TabSwitcher
-        tabs={[{ key: 'plans', label: 'Plans' }, { key: 'exercises', label: 'Exercises' }]}
-        activeTab={activeTab}
-      />
-
-      {activeTab === 'plans' && (
-        <>
       {/* In-progress session banner */}
       {activeSession && activeSchemaInfo && (
         <div className="bg-accent/10 border border-accent rounded-sm p-4 flex flex-col sm:flex-row sm:items-center gap-3">
@@ -204,16 +188,6 @@ export default async function TraineeHomePage({
             ))}
           </div>
         </section>
-      )}
-        </>
-      )}
-
-      {activeTab === 'exercises' && (
-        <TraineeExercisesTab
-          traineeAuthUid={claims.sub}
-          searchQuery={resolvedSearch?.q ?? ''}
-          muscleFilter={resolvedSearch?.muscles ?? ''}
-        />
       )}
     </div>
   );

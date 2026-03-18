@@ -87,7 +87,7 @@ export default async function TraineeCrossPlanExercisePage({ params }: TraineeCr
     <div className="space-y-6">
       {/* Back link */}
       <Link
-        href="/trainee?tab=exercises"
+        href="/trainee/exercises"
         className="inline-flex items-center gap-1 text-sm text-text-primary hover:text-accent transition-colors"
       >
         <svg
