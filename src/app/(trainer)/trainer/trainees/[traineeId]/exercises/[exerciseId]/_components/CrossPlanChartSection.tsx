@@ -41,8 +41,22 @@ export function CrossPlanChartSection({ allChartData }: CrossPlanChartSectionPro
   const hasAnyData = allChartData.length > 0;
   const hasFilteredData = filteredData.length > 0;
 
+  const personalRecord = hasAnyData
+    ? allChartData.reduce<number | null>((max, d) => {
+        if (d.set1 == null) return max;
+        return max == null || d.set1 > max ? d.set1 : max;
+      }, null)
+    : null;
+
   return (
     <div className="space-y-4">
+      {personalRecord != null && (
+        <div className="bg-bg-surface border border-accent rounded-sm px-4 py-3 flex items-center justify-between">
+          <p className="text-xs font-semibold text-text-primary uppercase tracking-wide opacity-60">Personal Record</p>
+          <p className="text-lg font-bold text-accent">{personalRecord} kg</p>
+        </div>
+      )}
+
       <div className="flex items-center justify-between flex-wrap gap-2">
         <h2 className="text-sm font-semibold text-text-primary opacity-60 uppercase tracking-wide">
           Top-set weight over time
