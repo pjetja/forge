@@ -1,49 +1,28 @@
-import Link from 'next/link';
-import { signOut } from '@/app/(auth)/login/actions';
-import { ForgeLogo } from '@/components/ForgeLogo';
+import { NavHeader } from './_components/NavHeader';
+import { createClient } from '@/lib/supabase/server';
+import { gravatarUrl } from '@/lib/gravatar';
 
-export default function TrainerLayout({ children }: { children: React.ReactNode }) {
+export default async function TrainerLayout({ children }: { children: React.ReactNode }) {
+  const supabase = await createClient();
+  const claimsResult = await supabase.auth.getClaims();
+  const claims = claimsResult.data?.claims;
+  const email = (claims?.email as string) ?? '';
+  const avatarUrl = email ? gravatarUrl(email) : '';
+
+  let trainerName = '';
+  if (claims?.sub) {
+    const { data: trainer } = await supabase
+      .from('trainers')
+      .select('name')
+      .eq('auth_uid', claims.sub)
+      .single();
+    trainerName = trainer?.name ?? '';
+  }
+
   return (
     <div className="min-h-screen bg-bg-page">
-      <header className="bg-bg-page border-b border-border px-4 py-3 flex items-center justify-between">
-        <Link href="/trainer" aria-label="Forge home">
-          <ForgeLogo variant="horizontal" className="h-7" />
-        </Link>
-
-        <nav className="flex items-center gap-6">
-          <Link
-            href="/trainer/exercises"
-            className="text-sm text-text-primary hover:text-accent transition-colors"
-          >
-            Exercises
-          </Link>
-        </nav>
-
-        <form action={signOut}>
-          <button
-            type="submit"
-            className="flex items-center gap-1.5 text-sm text-text-primary hover:text-accent transition-colors cursor-pointer"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-4 h-4"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-              <polyline points="16 17 21 12 16 7" />
-              <line x1="21" y1="12" x2="9" y2="12" />
-            </svg>
-            Sign out
-          </button>
-        </form>
-      </header>
-      <main className="max-w-4xl mx-auto px-4 py-8">{children}</main>
+      <NavHeader avatarUrl={avatarUrl} userName={trainerName} />
+      <main className="max-w-[1280px] mx-auto px-4 py-8">{children}</main>
     </div>
   );
 }

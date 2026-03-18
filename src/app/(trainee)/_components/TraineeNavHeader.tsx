@@ -2,8 +2,8 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { signOut } from '@/app/(auth)/login/actions';
 import { ForgeLogo } from '@/components/ForgeLogo';
+import { GravatarAvatar } from '@/components/GravatarAvatar';
 
 const navLinks = [
   {
@@ -19,35 +19,7 @@ const navLinks = [
   },
 ];
 
-function SignOutButton({ className }: { className?: string }) {
-  return (
-    <form action={signOut}>
-      <button
-        type="submit"
-        className={`flex items-center gap-1.5 text-sm text-text-primary hover:text-accent transition-colors cursor-pointer ${className ?? ''}`}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-4 h-4"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-          <polyline points="16 17 21 12 16 7" />
-          <line x1="21" y1="12" x2="9" y2="12" />
-        </svg>
-        Sign out
-      </button>
-    </form>
-  );
-}
-
-export function TraineeNavHeader() {
+export function TraineeNavHeader({ avatarUrl, userName }: { avatarUrl: string; userName: string }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
 
@@ -59,16 +31,21 @@ export function TraineeNavHeader() {
   return (
     <>
       <header className="bg-bg-page border-b border-border">
-        {/* Row 1: Logo | Sign out (desktop) / Hamburger (mobile) */}
+        {/* Row 1: Logo | Avatar (desktop) / Hamburger (mobile) */}
         <div className="h-14 px-4 flex items-center justify-between">
           <Link href="/trainee" aria-label="Forge home" className="flex items-center">
             <ForgeLogo variant="horizontal" className="h-7" />
           </Link>
 
           <div className="flex items-center gap-3">
-            {/* Sign out — desktop only */}
+            {/* Avatar linking to profile — desktop only */}
             <div className="hidden md:block">
-              <SignOutButton />
+              <Link
+                href="/trainee/profile"
+                className="block rounded-full hover:ring-2 hover:ring-accent hover:ring-offset-2 hover:ring-offset-bg-page transition-shadow"
+              >
+                <GravatarAvatar url={avatarUrl} name={userName} size={32} />
+              </Link>
             </div>
 
             {/* Hamburger — mobile only */}
@@ -156,9 +133,16 @@ export function TraineeNavHeader() {
               ))}
             </nav>
 
-            {/* Sign out at bottom */}
+            {/* Profile link at bottom */}
             <div className="px-4 py-4 border-t border-border">
-              <SignOutButton />
+              <Link
+                href="/trainee/profile"
+                onClick={() => setSidebarOpen(false)}
+                className="flex items-center gap-2 text-sm text-text-primary hover:text-accent transition-colors"
+              >
+                <GravatarAvatar url={avatarUrl} name={userName} size={32} />
+                Profile
+              </Link>
             </div>
           </div>
         </div>
