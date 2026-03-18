@@ -1,37 +1,34 @@
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { InviteDialog } from './_components/InviteDialog';
-
-interface TraineeRow {
-  trainee_auth_uid: string;
-  connected_at: string;
-  users: {
-    name: string;
-    email: string;
-  }[];
-}
+import { getCurrentWeekBounds } from '@/lib/utils/week';
+import { gravatarUrl } from '@/lib/gravatar';
+import { GravatarAvatar } from '@/components/GravatarAvatar';
 
 export default async function TrainerHomePage() {
   const supabase = await createClient();
 
   // Fetch connected trainees — RLS filters to this trainer's connections only
-  // Join with users table to get trainee name/email
   const { data: connections, error } = await supabase
     .from('trainer_trainee_connections')
-    .select(`
-      trainee_auth_uid,
-      connected_at,
-      users!trainer_trainee_connections_trainee_auth_uid_fkey (
-        name,
-        email
-      )
-    `)
+    .select('trainee_auth_uid, connected_at')
     .order('connected_at', { ascending: false });
 
-  const trainees = (connections ?? []) as TraineeRow[];
+  const traineeIds = (connections ?? []).map((c) => c.trainee_auth_uid);
+
+  // Fetch user profiles separately — avoids PostgREST FK hint issues
+  const { data: userRows } = traineeIds.length > 0
+    ? await supabase
+        .from('users')
+        .select('auth_uid, name, email')
+        .in('auth_uid', traineeIds)
+    : { data: [] };
+
+  const usersByAuthUid = Object.fromEntries(
+    (userRows ?? []).map((u) => [u.auth_uid, u])
+  );
 
   // Fetch assigned plans (active or pending) for all connected trainees
-  const traineeIds = trainees.map((t) => t.trainee_auth_uid);
   let assignedPlansByTrainee: Record<string, { id: string; name: string; status: string } | null> = {};
 
   if (traineeIds.length > 0) {
@@ -42,9 +39,10 @@ export default async function TrainerHomePage() {
       .in('status', ['pending', 'active'])
       .order('created_at', { ascending: false });
 
-    // Map: one per trainee (first = most recent active/pending)
+    // Map: one per trainee — prefer active over pending
     for (const ap of assignedPlans ?? []) {
-      if (!assignedPlansByTrainee[ap.trainee_auth_uid]) {
+      const existing = assignedPlansByTrainee[ap.trainee_auth_uid];
+      if (!existing || (ap.status === 'active' && existing.status !== 'active')) {
         assignedPlansByTrainee[ap.trainee_auth_uid] = {
           id: ap.id,
           name: ap.name,
@@ -52,6 +50,26 @@ export default async function TrainerHomePage() {
         };
       }
     }
+  }
+
+  // Compliance stats — batch query across all trainees
+  const { weekStart } = getCurrentWeekBounds();
+
+  const { data: sessions } = traineeIds.length > 0
+    ? await supabase
+        .from('workout_sessions')
+        .select('trainee_auth_uid, completed_at')
+        .in('trainee_auth_uid', traineeIds)
+        .eq('status', 'completed')
+        .order('completed_at', { ascending: false })
+    : { data: [] };
+
+  const statsByTrainee: Record<string, { lastSession: string | null; thisWeek: number }> = {};
+  for (const session of sessions ?? []) {
+    const uid = session.trainee_auth_uid;
+    const stat = statsByTrainee[uid] ??= { lastSession: null, thisWeek: 0 };
+    if (!stat.lastSession) stat.lastSession = session.completed_at; // first = most recent (desc order)
+    if (new Date(session.completed_at) >= weekStart) stat.thisWeek++;
   }
 
   return (
@@ -67,7 +85,7 @@ export default async function TrainerHomePage() {
         </div>
       )}
 
-      {!error && trainees.length === 0 && (
+      {!error && traineeIds.length === 0 && (
         <div className="bg-bg-surface border border-border rounded-sm p-12 text-center space-y-3">
           <div className="text-4xl">👥</div>
           <h2 className="font-medium text-text-primary">No trainees yet</h2>
@@ -78,18 +96,10 @@ export default async function TrainerHomePage() {
         </div>
       )}
 
-      {!error && trainees.length > 0 && (
+      {!error && traineeIds.length > 0 && (
         <div className="space-y-3">
-          {trainees.map((connection) => {
-            const trainee = connection.users[0] ?? null;
-            const initials = trainee?.name
-              ? trainee.name
-                  .split(' ')
-                  .map((n) => n[0])
-                  .join('')
-                  .toUpperCase()
-                  .slice(0, 2)
-              : '?';
+          {(connections ?? []).map((connection) => {
+            const trainee = usersByAuthUid[connection.trainee_auth_uid] ?? null;
             const currentPlan = assignedPlansByTrainee[connection.trainee_auth_uid] ?? null;
 
             return (
@@ -99,9 +109,7 @@ export default async function TrainerHomePage() {
                 className="bg-bg-surface border border-border rounded-sm p-4 flex items-center gap-4 hover:border-accent transition-colors"
               >
                 {/* Avatar */}
-                <div className="w-10 h-10 rounded-full bg-accent/20 text-accent flex items-center justify-center text-sm font-semibold flex-shrink-0">
-                  {initials}
-                </div>
+                <GravatarAvatar url={gravatarUrl(trainee?.email ?? '')} name={trainee?.name ?? ''} size={40} />
                 {/* Info */}
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-text-primary truncate">
@@ -111,16 +119,28 @@ export default async function TrainerHomePage() {
                     <p className="text-sm text-text-primary truncate">
                       <span
                         className={
-                          currentPlan.status === 'active' ? 'text-accent' : 'text-text-primary'
+                          currentPlan.status === 'active' ? 'text-accent' : 'text-text-primary opacity-50'
                         }
                       >
-                        {currentPlan.status === 'active' ? 'Active' : 'Pending'}:
+                        {currentPlan.status === 'active' ? 'Active' : 'Upcoming'}:
                       </span>{' '}
                       {currentPlan.name}
                     </p>
                   ) : (
-                    <p className="text-sm text-text-primary">No plan assigned</p>
+                    <p className="text-sm text-text-primary opacity-40">No plan assigned</p>
                   )}
+                  {(() => {
+                    const stat = statsByTrainee[connection.trainee_auth_uid];
+                    if (!stat || (!stat.lastSession && stat.thisWeek === 0)) {
+                      return <p className="text-sm text-text-primary opacity-50">No sessions yet</p>;
+                    }
+                    const parts: string[] = [];
+                    if (stat.lastSession) {
+                      parts.push(`Last workout: ${new Date(stat.lastSession).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}`);
+                    }
+                    parts.push(`${stat.thisWeek} this week`);
+                    return <p className="text-sm text-text-primary opacity-50">{parts.join(' \u00B7 ')}</p>;
+                  })()}
                 </div>
                 {/* Chevron */}
                 <span className="text-text-primary flex-shrink-0">&rsaquo;</span>
