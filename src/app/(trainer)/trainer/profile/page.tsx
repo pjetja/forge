@@ -1,0 +1,60 @@
+import { createClient } from '@/lib/supabase/server';
+import { gravatarUrl } from '@/lib/gravatar';
+import { GravatarAvatar } from '@/components/GravatarAvatar';
+import { signOut } from '@/app/(auth)/login/actions';
+import { TrainerProfileForm } from './_components/TrainerProfileForm';
+
+export default async function TrainerProfilePage() {
+  const supabase = await createClient();
+  const claimsResult = await supabase.auth.getClaims();
+  const claims = claimsResult.data?.claims;
+
+  const { data: trainer } = claims?.sub
+    ? await supabase
+        .from('trainers')
+        .select('name, email, bio')
+        .eq('auth_uid', claims.sub)
+        .single()
+    : { data: null };
+
+  const name = trainer?.name ?? '';
+  const email = trainer?.email ?? '';
+  const bio = trainer?.bio ?? '';
+
+  return (
+    <div className="max-w-xl mx-auto space-y-8">
+      {/* Avatar + identity header */}
+      <div className="flex items-center gap-4">
+        <GravatarAvatar
+          url={gravatarUrl(email)}
+          name={name}
+          size={80}
+          className="ring-2 ring-accent shrink-0"
+        />
+        <div>
+          <h1 className="text-[28px] font-bold text-text-primary">{name}</h1>
+          <p className="text-sm text-text-primary opacity-50">{email}</p>
+          <p className="text-sm text-text-primary opacity-50">
+            Set your avatar at gravatar.com
+          </p>
+        </div>
+      </div>
+
+      {/* Profile section */}
+      <div className="space-y-4">
+        <h2 className="text-xl font-bold text-text-primary">Profile</h2>
+        <TrainerProfileForm initialName={name} initialBio={bio} />
+      </div>
+
+      {/* Sign out */}
+      <form action={signOut}>
+        <button
+          type="submit"
+          className="text-sm text-error hover:text-red-400 transition-colors cursor-pointer"
+        >
+          Sign out
+        </button>
+      </form>
+    </div>
+  );
+}
