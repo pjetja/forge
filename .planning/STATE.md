@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 06-01-PLAN.md
-last_updated: "2026-03-18T13:57:15.351Z"
+stopped_at: Completed 06-02-PLAN.md
+last_updated: "2026-03-18T14:01:21.352Z"
 last_activity: 2026-03-13 — Plan 04-05 tasks 1-2 complete (exercises/[exerciseId]/page.tsx, SetList.tsx)
 progress:
   total_phases: 14
   completed_phases: 8
   total_plans: 32
-  completed_plans: 29
+  completed_plans: 30
   percent: 70
 ---
 
@@ -72,6 +72,7 @@ Progress: [█████████░] 70%
 | Phase 05 P01 | 25 | 3 tasks | 7 files |
 | Phase 05 P02 | 3 | 2 tasks | 5 files |
 | Phase 06-trainee-and-trainer-profile-pages P01 | 2 | 2 tasks | 4 files |
+| Phase 06-trainee-and-trainer-profile-pages P02 | 5 | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -155,6 +156,9 @@ Recent decisions affecting current work:
 - [Phase 06-01]: text('date_of_birth') used in Drizzle (not date()) — PostgREST serializes PostgreSQL date columns as ISO strings
 - [Phase 06-01]: GravatarAvatar has no use client directive — pure presentational component works in both server and client contexts
 - [Phase 06-01]: trainer_updates_own_connection and trainee_sees_connected_trainer RLS policies added in profile migration
+- [Phase 06-02]: Layouts converted to async server components to compute gravatarUrl server-side before passing to client nav headers
+- [Phase 06-02]: SignOutButton removed from both nav headers; sign-out relocated to profile page bottom
+- [Phase 06-02]: useTransition used for TrainerProfileForm submission (not useActionState) — simpler state management for this case
 
 ### Roadmap Evolution
 
@@ -183,6 +187,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-03-18T13:57:15.347Z
-Stopped at: Completed 06-01-PLAN.md
+Last session: 2026-03-18T14:01:21.347Z
+Stopped at: Completed 06-02-PLAN.md
 Resume file: None
