@@ -187,7 +187,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 **Goal:** Visual review and polish of Trainer Progress Visibility UI — Figma screens reviewed against built workout history views, data density and trainer dashboard interactions finalized
 **Requirements**: TBD
 **Depends on:** Phase 5
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 - [ ] TBD (run /gsd:plan-phase 05.1 to break down)

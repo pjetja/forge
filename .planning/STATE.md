@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 05-01-PLAN.md
-last_updated: "2026-03-18T12:10:28.939Z"
+stopped_at: Completed 05-02-PLAN.md
+last_updated: "2026-03-18T12:15:57.016Z"
 last_activity: 2026-03-13 — Plan 04-05 tasks 1-2 complete (exercises/[exerciseId]/page.tsx, SetList.tsx)
 progress:
   total_phases: 14
-  completed_phases: 7
+  completed_phases: 8
   total_plans: 28
-  completed_plans: 27
+  completed_plans: 28
   percent: 70
 ---
 
@@ -70,6 +70,7 @@ Progress: [█████████░] 70%
 | Phase 04-trainee-workout-logging P04 | 2min | 2 tasks | 2 files |
 | Phase 04-trainee-workout-logging P04 | 2 | 2 tasks | 2 files |
 | Phase 05 P01 | 25 | 3 tasks | 7 files |
+| Phase 05 P02 | 3 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -148,6 +149,8 @@ Recent decisions affecting current work:
 - [Phase 05-01]: CrossPlanChartSection extends Record index signature to satisfy ProgressChart generic prop type in TypeScript strict mode
 - [Phase 05-01]: Date range filtering done client-side — allChartData serialized from server as prop, no re-fetch on toggle
 - [Phase 05-01]: Top-set weight computed per session (max actual_weight_kg across all ASE IDs for base exercise_id) for cross-plan chart
+- [Phase 05-02]: Plans tab data always fetched regardless of active tab — needed for in-progress banner check on Plans tab; acceptable cost since plans data is lightweight
+- [Phase 05-02]: TraineeExerciseFilterBar and TraineeCrossPlanChart created as separate copies (not reusing trainer-side components) to avoid cross-route-group imports between (trainer) and (trainee) route groups
 
 ### Roadmap Evolution
 
@@ -176,6 +179,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-03-18T12:10:28.936Z
-Stopped at: Completed 05-01-PLAN.md
+Last session: 2026-03-18T12:15:57.013Z
+Stopped at: Completed 05-02-PLAN.md
 Resume file: None
