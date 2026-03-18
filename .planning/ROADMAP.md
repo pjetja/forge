@@ -119,7 +119,7 @@ Plans:
 **Plans:** Complete
 
 Plans:
-- [x] UAT iteration rounds 1–3: inline tags, trainees layout, hover titles, section headings, vertical spacing, clickable workout rows (completed 2026-03-13)
+- [x] UAT iteration rounds 1-3: inline tags, trainees layout, hover titles, section headings, vertical spacing, clickable workout rows (completed 2026-03-13)
 
 ### Phase 4: Trainee Workout Logging
 **Goal**: A trainee can open the app at the gym, see today's workout with last week's results, and log their sets in under a minute
@@ -166,7 +166,7 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -192,15 +192,18 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 Plans:
 - [x] TBD (run /gsd:plan-phase 05.1 to break down) (completed 2026-03-18)
 
-### Phase 6: trainee and trainer profile pages
+### Phase 6: Trainee and Trainer Profile Pages
 
-**Goal:** [To be planned]
-**Requirements**: TBD
+**Goal:** Both trainers and trainees can manage their own profiles (name, bio, goals, physical stats), trainers can write private notes per trainee, and compliance stats (last session + this-week count) appear on the trainer roster
+**Requirements**: PROF-SCHEMA, PROF-GRAVATAR, PROF-NAV-AVATAR, PROF-TRAINER-OWN, PROF-TRAINEE-OWN, PROF-TRAINER-CARD, PROF-TRAINER-NOTES, PROF-TRAINEE-ENRICHED, PROF-COMPLIANCE-STATS
 **Depends on:** Phase 5
-**Plans:** 0 plans
+**Plans:** 4 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 6 to break down)
+- [ ] 06-01-PLAN.md — DB migration (profile fields + RLS) + Gravatar utility + GravatarAvatar component + Drizzle schema update
+- [ ] 06-02-PLAN.md — Nav header avatars (both roles) + trainer profile page (name + bio editing + sign-out)
+- [ ] 06-03-PLAN.md — Trainee profile page (name, goals, stats editing + My Trainer card + sign-out)
+- [ ] 06-04-PLAN.md — Trainee detail enrichment (goals, stats, notes) + compliance stats on trainer home roster cards
 
 ### Phase 7: main page / landing page with teasers to drive app adoption
 
