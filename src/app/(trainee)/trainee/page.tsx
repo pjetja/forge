@@ -3,8 +3,17 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { getCurrentWeekBounds } from '@/lib/utils/week';
 import AbandonSessionButton from './_components/AbandonSessionButton';
+import { TabSwitcher } from '@/components/TabSwitcher';
+import { TraineeExercisesTab } from './_components/TraineeExercisesTab';
 
-export default async function TraineeHomePage() {
+export default async function TraineeHomePage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ tab?: string; q?: string; muscles?: string }>;
+}) {
+  const resolvedSearch = await searchParams;
+  const activeTab = resolvedSearch?.tab === 'exercises' ? 'exercises' : 'plans';
+
   const supabase = await createClient();
   const claimsResult = await supabase.auth.getClaims();
   const claims = claimsResult.data?.claims;
@@ -17,6 +26,7 @@ export default async function TraineeHomePage() {
     .from('assigned_plans')
     .select('id, name, status, week_count, workouts_per_week, started_at, created_at')
     .eq('trainee_auth_uid', claims.sub)
+    .order('sort_order', { ascending: true })
     .order('created_at', { ascending: false });
 
   // Fetch this week's completed sessions with plan linkage
@@ -39,9 +49,13 @@ export default async function TraineeHomePage() {
   const plans = assignedPlans ?? [];
   const activePlans = plans.filter((p) => p.status === 'active');
   const pendingPlans = plans.filter((p) => p.status === 'pending');
-  const pastPlans = plans.filter(
-    (p) => p.status === 'completed' || p.status === 'terminated'
-  );
+  const pastPlans = plans
+    .filter((p) => p.status === 'completed' || p.status === 'terminated')
+    .sort((a, b) => {
+      const aTime = a.started_at ? new Date(a.started_at).getTime() : 0;
+      const bTime = b.started_at ? new Date(b.started_at).getTime() : 0;
+      return bTime - aTime;
+    });
 
   const hasAnyPlans = plans.length > 0;
 
@@ -67,6 +81,13 @@ export default async function TraineeHomePage() {
     <div className="space-y-8">
       <h1 className="text-2xl font-bold text-text-primary">Your Training</h1>
 
+      <TabSwitcher
+        tabs={[{ key: 'plans', label: 'Plans' }, { key: 'exercises', label: 'Exercises' }]}
+        activeTab={activeTab}
+      />
+
+      {activeTab === 'plans' && (
+        <>
       {/* In-progress session banner */}
       {activeSession && activeSchemaInfo && (
         <div className="bg-accent/10 border border-accent rounded-sm p-4 flex flex-col sm:flex-row sm:items-center gap-3">
@@ -168,9 +189,10 @@ export default async function TraineeHomePage() {
           </h2>
           <div className="space-y-2">
             {pastPlans.map((plan) => (
-              <div
+              <Link
                 key={plan.id}
-                className="bg-bg-surface border border-border rounded-sm p-4 opacity-50"
+                href={`/trainee/plans/${plan.id}`}
+                className="block bg-bg-surface border border-border rounded-sm p-4 opacity-60 hover:opacity-100 hover:border-accent/50 transition-all"
               >
                 <div className="flex items-start justify-between gap-4">
                   <p className="font-semibold text-text-primary">{plan.name}</p>
@@ -178,10 +200,20 @@ export default async function TraineeHomePage() {
                     {plan.status === 'completed' ? 'Completed' : 'Ended'}
                   </span>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </section>
+      )}
+        </>
+      )}
+
+      {activeTab === 'exercises' && (
+        <TraineeExercisesTab
+          traineeAuthUid={claims.sub}
+          searchQuery={resolvedSearch?.q ?? ''}
+          muscleFilter={resolvedSearch?.muscles ?? ''}
+        />
       )}
     </div>
   );
