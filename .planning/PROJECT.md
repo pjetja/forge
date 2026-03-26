@@ -1,4 +1,4 @@
-# GYM AI Assistant
+# Forge
 
 ## What This Is
 
