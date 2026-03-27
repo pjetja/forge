@@ -62,7 +62,7 @@ Notes:
 - Heading (24px / `text-2xl`) matches existing in-app page heading pattern from `login/page.tsx`
 - Body (16px / `text-base`) used for feature card descriptions and hero subheadline
 - Label (14px / `text-sm`) used for footer links, FAQ section labels, nav links in app header
-- Only two weights are used: 400 (regular) and 700 (bold); `font-medium` (500) is permitted for active nav state only, consistent with existing NavHeader
+- Only two weights are used: 400 (regular) and 700 (bold)
 
 Source: codebase scan of `login/page.tsx` and `NavHeader.tsx` for existing type scale; display size is Claude's discretion per CONTEXT.md.
 
