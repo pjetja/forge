@@ -22,6 +22,11 @@ const navLinks = [
     label: 'Exercise Library',
     isActive: (pathname: string) => pathname.startsWith('/trainer/exercises'),
   },
+  {
+    href: '/help',
+    label: 'Help',
+    isActive: (_pathname: string) => false,
+  },
 ];
 
 export function NavHeader({ avatarUrl, userName }: { avatarUrl: string; userName: string }) {

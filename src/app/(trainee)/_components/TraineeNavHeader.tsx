@@ -17,6 +17,11 @@ const navLinks = [
     label: 'Exercises',
     isActive: (pathname: string) => pathname.startsWith('/trainee/exercises'),
   },
+  {
+    href: '/help',
+    label: 'Help',
+    isActive: (_pathname: string) => false,
+  },
 ];
 
 export function TraineeNavHeader({ avatarUrl, userName }: { avatarUrl: string; userName: string }) {
