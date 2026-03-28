@@ -21,9 +21,9 @@ decisions:
   - FAQ page is a server component with no client JS — purely static informational content
   - Last FAQ item in each section omits the hr separator — cleaner visual end-of-section
 metrics:
-  duration: ~3 min
+  duration: ~5 min
   completed_date: "2026-03-28"
-  tasks_completed: 2
+  tasks_completed: 3
   tasks_total: 3
   files_modified: 3
 ---
@@ -38,10 +38,7 @@ metrics:
 |---|------|--------|-------|
 | 1 | Create FAQ/Docs page at /help | 46ffacd | src/app/help/page.tsx |
 | 2 | Add Help link to both nav headers | b904891 | NavHeader.tsx, TraineeNavHeader.tsx |
-
-## Task 3: Awaiting Human Verification
-
-Task 3 is a `checkpoint:human-verify` — visual verification of all Phase 07 deliverables in the browser.
+| 3 | Visual verification of landing page and FAQ | checkpoint | Human approved |
 
 ## Deviations from Plan
 
@@ -54,3 +51,4 @@ None - plan executed exactly as written.
 - src/app/(trainee)/_components/TraineeNavHeader.tsx has /help entry: FOUND
 - Commit 46ffacd exists: FOUND
 - Commit b904891 exists: FOUND
+- Task 3 checkpoint: Human approved 2026-03-28
