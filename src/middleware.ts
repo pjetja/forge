@@ -33,7 +33,7 @@ export async function middleware(request: NextRequest) {
 
   // Public paths — no auth required
   const publicPaths = ['/', '/login', '/signup', '/auth', '/join', '/verify-email', '/invite-invalid', '/forgot-password', '/reset-password', '/help'];
-  const isPublic = publicPaths.some(p => path.startsWith(p));
+  const isPublic = publicPaths.some(p => p === '/' ? path === '/' : path.startsWith(p));
 
   // Not authenticated
   if (!claims || error) {
