@@ -1,65 +1,124 @@
-import Image from "next/image";
+import Link from 'next/link';
+import { ForgeLogo } from '@/components/ForgeLogo';
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <main className="bg-bg-page min-h-screen flex flex-col">
+      {/* Hero */}
+      <section className="flex-1 flex flex-col items-center justify-center px-4 py-12 md:py-16">
+        <div className="max-w-[640px] mx-auto w-full flex flex-col items-center">
+          <ForgeLogo variant="horizontal" className="h-10" />
+          <h1 className="text-4xl font-bold text-text-primary text-center mt-8">
+            Replace the spreadsheet.
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p
+            className="text-base text-text-primary text-center mt-4"
+            style={{ opacity: 0.8 }}
+          >
+            Trainers build plans. Trainees log workouts. In under a minute.
           </p>
+          <div className="mt-8 flex flex-col gap-3 min-[380px]:flex-row min-[380px]:gap-4">
+            <Link
+              href="/signup/trainer"
+              className="inline-flex items-center justify-center px-6 py-3 rounded-sm font-bold text-base bg-accent text-white hover:bg-accent-hover transition-colors min-h-[44px] cursor-pointer"
+            >
+              Sign up as trainer
+            </Link>
+            <Link
+              href="/signup/trainee"
+              className="inline-flex items-center justify-center px-6 py-3 rounded-sm font-bold text-base border border-border text-text-primary hover:border-accent hover:text-accent transition-colors min-h-[44px] cursor-pointer bg-transparent"
+            >
+              Join as trainee
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Features */}
+      <section className="px-4 py-12 md:py-12">
+        <div className="max-w-[960px] mx-auto">
+          <h2 className="text-2xl font-bold text-text-primary text-center mb-8">Why Forge?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+            {/* Card 1: Build structured plans */}
+            <div className="bg-bg-surface border border-border rounded-sm p-6">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="28"
+                height="28"
+                className="text-accent"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                <line x1="12" y1="11" x2="16" y2="11" />
+                <line x1="12" y1="16" x2="16" y2="16" />
+                <line x1="8" y1="11" x2="8.01" y2="11" />
+                <line x1="8" y1="16" x2="8.01" y2="16" />
+              </svg>
+              <h3 className="text-base font-bold text-text-primary mt-4">Build structured plans</h3>
+              <p className="text-sm text-text-primary mt-2" style={{ opacity: 0.7 }}>
+                Create multi-week programs with sets, reps, and weights.
+              </p>
+            </div>
+
+            {/* Card 2: Log workouts in seconds */}
+            <div className="bg-bg-surface border border-border rounded-sm p-6">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="28"
+                height="28"
+                className="text-accent"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+              </svg>
+              <h3 className="text-base font-bold text-text-primary mt-4">Log workouts in seconds</h3>
+              <p className="text-sm text-text-primary mt-2" style={{ opacity: 0.7 }}>
+                See last week&apos;s results inline and record today&apos;s sets fast.
+              </p>
+            </div>
+
+            {/* Card 3: Track progress over time */}
+            <div className="bg-bg-surface border border-border rounded-sm p-6">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="28"
+                height="28"
+                className="text-accent"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <polyline points="22 12 18 8 13 13 9 9 2 16" />
+                <polyline points="22 12 22 8 18 8" />
+              </svg>
+              <h3 className="text-base font-bold text-text-primary mt-4">Track progress over time</h3>
+              <p className="text-sm text-text-primary mt-2" style={{ opacity: 0.7 }}>
+                Trainers monitor every session. Trainees watch their lifts grow.
+              </p>
+            </div>
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-border py-8 px-4">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 text-sm">
+          <Link href="/login" className="text-accent hover:text-accent-hover transition-colors">
+            Already have an account? Log in
+          </Link>
+          <Link href="/help" className="text-text-primary hover:text-accent transition-colors">
+            Help / FAQ
+          </Link>
+        </div>
+      </footer>
+    </main>
   );
 }
