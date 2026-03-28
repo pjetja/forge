@@ -1,10 +1,11 @@
 ---
 phase: 8
 slug: training-logs-and-body-weight-progression-tracking
-status: draft
+status: approved
 shadcn_initialized: false
 preset: none
 created: 2026-03-28
+reviewed_at: 2026-03-28
 ---
 
 # Phase 8 — UI Design Contract
