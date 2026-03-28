@@ -12,7 +12,8 @@ A trainee can open the app mid-workout, see exactly what they did last week on e
 
 ### Validated
 
-(None yet — ship to validate)
+- [x] Public landing page drives trainer and trainee signups (Validated in Phase 07)
+- [x] In-app FAQ/Help page accessible to all users without login (Validated in Phase 07)
 
 ### Active
 
@@ -57,4 +58,4 @@ A trainee can open the app mid-workout, see exactly what they did last week on e
 | Multi-trainer platform from day 1 | Not personal use — multiple trainers with independent rosters | — Pending |
 
 ---
-*Last updated: 2026-02-27 after initialization*
+*Last updated: 2026-03-28 — Phase 07 complete*
