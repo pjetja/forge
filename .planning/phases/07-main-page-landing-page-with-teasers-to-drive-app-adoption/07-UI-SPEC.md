@@ -1,10 +1,11 @@
 ---
 phase: 7
 slug: main-page-landing-page-with-teasers-to-drive-app-adoption
-status: draft
+status: approved
 shadcn_initialized: false
 preset: none
 created: 2026-03-26
+reviewed_at: 2026-03-28
 ---
 
 # Phase 7 — UI Design Contract
@@ -59,7 +60,7 @@ Exceptions:
 
 Notes:
 - Display size (36px) is used exclusively for the hero headline "Replace the spreadsheet." — larger than any existing in-app heading to signal this is a marketing surface
-- Heading (24px / `text-2xl`) matches existing in-app page heading pattern from `login/page.tsx`
+- Heading (24px / `text-2xl`) matches existing in-app page heading pattern from `login/page.tsx`; also used for FAQ section headings "For Trainers" and "For Trainees"
 - Body (16px / `text-base`) used for feature card descriptions and hero subheadline
 - Label (14px / `text-sm`) used for footer links, FAQ section labels, nav links in app header
 - Only two weights are used: 400 (regular) and 700 (bold)
@@ -156,7 +157,7 @@ Source: CONTEXT.md (locked footer content and routes).
 Two sections — Trainers then Trainees:
 
 **Trainer section:**
-- Section heading: "For Trainers" — 20px, weight 700, `text-text-primary`, `mb-4`
+- Section heading: "For Trainers" — 24px, weight 700, `text-text-primary`, `mb-4`
 - FAQ items: plain static sections (not accordion) — simpler implementation, no JS state needed; Claude's discretion per CONTEXT.md
 - Topics (locked from CONTEXT.md):
   1. How to create a plan
@@ -164,7 +165,7 @@ Two sections — Trainers then Trainees:
   3. How to view trainee progress
 
 **Trainee section:**
-- Section heading: "For Trainees" — 20px, weight 700, `text-text-primary`, `mb-4`
+- Section heading: "For Trainees" — 24px, weight 700, `text-text-primary`, `mb-4`
 - Topics (locked from CONTEXT.md):
   1. How to join a trainer
   2. How to log a workout
