@@ -44,8 +44,8 @@ Declared values (multiples of 4 only):
 
 Exceptions:
 - Touch targets for the RPE 1–10 tap-select buttons: minimum 44px height (`min-h-[44px]`) — gym-friendly touch area
-- FinishWorkoutButton full-width CTA: 12px vertical padding (`py-3`) — matches existing button height in `FinishWorkoutButton.tsx`
-- DateRangeToggle pill buttons: 4px vertical / 12px horizontal (`py-1 px-3`) — matches existing `DateRangeToggle.tsx`
+- FinishWorkoutButton full-width CTA: 12px vertical padding (`py-3`) — matches existing button height in `FinishWorkoutButton.tsx` (component-compatibility only; must not be used for new layout spacing)
+- DateRangeToggle pill buttons: 4px vertical / 12px horizontal (`py-1 px-3`) — matches existing `DateRangeToggle.tsx` (component-compatibility only; must not be used for new layout spacing)
 
 Source: Measured from existing components in `src/app/(trainee)/trainee/` and `src/components/`
 
@@ -56,16 +56,16 @@ Source: Measured from existing components in `src/app/(trainee)/trainee/` and `s
 | Role | Size | Weight | Line Height | Tailwind |
 |------|------|--------|-------------|---------|
 | Display | 24px | 700 (bold) | 1.2 | `text-2xl font-bold` |
-| Heading | 20px | 600 (semibold) | 1.3 | `text-xl font-semibold` (section sub-heads) |
+| Heading | 20px | 700 (bold) | 1.3 | `text-xl font-bold` (section sub-heads) |
 | Body | 16px | 400 (normal) | 1.5 | `text-base` |
 | Label | 14px | 400 (normal) | 1.4 | `text-sm` |
-| Caption | 12px | 400 (normal) | 1.4 | `text-xs` |
 
 Notes:
 - Body is the default prose size used inside log rows, enrichment field labels, and weight entry rows
 - Label (14px) is used for metadata: date strings, enrichment values, muscle group tags, tab labels
-- Caption (12px) is used for secondary metadata on cards (RPE badge text, kcal/duration pill text)
-- Section headings (uppercase tracking) follow existing pattern: `text-sm font-semibold text-text-primary uppercase tracking-wide`
+- RPE badge text, kcal/duration pill text, and secondary metadata use `text-xs` as an unlabeled utility class — not a named type scale role
+- Section headings (uppercase tracking) follow existing pattern: `text-sm font-bold text-text-primary uppercase tracking-wide`
+- Loaded font weights are 400 and 700 only (Lato via next/font) — do not declare or use font-semibold (600), which is not loaded and would trigger browser font synthesis
 - No new font sizes — all sizes already in use across existing pages
 
 Source: Measured from `src/app/(trainee)/trainee/page.tsx`, `src/app/(trainee)/trainee/plans/[assignedPlanId]/workouts/[sessionId]/page.tsx`
@@ -94,7 +94,7 @@ Accent reserved for:
 3. "Confirm & Finish" button in FinishWorkoutButton confirming panel
 4. Line chart stroke color on body weight `LineChart` (`stroke="#10b981"`)
 5. Active `DateRangeToggle` pill — `bg-accent text-white`
-6. "Approve" button for body weight access request (trainee confirms trainer access)
+6. "Approve access" button for body weight access request (trainee confirms trainer access)
 7. Weight value highlighted on the most recent log row (optional, only if data exists)
 
 Accent is NOT used for:
@@ -165,10 +165,12 @@ Layout in the `confirming` state panel, below existing summary:
 
 ### 3. Training Log Tab — Session Feed
 
+Primary visual anchor: the date string on the left of each row in `text-sm font-bold text-text-primary` — it is the first scanned element, establishing chronological context.
+
 - Section heading: none (tab content fills the area directly)
 - Each row is a non-interactive card (no link): `bg-bg-surface border border-border rounded-sm px-4 py-3`
 - Row layout (horizontal, single line or two lines):
-  - Left: date string (`text-sm text-text-primary font-medium`, e.g., "Mar 28") + workout name (`text-sm text-text-primary`, e.g., "Push Day") — stacked vertically
+  - Left: date string (`text-sm text-text-primary font-bold`, e.g., "Mar 28") + workout name (`text-sm text-text-primary`, e.g., "Push Day") — stacked vertically
   - Right: enrichment pill row (if any filled): duration, kcal, RPE displayed as compact labels `text-xs text-text-primary opacity-70` with a `·` separator between them
 - If no enrichment data filled: right side is empty (no placeholder)
 - List: `space-y-2`
@@ -176,14 +178,16 @@ Layout in the `confirming` state panel, below existing summary:
 
 ### 4. Body Weight Tab — Log List + Chart Toggle
 
+Primary visual anchor: the weight value on the right of each row in `text-sm text-text-primary font-bold` + " kg" — it is the primary data point the user is scanning for.
+
 Default view (list):
 - "Log weight" inline form at top of the tab
 - List of weight entries below, most recent first
 - Each row: compact single line `bg-bg-surface border border-border rounded-sm px-4 py-3 flex items-center justify-between`
-  - Left: date string `text-sm text-text-primary font-medium`
-  - Right: `text-sm text-text-primary font-semibold` + " kg"
-  - Edit/delete: inline ghost icon button (pencil / trash) — `text-text-primary opacity-40 hover:opacity-100 hover:text-accent transition` — appears on hover (desktop) or always visible (mobile)
-- "Show Chart" button: `text-sm text-accent font-medium hover:text-accent-hover transition-colors underline-offset-4 hover:underline` — below the log list, or above it after first entry exists
+  - Left: date string `text-sm text-text-primary font-bold`
+  - Right: `text-sm text-text-primary font-bold` + " kg"
+  - Edit/delete: inline ghost icon buttons (pencil / trash) — `text-text-primary opacity-40 hover:opacity-100 hover:text-accent transition` — appears on hover (desktop) or always visible (mobile). Pencil button: `aria-label="Edit entry"`. Trash button: `aria-label="Delete entry"`.
+- "Show Chart" button: `text-sm text-accent font-bold hover:text-accent-hover transition-colors underline-offset-4 hover:underline` — below the log list, or above it after first entry exists
 
 Chart view (toggled):
 - Appears inline below the "Show Chart" / "Hide Chart" toggle button
@@ -194,7 +198,7 @@ Chart view (toggled):
 
 Log Weight form (inline, at top of tab):
 - Single input: `<input type="number" inputMode="decimal" step="0.1" min="1" max="500" placeholder="e.g. 82.5">` + "kg" label inline right
-- Submit button: `bg-accent text-white text-sm font-semibold px-4 py-2 rounded-sm hover:bg-accent/90 transition-colors`
+- Submit button: `bg-accent text-white text-sm font-bold px-4 py-2 rounded-sm hover:bg-accent/90 transition-colors`
 - Form row: `flex items-center gap-2` — input grows, button fixed width
 - No modal — inline form only, matching CONTEXT.md decision
 - Upsert semantics: if same-day entry exists, the form pre-fills with existing value, button label changes to "Update"
@@ -203,14 +207,14 @@ Log Weight form (inline, at top of tab):
 
 Trainer side (on `/trainer/trainees/[traineeId]` page):
 
-- No access request exists: "Request body weight access" button — ghost style `border border-border text-text-primary text-sm font-medium px-3 py-2 rounded-sm hover:border-accent/50 transition-colors`
+- No access request exists: "Request body weight access" button — ghost style `border border-border text-text-primary text-sm font-bold px-3 py-2 rounded-sm hover:border-accent/50 transition-colors`
 - Request pending: replace button with status label `text-sm text-text-primary opacity-60` reading "Body weight access requested" + "Revoke request" text link `text-xs text-error hover:text-error-light`
 - Access approved: "Body Weight" tab/section appears on trainee profile with the same list + chart view as trainee sees. "Revoke access" link `text-xs text-error hover:text-error-light`
 
 Trainee side (on `/trainee/profile` page OR `/trainee?tab=body-weight`):
 
 - Pending request indicator: dismissable banner at the top of the Body Weight tab content (not a nav badge — per RESEARCH.md recommendation)
-- Banner: `bg-bg-surface border border-border rounded-sm px-4 py-3 mb-4` with text `text-sm text-text-primary` reading "Your trainer has requested access to your body weight data." followed by two inline buttons: "Approve" (`bg-accent text-white text-xs px-3 py-1 rounded-sm`) and "Decline" (`border border-border text-text-primary text-xs px-3 py-1 rounded-sm hover:border-error/50`)
+- Banner: `bg-bg-surface border border-border rounded-sm px-4 py-3 mb-4` with text `text-sm text-text-primary` reading "Your trainer has requested access to your body weight data." followed by two inline buttons: "Approve access" (`bg-accent text-white text-xs px-3 py-1 rounded-sm`) and "Decline request" (`border border-border text-text-primary text-xs px-3 py-1 rounded-sm hover:border-error/50`)
 - Once approved or declined: banner dismissed, no further indicator
 - Trainee can revoke granted access: "Revoke trainer access" text link `text-xs text-error hover:text-error-light` at the bottom of the Body Weight tab
 
@@ -239,13 +243,13 @@ Trainee side (on `/trainee/profile` page OR `/trainee?tab=body-weight`):
 | Trainer revoke request link | "Revoke request" |
 | Trainer revoke access link | "Revoke access" |
 | Trainee access request banner | "Your trainer has requested access to your body weight data." |
-| Trainee approve button | "Approve" |
-| Trainee decline button | "Decline" |
+| Trainee approve button | "Approve access" |
+| Trainee decline button | "Decline request" |
 | Trainee revoke access link | "Revoke trainer access" |
 | Error — weight save failed | "Could not save your weight entry. Please try again." |
 | Error — finish workout failed | "Could not finish your workout. Please try again." |
-| Destructive: decline access request | Inline: "Decline" button in banner — no secondary confirmation (low-stakes, reversible by trainer re-requesting) |
-| Destructive: delete weight entry | Inline trash icon button — no modal confirmation. Immediate delete with revalidation. (Single-step: low-stakes, can re-log.) |
+| Destructive: decline access request | Inline: "Decline request" button in banner — no secondary confirmation (low-stakes, reversible by trainer re-requesting) |
+| Destructive: delete weight entry | Inline trash icon button (`aria-label="Delete entry"`) — no modal confirmation. Immediate delete with revalidation. (Single-step: low-stakes, can re-log.) |
 
 ---
 
