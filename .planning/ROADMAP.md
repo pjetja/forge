@@ -205,12 +205,23 @@ Plans:
 - [ ] 06-03-PLAN.md — Trainee profile page (name, goals, stats editing + My Trainer card + sign-out)
 - [ ] 06-04-PLAN.md — Trainee detail enrichment (goals, stats, notes) + compliance stats on trainer home roster cards
 
-### Phase 7: main page / landing page with teasers to drive app adoption
+### Phase 7: Landing Page & FAQ/Docs
+
+**Goal:** Unauthenticated visitors see a marketing landing page that drives trainer and trainee signups; all users can access a Help/FAQ page with documentation on how to use the app
+**Requirements**: LAND-01, LAND-02, LAND-03, LAND-04
+**Depends on:** Phase 6
+**Plans:** 2 plans
+
+Plans:
+- [ ] 07-01-PLAN.md — Landing page (hero + 3 feature cards + footer) + middleware /help publicPaths fix
+- [ ] 07-02-PLAN.md — FAQ/Docs page at /help + Help link in both nav headers + visual verification checkpoint
+
+### Phase 8: Training logs and body weight progression tracking
 
 **Goal:** [To be planned]
 **Requirements**: TBD
-**Depends on:** Phase 6
+**Depends on:** Phase 7
 **Plans:** 0 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 7 to break down)
+- [ ] TBD (run /gsd:plan-phase 8 to break down)
