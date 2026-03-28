@@ -32,7 +32,7 @@ export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
 
   // Public paths — no auth required
-  const publicPaths = ['/login', '/signup', '/auth', '/join', '/verify-email', '/invite-invalid', '/help'];
+  const publicPaths = ['/', '/login', '/signup', '/auth', '/join', '/verify-email', '/invite-invalid', '/forgot-password', '/reset-password', '/help'];
   const isPublic = publicPaths.some(p => path.startsWith(p));
 
   // Not authenticated
@@ -41,11 +41,6 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/login', request.url));
     }
     return response;
-  }
-
-  // Email verification gate — block unverified users from accessing the app
-  if (!claims.email_confirmed_at && !isPublic) {
-    return NextResponse.redirect(new URL('/verify-email', request.url));
   }
 
   const role = claims.app_metadata?.role as 'trainer' | 'trainee' | undefined;

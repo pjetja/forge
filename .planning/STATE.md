@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: verifying
-stopped_at: Completed 07-01-PLAN.md
-last_updated: "2026-03-28T18:04:36.329Z"
+status: executing
+stopped_at: Phase 07 — 07-01 complete, 07-02 awaiting human checkpoint
+last_updated: "2026-03-28T19:06:00.000Z"
 last_activity: 2026-03-28
 progress:
   total_phases: 15
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-28)
 
 **Core value:** A trainee can open the app mid-workout, see exactly what they did last week on each exercise, and log today's results in under a minute.
-**Current focus:** Phase 1 — Foundation
+**Current focus:** Phase 07 — main-page-landing-page-with-teasers-to-drive-app-adoption
 
 ## Current Position
 
-Phase: 04-trainee-workout-logging (Trainee Workout Logging) — Awaiting human verification
-Plan: 5 of 5 (Tasks 1-2 complete; Task 3 is a checkpoint:human-verify)
-Status: Phase complete — ready for verification
+Phase: 07 (main-page-landing-page-with-teasers-to-drive-app-adoption) — EXECUTING
+Plan: 2 of 2 — 07-01 complete, 07-02 awaiting human-verify checkpoint (Task 3)
+Status: Human checkpoint pending — visual verification required
 Last activity: 2026-03-28
 
 Progress: [█████████░] 70%
@@ -182,6 +182,7 @@ Recent decisions affecting current work:
 - Phase 05.1 inserted after Phase 5: UI Polish — visual review and polish after Trainer Progress Visibility is built
 - Phase 6 added: trainee and trainer profile pages
 - Phase 7 added: main page / landing page with teasers to drive app adoption
+- Phase 8 added: Training logs and body weight progression tracking
 
 ### Pending Todos
 
@@ -198,6 +199,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-03-28T18:04:36.325Z
-Stopped at: Completed 07-01-PLAN.md
+Last session: 2026-03-28T19:06:00.000Z
+Stopped at: Phase 07 — 07-01 complete, 07-02 awaiting human checkpoint
 Resume file: None
