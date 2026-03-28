@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Completed 06-04-PLAN.md
-last_updated: "2026-03-19T08:10:18.388Z"
-last_activity: 2026-03-13 — Plan 04-05 tasks 1-2 complete (exercises/[exerciseId]/page.tsx, SetList.tsx)
+status: verifying
+stopped_at: Completed 07-01-PLAN.md
+last_updated: "2026-03-28T18:04:36.329Z"
+last_activity: 2026-03-28
 progress:
-  total_phases: 14
-  completed_phases: 9
-  total_plans: 32
-  completed_plans: 32
+  total_phases: 15
+  completed_phases: 13
+  total_plans: 38
+  completed_plans: 37
   percent: 70
 ---
 
@@ -27,14 +27,15 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 
 Phase: 04-trainee-workout-logging (Trainee Workout Logging) — Awaiting human verification
 Plan: 5 of 5 (Tasks 1-2 complete; Task 3 is a checkpoint:human-verify)
-Status: Plan 04-05 tasks 1-2 complete. Exercise detail page + SetList with useOptimistic auto-save built.
-Last activity: 2026-03-13 — Plan 04-05 tasks 1-2 complete (exercises/[exerciseId]/page.tsx, SetList.tsx)
+Status: Phase complete — ready for verification
+Last activity: 2026-03-28
 
 Progress: [█████████░] 70%
 
 ## Performance Metrics
 
 **Velocity:**
+
 - Total plans completed: 6
 - Average duration: 8 min
 - Total execution time: 0.8 hours
@@ -49,6 +50,7 @@ Progress: [█████████░] 70%
 | 02-exercise-library | 3/3 | 12 min | 4 min |
 
 **Recent Trend:**
+
 - Last 5 plans: 01-05 (2 min), 01.1-01 (2 min), 01.1-02 (2 min), 01.1-03 tasks 1-2 (2 min), 01.1-03 task 3 fixes (15 min)
 - Trend: human-verify checkpoints add time for visual review and polish cycles; core restyling remains fast
 
@@ -75,6 +77,7 @@ Progress: [█████████░] 70%
 | Phase 06-trainee-and-trainer-profile-pages P02 | 5 | 2 tasks | 7 files |
 | Phase 06 P03 | 3 | 2 tasks | 4 files |
 | Phase 06 P04 | 2 | 2 tasks | 5 files |
+| Phase 07 P01 | 1 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -165,6 +168,8 @@ Recent decisions affecting current work:
 - [Phase 06-03]: weight_kg cast to Number() before passing as initialWeightKg prop — PostgREST returns numeric as string
 - [Phase 06-04]: PhysicalStatsRow is a server component (no use client) — pure presentational with no interactivity needed
 - [Phase 06-04]: compliance stats query is a single batch .in() fetch — avoids N+1 per trainee
+- [Phase 07-01]: Landing page is a pure server component with no 'use client' directive — no client-side JS shipped for the marketing page
+- [Phase 07-01]: '/help' added to publicPaths only — unauthenticated users pass through; authenticated users at /help already fall through correctly via existing middleware logic
 
 ### Roadmap Evolution
 
@@ -193,6 +198,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-03-18T14:09:31.896Z
-Stopped at: Completed 06-04-PLAN.md
+Last session: 2026-03-28T18:04:36.325Z
+Stopped at: Completed 07-01-PLAN.md
 Resume file: None
