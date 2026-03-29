@@ -1,0 +1,49 @@
+{
+  "common": {
+    "nav": {
+      "trainees": "Podopieczni",
+      "plans": "Plany",
+      "exerciseLibrary": "Biblioteka cwiczen",
+      "exercises": "Cwiczenia",
+      "help": "Pomoc",
+      "language": "Jezyk",
+      "profile": "Profil"
+    },
+    "button": {
+      "save": "Zapisz",
+      "cancel": "Anuluj",
+      "delete": "Usun",
+      "add": "Dodaj",
+      "edit": "Edytuj",
+      "close": "Zamknij",
+      "back": "Wstecz",
+      "confirm": "Potwierdz",
+      "duplicate": "Duplikuj",
+      "assign": "Przypisz",
+      "activate": "Aktywuj",
+      "signOut": "Wyloguj sie"
+    },
+    "empty": {
+      "heading": "Brak danych",
+      "body": "Sprawdz ponownie po ukonczeniu treningu."
+    },
+    "error": {
+      "generic": "Cos poszlo nie tak. Odswiez strone.",
+      "required": "To pole jest wymagane.",
+      "invalidEmail": "Podaj prawidlowy adres e-mail."
+    },
+    "label": {
+      "email": "E-mail",
+      "password": "Haslo",
+      "name": "Imie",
+      "search": "Szukaj",
+      "loading": "Ladowanie..."
+    },
+    "aria": {
+      "openMenu": "Otworz menu",
+      "closeMenu": "Zamknij menu",
+      "signOut": "Wyloguj sie",
+      "forgeHome": "Forge - strona glowna"
+    }
+  }
+}
