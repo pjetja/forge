@@ -221,9 +221,9 @@ Plans:
 **Goal:** Finish Workout gains optional enrichment fields (duration, kcal, RPE), trainee home becomes a 4-tab layout with a chronological training log and body weight tracking (list + chart), and trainers can request permission to view trainee body weight data
 **Requirements**: LOG-01, LOG-02, LOG-03, LOG-04, LOG-05, LOG-06
 **Depends on:** Phase 7
-**Plans:** 1/3 plans executed
+**Plans:** 2/3 plans executed
 
 Plans:
 - [x] 08-01-PLAN.md — DB migration (enrichment columns + body_weight_logs + body_weight_access_requests tables + RLS) + Drizzle schema + finishWorkout enrichment + FinishWorkoutButton UI
-- [ ] 08-02-PLAN.md — Trainee home 4-tab restructuring (Plans | Exercises | Log | Body Weight) + training log feed + body weight tab (list + chart + inline form)
+- [x] 08-02-PLAN.md — Trainee home 4-tab restructuring (Plans | Exercises | Log | Body Weight) + training log feed + body weight tab (list + chart + inline form)
 - [ ] 08-03-PLAN.md — Trainer body weight access permission flow (request/approve/decline/revoke) + trainer Body Weight tab on trainee profile + end-to-end verification
