@@ -24,6 +24,11 @@ export default function FinishWorkoutButton({
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
+  // Enrichment state (Phase 8)
+  const [durationMinutes, setDurationMinutes] = useState<string>('');
+  const [kcalBurned, setKcalBurned] = useState<string>('');
+  const [rpe, setRpe] = useState<number | null>(null);
+
   // Keep assignedPlanId in scope for future use (e.g., post-finish navigation variants)
   void assignedPlanId;
 
@@ -37,6 +42,9 @@ export default function FinishWorkoutButton({
   function handleKeepGoing() {
     setUiState('idle');
     setError(null);
+    setDurationMinutes('');
+    setKcalBurned('');
+    setRpe(null);
   }
 
   function handleConfirm() {
@@ -44,7 +52,12 @@ export default function FinishWorkoutButton({
     setError(null);
 
     startTransition(async () => {
-      const result = await finishWorkout(sessionId);
+      const enrichment = {
+        durationMinutes: durationMinutes ? parseInt(durationMinutes, 10) : null,
+        kcalBurned: kcalBurned ? parseInt(kcalBurned, 10) : null,
+        rpe: rpe,
+      };
+      const result = await finishWorkout(sessionId, enrichment);
 
       if ('error' in result) {
         setError(result.error);
@@ -94,6 +107,65 @@ export default function FinishWorkoutButton({
       {allSetsLogged && (
         <p className="text-sm text-accent font-medium">All sets completed!</p>
       )}
+
+      {/* ── Enrichment fields (Phase 8) ── */}
+      <div className="border-t border-border pt-3 mt-1 space-y-3">
+        <p className="text-xs text-text-primary opacity-60 mb-2">Optional session notes</p>
+
+        {/* Training time */}
+        <div>
+          <label className="text-xs text-text-primary opacity-60 mb-1 block">Training time (min)</label>
+          <input
+            type="number"
+            inputMode="numeric"
+            step="1"
+            min="0"
+            value={durationMinutes}
+            onChange={(e) => setDurationMinutes(e.target.value)}
+            disabled={uiState === 'submitting' || isPending}
+            placeholder="e.g. 52"
+            className="bg-bg-surface border border-border rounded-sm px-3 py-2 text-sm text-text-primary w-full focus:border-accent focus:outline-none disabled:opacity-60"
+          />
+        </div>
+
+        {/* Kcal burned */}
+        <div>
+          <label className="text-xs text-text-primary opacity-60 mb-1 block">Kcal burned</label>
+          <input
+            type="number"
+            inputMode="numeric"
+            step="1"
+            min="0"
+            value={kcalBurned}
+            onChange={(e) => setKcalBurned(e.target.value)}
+            disabled={uiState === 'submitting' || isPending}
+            placeholder="e.g. 350"
+            className="bg-bg-surface border border-border rounded-sm px-3 py-2 text-sm text-text-primary w-full focus:border-accent focus:outline-none disabled:opacity-60"
+          />
+        </div>
+
+        {/* Difficulty (RPE 1-10) */}
+        <div>
+          <label className="text-xs text-text-primary opacity-60 mb-1 block">Difficulty (1–10)</label>
+          <div className="flex gap-1">
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
+              <button
+                key={n}
+                type="button"
+                onClick={() => setRpe(rpe === n ? null : n)}
+                disabled={uiState === 'submitting' || isPending}
+                className={`flex-1 min-h-[44px] text-sm font-bold rounded-sm transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed ${
+                  rpe === n
+                    ? 'bg-accent text-white'
+                    : 'bg-bg-surface border border-border text-text-primary hover:border-accent/50'
+                }`}
+              >
+                {n}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
 
       {error && (
         <p className="text-sm text-red-400">{error}</p>
