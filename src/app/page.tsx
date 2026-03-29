@@ -1,7 +1,10 @@
+import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import { ForgeLogo } from '@/components/ForgeLogo';
 
-export default function Home() {
+export default async function Home() {
+  const t = await getTranslations('common');
+
   return (
     <main className="bg-bg-page min-h-screen flex flex-col">
       {/* Hero */}
@@ -9,26 +12,26 @@ export default function Home() {
         <div className="max-w-[640px] mx-auto w-full flex flex-col items-center">
           <ForgeLogo variant="horizontal" className="h-10" />
           <h1 className="text-4xl font-bold text-text-primary text-center mt-8">
-            Replace the spreadsheet.
+            {t('landing.heroHeading')}
           </h1>
           <p
             className="text-base text-text-primary text-center mt-4"
             style={{ opacity: 0.8 }}
           >
-            Trainers build plans. Trainees log workouts. In under a minute.
+            {t('landing.heroSubheading')}
           </p>
           <div className="mt-8 flex flex-col gap-3 min-[380px]:flex-row min-[380px]:gap-4">
             <Link
               href="/signup/trainer"
               className="inline-flex items-center justify-center px-6 py-3 rounded-sm font-bold text-base bg-accent text-white hover:bg-accent-hover transition-colors min-h-[44px] cursor-pointer"
             >
-              Sign up as trainer
+              {t('landing.ctaTrainer')}
             </Link>
             <Link
               href="/signup/trainee"
               className="inline-flex items-center justify-center px-6 py-3 rounded-sm font-bold text-base border border-border text-text-primary hover:border-accent hover:text-accent transition-colors min-h-[44px] cursor-pointer bg-transparent"
             >
-              Join as trainee
+              {t('landing.ctaTrainee')}
             </Link>
           </div>
         </div>
@@ -37,7 +40,7 @@ export default function Home() {
       {/* Features */}
       <section className="px-4 py-12 md:py-12">
         <div className="max-w-[960px] mx-auto">
-          <h2 className="text-2xl font-bold text-text-primary text-center mb-8">Why Forge?</h2>
+          <h2 className="text-2xl font-bold text-text-primary text-center mb-8">{t('landing.whyForge')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             {/* Card 1: Build structured plans */}
             <div className="bg-bg-surface border border-border rounded-sm p-6">
@@ -58,9 +61,9 @@ export default function Home() {
                 <line x1="8" y1="11" x2="8.01" y2="11" />
                 <line x1="8" y1="16" x2="8.01" y2="16" />
               </svg>
-              <h3 className="text-base font-bold text-text-primary mt-4">Build structured plans</h3>
+              <h3 className="text-base font-bold text-text-primary mt-4">{t('landing.feature1Title')}</h3>
               <p className="text-sm text-text-primary mt-2" style={{ opacity: 0.7 }}>
-                Create multi-week programs with sets, reps, and weights.
+                {t('landing.feature1Description')}
               </p>
             </div>
 
@@ -78,9 +81,9 @@ export default function Home() {
               >
                 <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
               </svg>
-              <h3 className="text-base font-bold text-text-primary mt-4">Log workouts in seconds</h3>
+              <h3 className="text-base font-bold text-text-primary mt-4">{t('landing.feature2Title')}</h3>
               <p className="text-sm text-text-primary mt-2" style={{ opacity: 0.7 }}>
-                See last week&apos;s results inline and record today&apos;s sets fast.
+                {t('landing.feature2Description')}
               </p>
             </div>
 
@@ -99,9 +102,9 @@ export default function Home() {
                 <polyline points="22 12 18 8 13 13 9 9 2 16" />
                 <polyline points="22 12 22 8 18 8" />
               </svg>
-              <h3 className="text-base font-bold text-text-primary mt-4">Track progress over time</h3>
+              <h3 className="text-base font-bold text-text-primary mt-4">{t('landing.feature3Title')}</h3>
               <p className="text-sm text-text-primary mt-2" style={{ opacity: 0.7 }}>
-                Trainers monitor every session. Trainees watch their lifts grow.
+                {t('landing.feature3Description')}
               </p>
             </div>
           </div>
@@ -112,10 +115,10 @@ export default function Home() {
       <footer className="border-t border-border py-8 px-4">
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 text-sm">
           <Link href="/login" className="text-accent hover:text-accent-hover transition-colors">
-            Already have an account? Log in
+            {t('landing.footerLogin')}
           </Link>
           <Link href="/help" className="text-text-primary hover:text-accent transition-colors">
-            Help / FAQ
+            {t('landing.footerHelp')}
           </Link>
         </div>
       </footer>

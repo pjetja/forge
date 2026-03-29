@@ -1,4 +1,5 @@
 'use client';
+import { useTranslations } from 'next-intl';
 
 type DateRange = 'all' | '3m' | '1m';
 
@@ -8,10 +9,12 @@ interface DateRangeToggleProps {
 }
 
 export function DateRangeToggle({ value, onChange }: DateRangeToggleProps) {
+  const t = useTranslations('common');
+
   const options: { key: DateRange; label: string }[] = [
-    { key: 'all', label: 'All time' },
-    { key: '3m', label: 'Last 3 months' },
-    { key: '1m', label: 'Last month' },
+    { key: 'all', label: t('dateRange.allTime') },
+    { key: '3m', label: t('dateRange.last3Months') },
+    { key: '1m', label: t('dateRange.lastMonth') },
   ];
 
   return (

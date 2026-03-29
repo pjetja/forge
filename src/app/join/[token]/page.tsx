@@ -1,3 +1,4 @@
+import { getTranslations } from 'next-intl/server';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
@@ -8,6 +9,7 @@ interface PageProps {
 
 export default async function JoinPage({ params }: PageProps) {
   const { token } = await params;
+  const t = await getTranslations('common');
 
   const adminClient = createAdminClient();
 
@@ -24,9 +26,9 @@ export default async function JoinPage({ params }: PageProps) {
       <div className="min-h-screen flex items-center justify-center bg-bg-page p-4">
         <div className="bg-bg-surface border border-border rounded-sm p-8 max-w-md w-full space-y-4">
           <div className="text-4xl text-center">🔗</div>
-          <h1 className="text-xl font-bold text-text-primary text-center">Invalid invite link</h1>
+          <h1 className="text-xl font-bold text-text-primary text-center">{t('join.invalidHeading')}</h1>
           <p className="text-sm text-text-primary text-center">
-            This invite link is invalid or has been revoked. Ask your trainer to send a new one.
+            {t('join.invalidBody')}
           </p>
         </div>
       </div>
@@ -68,17 +70,16 @@ export default async function JoinPage({ params }: PageProps) {
       <div className="min-h-screen flex items-center justify-center bg-bg-page p-4">
         <div className="bg-bg-surface border border-border rounded-sm p-8 max-w-md w-full space-y-4">
           <div className="text-4xl text-center">⚠️</div>
-          <h1 className="text-xl font-bold text-text-primary text-center">Already connected</h1>
+          <h1 className="text-xl font-bold text-text-primary text-center">{t('join.alreadyConnectedHeading')}</h1>
           <p className="text-sm text-text-primary text-center">
-            You are already connected to a trainer. You must disconnect from your current trainer
-            before joining a new one.
+            {t('join.alreadyConnectedBody')}
           </p>
           <div className="text-center">
             <a
               href="/trainee"
               className="inline-block mt-2 text-sm font-medium text-accent hover:text-accent-hover transition-colors"
             >
-              Go to your dashboard
+              {t('join.goToDashboard')}
             </a>
           </div>
         </div>
@@ -104,9 +105,9 @@ export default async function JoinPage({ params }: PageProps) {
         <div className="min-h-screen flex items-center justify-center bg-bg-page p-4">
           <div className="bg-bg-surface border border-border rounded-sm p-8 max-w-md w-full space-y-4">
             <div className="text-4xl text-center">❌</div>
-            <h1 className="text-xl font-bold text-text-primary text-center">Connection failed</h1>
+            <h1 className="text-xl font-bold text-text-primary text-center">{t('join.connectionFailedHeading')}</h1>
             <p className="text-sm text-text-primary text-center">
-              Something went wrong while connecting you to your trainer. Please try the link again.
+              {t('join.connectionFailedBody')}
             </p>
           </div>
         </div>

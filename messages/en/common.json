@@ -43,7 +43,97 @@
       "openMenu": "Open menu",
       "closeMenu": "Close menu",
       "signOut": "Sign out",
-      "forgeHome": "Forge home"
+      "forgeHome": "Forge home",
+      "close": "Close"
+    },
+    "landing": {
+      "heroHeading": "Replace the spreadsheet.",
+      "heroSubheading": "Trainers build plans. Trainees log workouts. In under a minute.",
+      "ctaTrainer": "Sign up as trainer",
+      "ctaTrainee": "Join as trainee",
+      "whyForge": "Why Forge?",
+      "feature1Title": "Build structured plans",
+      "feature1Description": "Create multi-week programs with sets, reps, and weights.",
+      "feature2Title": "Log workouts in seconds",
+      "feature2Description": "See last week's results inline and record today's sets fast.",
+      "feature3Title": "Track progress over time",
+      "feature3Description": "Trainers monitor every session. Trainees watch their lifts grow.",
+      "footerLogin": "Already have an account? Log in",
+      "footerHelp": "Help / FAQ"
+    },
+    "help": {
+      "heading": "Help & FAQ",
+      "backToHome": "\u2190 Back to home",
+      "trainers": {
+        "sectionHeading": "For Trainers",
+        "q1": "How do I create a workout plan?",
+        "a1": "Go to the Plans tab and click 'New Plan'. Give your plan a name and set the number of weeks. Then add workout schemas (like 'Push Day' or 'Pull Day') to each week. Inside each schema, add exercises from your library with the target sets, reps, and weight.",
+        "q2": "How do I assign a plan to a trainee?",
+        "a2": "Open any plan and click 'Assign'. Select a trainee from your connected roster. Review the exercise weights and adjust if needed for that specific trainee. Once assigned, the trainee will see their scheduled workouts immediately.",
+        "q3": "How do I view a trainee's progress?",
+        "a3": "Go to the Trainees tab and click on any trainee's name. You'll see their workout history with every session, exercise, and the sets, reps, and weights they actually logged. Use the Exercises tab to see cross-plan progress charts for individual exercises."
+      },
+      "trainees": {
+        "sectionHeading": "For Trainees",
+        "q1": "How do I join a trainer?",
+        "a1": "Your trainer will send you an invite link or code. Click the link or enter the code on the join page. Once connected, you'll see the workout plans your trainer assigns to you.",
+        "q2": "How do I log a workout?",
+        "a2": "Open your current plan from the Plans tab. Tap the workout scheduled for today to start a session. For each exercise, you'll see last week's results inline. Enter your actual weight, reps, and sets for each exercise. Tap 'Finish Workout' when you're done."
+      }
+    },
+    "join": {
+      "invalidHeading": "Invalid invite link",
+      "invalidBody": "This invite link is invalid or has been revoked. Ask your trainer to send a new one.",
+      "alreadyConnectedHeading": "Already connected",
+      "alreadyConnectedBody": "You are already connected to a trainer. You must disconnect from your current trainer before joining a new one.",
+      "goToDashboard": "Go to your dashboard",
+      "connectionFailedHeading": "Connection failed",
+      "connectionFailedBody": "Something went wrong while connecting you to your trainer. Please try the link again."
+    },
+    "dateRange": {
+      "allTime": "All time",
+      "last3Months": "Last 3 months",
+      "lastMonth": "Last month"
+    },
+    "completedPlan": {
+      "workoutsHeading": "Workouts",
+      "exercisesHeading": "Exercises",
+      "noCompletedWeeks": "No completed weeks.",
+      "noExercises": "No exercises in this plan.",
+      "week": "Week {number}",
+      "tapExercise": "Tap an exercise to view progress chart."
+    },
+    "progression": {
+      "label": "Progression",
+      "infoAriaLabel": "What are progression modes?",
+      "modesModalTitle": "Progression modes",
+      "fixed": {
+        "label": "Fixed",
+        "description": "Weight and reps stay the same every session. Use for technique work, warm-ups, or when you want full manual control."
+      },
+      "linear": {
+        "label": "Linear",
+        "description": "Add a fixed amount of weight each session (e.g. +2.5 kg). Best for beginners where strength increases every workout.",
+        "aboutAriaLabel": "About Linear progression"
+      },
+      "doubleProgression": {
+        "label": "Double progression",
+        "description": "Progress reps first within a target range (e.g. 3\u00d78\u201312), then increase weight and reset to the bottom of the range. Good for intermediate trainees.",
+        "aboutAriaLabel": "About Double progression"
+      },
+      "rpe": {
+        "label": "RPE",
+        "description": "Rate of Perceived Exertion (1\u201310). Trainer sets a target RPE (e.g. RPE 8 = 2 reps left in the tank). Load adjusts session to session based on daily readiness.",
+        "aboutAriaLabel": "About RPE progression"
+      },
+      "rir": {
+        "label": "RIR",
+        "description": "Reps In Reserve \u2014 how many reps you could still do before failure. RIR 2 means stop when 2 reps remain. Similar to RPE but often more intuitive.",
+        "aboutAriaLabel": "About RIR progression"
+      }
+    },
+    "modal": {
+      "closeAriaLabel": "Close"
     }
   }
 }
