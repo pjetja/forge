@@ -134,6 +134,38 @@
     },
     "modal": {
       "closeAriaLabel": "Zamknij"
+    },
+    "muscleGroup": {
+      "chest": "Klatka piersiowa",
+      "back": "Plecy",
+      "shoulders": "Barki",
+      "biceps": "Biceps",
+      "triceps": "Triceps",
+      "legs": "Nogi",
+      "core": "Core",
+      "cardio": "Kardio",
+      "other": "Inne"
+    },
+    "day": {
+      "monday": "Poniedzialek",
+      "tuesday": "Wtorek",
+      "wednesday": "Sroda",
+      "thursday": "Czwartek",
+      "friday": "Piatek",
+      "saturday": "Sobota",
+      "sunday": "Niedziela",
+      "mon": "Pon",
+      "tue": "Wt",
+      "wed": "Sr",
+      "thu": "Czw",
+      "fri": "Pt",
+      "sat": "Sob",
+      "sun": "Nd"
+    },
+    "video": {
+      "yes": "Tak",
+      "no": "Nie",
+      "all": "Wszystkie"
     }
   }
 }

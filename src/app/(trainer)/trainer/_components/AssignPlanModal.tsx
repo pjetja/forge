@@ -1,6 +1,7 @@
 'use client';
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { assignPlan, type WeightOverride } from '../trainees/actions';
 
 interface ExerciseForReview {
@@ -35,6 +36,8 @@ export function AssignPlanModal({
   exerciseHistory,
   onClose,
 }: AssignPlanModalProps) {
+  const t = useTranslations('trainer');
+  const tc = useTranslations('common');
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -51,7 +54,7 @@ export function AssignPlanModal({
   });
 
   function handleConfirm() {
-    if (!confirmed) { setError('Confirm the warning above to proceed.'); return; }
+    if (!confirmed) { setError(t('assign.confirmWarningError')); return; }
     startTransition(async () => {
       const overrides: WeightOverride[] = exercises.map((ex) => ({
         exerciseId: ex.exerciseId,
@@ -78,12 +81,13 @@ export function AssignPlanModal({
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-border">
           <h2 className="font-semibold text-text-primary">
-            Review plan for {traineeName}
+            {t('assign.reviewPlanFor', { name: traineeName })}
           </h2>
           <button
             type="button"
             onClick={onClose}
             className="text-text-primary hover:text-accent transition-colors text-xl leading-none cursor-pointer"
+            aria-label={tc('aria.close')}
           >
             &times;
           </button>
@@ -92,8 +96,8 @@ export function AssignPlanModal({
         {/* Existing plan warning */}
         {hasExistingActivePlan && (
           <div className="p-4 border-b border-border bg-yellow-950/30 border-yellow-800/40">
-            <p className="text-sm text-yellow-300 font-medium">This trainee already has an active or pending plan.</p>
-            <p className="text-xs text-yellow-400 mt-1">The new plan will be queued as pending and start when their current plan ends.</p>
+            <p className="text-sm text-yellow-300 font-medium">{t('assign.existingPlanWarning')}</p>
+            <p className="text-xs text-yellow-400 mt-1">{t('assign.existingPlanDetail')}</p>
             <label className="flex items-center gap-2 mt-3 cursor-pointer">
               <input
                 type="checkbox"
@@ -101,7 +105,7 @@ export function AssignPlanModal({
                 onChange={(e) => setConfirmed(e.target.checked)}
                 className="accent-accent"
               />
-              <span className="text-sm text-text-primary">I understand — assign anyway</span>
+              <span className="text-sm text-text-primary">{t('assign.confirmWarning')}</span>
             </label>
           </div>
         )}
@@ -109,7 +113,7 @@ export function AssignPlanModal({
         {/* Exercise weight review */}
         <div className="overflow-y-auto flex-1 p-4 space-y-3">
           <p className="text-xs text-text-primary opacity-60">
-            Adjust target weights for {traineeName}. Pre-filled from their last time on this plan where available, otherwise from the plan template.
+            {t('assign.adjustWeightsHint', { name: traineeName })}
           </p>
           {exercises.map((ex) => (
             <div
@@ -121,10 +125,10 @@ export function AssignPlanModal({
                 <p className="text-xs text-text-primary opacity-60">
                   {ex.sets} sets &times; {ex.reps} reps
                   {exerciseHistory[ex.exerciseId]?.lastWeight != null && (
-                    <> &middot; Last: {exerciseHistory[ex.exerciseId]!.lastWeight}kg</>
+                    <> &middot; {t('assign.lastWeight', { weight: exerciseHistory[ex.exerciseId]!.lastWeight })}</>
                   )}
                   {exerciseHistory[ex.exerciseId] == null && (
-                    <> &middot; No previous data</>
+                    <> &middot; {t('assign.noPreviousData')}</>
                   )}
                 </p>
               </div>
@@ -160,7 +164,7 @@ export function AssignPlanModal({
             disabled={isPending || !confirmed}
             className="w-full bg-accent hover:bg-accent-hover disabled:opacity-50 text-white rounded-sm py-2 text-sm font-medium transition-colors cursor-pointer"
           >
-            {isPending ? 'Assigning...' : `Assign plan to ${traineeName}`}
+            {isPending ? t('assign.assigning') : t('assign.assignPlanTo', { name: traineeName })}
           </button>
         </div>
       </div>

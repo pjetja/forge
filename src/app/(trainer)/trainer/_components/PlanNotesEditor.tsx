@@ -1,5 +1,6 @@
 'use client';
 import { useState, useTransition } from 'react';
+import { useTranslations } from 'next-intl';
 import { updatePlan } from '../plans/actions';
 
 interface PlanNotesEditorProps {
@@ -8,6 +9,7 @@ interface PlanNotesEditorProps {
 }
 
 export function PlanNotesEditor({ planId, initialNotes }: PlanNotesEditorProps) {
+  const t = useTranslations('trainer');
   const [notes, setNotes] = useState(initialNotes);
   const [saved, setSaved] = useState(false);
   const [, startTransition] = useTransition();
@@ -24,15 +26,15 @@ export function PlanNotesEditor({ planId, initialNotes }: PlanNotesEditorProps) 
   return (
     <div className="space-y-1">
       <div className="flex items-center justify-between">
-        <label className="text-sm font-medium text-text-primary">Notes</label>
-        {saved && <span className="text-xs text-green-400">Saved</span>}
+        <label className="text-sm font-medium text-text-primary">{t('planDetail.notes')}</label>
+        {saved && <span className="text-xs text-green-400">{t('planDetail.notesSaved')}</span>}
       </div>
       <textarea
         value={notes}
         onChange={(e) => setNotes(e.target.value)}
         onBlur={handleBlur}
         rows={3}
-        placeholder="Training goals, equipment needed, special instructions..."
+        placeholder={t('plans.notesPlaceholder')}
         className="w-full bg-bg-surface border border-border rounded-sm px-3 py-2 text-sm text-text-primary placeholder:text-text-primary/40 focus:border-accent focus:outline-none resize-none"
       />
     </div>

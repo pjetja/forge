@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { ExercisePickerModal } from './ExercisePickerModal';
 
 interface SchemaEditorAddButtonProps {
@@ -15,6 +16,7 @@ export function SchemaEditorAddButton({
   currentCount,
   allExercises,
 }: SchemaEditorAddButtonProps) {
+  const t = useTranslations('trainer');
   const [open, setOpen] = useState(false);
 
   return (
@@ -24,7 +26,7 @@ export function SchemaEditorAddButton({
         onClick={() => setOpen(true)}
         className="w-full bg-bg-surface border border-dashed border-border rounded-sm p-3 text-sm text-text-primary opacity-60 hover:opacity-100 hover:border-accent transition-all cursor-pointer"
       >
-        + Add Exercise
+        {t('schemas.addExercise')}
       </button>
 
       {open && (
