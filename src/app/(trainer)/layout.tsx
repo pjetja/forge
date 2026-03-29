@@ -1,6 +1,8 @@
 import { NavHeader } from './_components/NavHeader';
 import { createClient } from '@/lib/supabase/server';
 import { gravatarUrl } from '@/lib/gravatar';
+import { getLocale } from 'next-intl/server';
+import type { Locale } from '@/i18n/constants';
 
 export default async function TrainerLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
@@ -8,6 +10,7 @@ export default async function TrainerLayout({ children }: { children: React.Reac
   const claims = claimsResult.data?.claims;
   const email = (claims?.email as string) ?? '';
   const avatarUrl = email ? gravatarUrl(email) : '';
+  const locale = await getLocale() as Locale;
 
   let trainerName = '';
   if (claims?.sub) {
@@ -21,7 +24,7 @@ export default async function TrainerLayout({ children }: { children: React.Reac
 
   return (
     <div className="min-h-screen min-w-[768px] bg-bg-page">
-      <NavHeader avatarUrl={avatarUrl} userName={trainerName} />
+      <NavHeader avatarUrl={avatarUrl} userName={trainerName} locale={locale} />
       <main className="max-w-[1280px] mx-auto px-4 py-8">{children}</main>
     </div>
   );
