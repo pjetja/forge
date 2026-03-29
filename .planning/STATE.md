@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Phase 07 complete — 07-02 human checkpoint approved
-last_updated: "2026-03-28T18:28:06.591Z"
+stopped_at: Completed 08-01-PLAN.md
+last_updated: "2026-03-29T00:04:06.304Z"
 last_activity: 2026-03-28
 progress:
   total_phases: 15
   completed_phases: 14
-  total_plans: 38
-  completed_plans: 38
+  total_plans: 41
+  completed_plans: 39
   percent: 74
 ---
 
@@ -79,6 +79,7 @@ Progress: [█████████░] 74%
 | Phase 06 P04 | 2 | 2 tasks | 5 files |
 | Phase 07 P01 | 1 | 2 tasks | 2 files |
 | Phase 07 P02 | 5 | 3 tasks | 3 files |
+| Phase 08-training-logs-and-body-weight-progression-tracking P01 | 8 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -171,6 +172,9 @@ Recent decisions affecting current work:
 - [Phase 06-04]: compliance stats query is a single batch .in() fetch — avoids N+1 per trainee
 - [Phase 07-01]: Landing page is a pure server component with no 'use client' directive — no client-side JS shipped for the marketing page
 - [Phase 07-01]: '/help' added to publicPaths only — unauthenticated users pass through; authenticated users at /help already fall through correctly via existing middleware logic
+- [Phase 08-01]: text('logged_date') used in Drizzle for body_weight_logs — PostgREST returns DATE as ISO strings
+- [Phase 08-01]: Migration SQL ordering: body_weight_access_requests CREATE TABLE before trainer SELECT policy on body_weight_logs
+- [Phase 08-01]: RPE is toggle-deselectable tap-select (1-10) rather than text input — gym-friendly touch targets (44px)
 
 ### Roadmap Evolution
 
@@ -200,6 +204,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-03-28T19:30:00.000Z
-Stopped at: Phase 07 complete — 07-02 human checkpoint approved
+Last session: 2026-03-29T00:04:06.300Z
+Stopped at: Completed 08-01-PLAN.md
 Resume file: None
