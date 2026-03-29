@@ -2,15 +2,15 @@
 
 import { useState, useTransition } from 'react';
 import { useTranslations } from 'next-intl';
-import { updateTrainerNotes } from '@/app/(trainer)/trainer/trainees/actions';
+import { updateTraineeGoals } from '@/app/(trainer)/trainer/trainees/actions';
 
-interface TrainerNotesEditorProps {
+interface TraineeGoalsEditorProps {
   traineeId: string;
-  initialNotes: string;
+  initialGoals: string;
 }
 
-export function TrainerNotesEditor({ traineeId, initialNotes }: TrainerNotesEditorProps) {
-  const [notes, setNotes] = useState(initialNotes);
+export function TraineeGoalsEditor({ traineeId, initialGoals }: TraineeGoalsEditorProps) {
+  const [goals, setGoals] = useState(initialGoals);
   const [isPending, startTransition] = useTransition();
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -20,7 +20,7 @@ export function TrainerNotesEditor({ traineeId, initialNotes }: TrainerNotesEdit
     setSuccessMessage(null);
     setErrorMessage(null);
     startTransition(async () => {
-      const result = await updateTrainerNotes(traineeId, notes);
+      const result = await updateTraineeGoals(traineeId, goals);
       if ('error' in result) {
         setErrorMessage(result.error);
       } else {
@@ -32,14 +32,12 @@ export function TrainerNotesEditor({ traineeId, initialNotes }: TrainerNotesEdit
 
   return (
     <section className="space-y-2">
-      <h2 className="text-xl font-bold text-text-primary">{t('traineeDetail.notes.heading')}</h2>
-      <p className="text-sm text-text-primary opacity-50">{t('traineeDetail.notes.subtitle')}</p>
       <textarea
         rows={4}
         className="bg-bg-surface border border-border rounded-sm px-3 py-2 text-text-primary focus:border-accent focus:outline-none w-full resize-y"
-        placeholder={t('traineeDetail.notes.placeholder')}
-        value={notes}
-        onChange={(e) => setNotes(e.target.value)}
+        placeholder={t('traineeDetail.goals.placeholder')}
+        value={goals}
+        onChange={(e) => setGoals(e.target.value)}
         disabled={isPending}
       />
       <div className="flex items-center gap-3">
@@ -48,14 +46,10 @@ export function TrainerNotesEditor({ traineeId, initialNotes }: TrainerNotesEdit
           disabled={isPending}
           className="bg-accent hover:bg-accent-hover text-white font-medium px-4 py-2 rounded-sm cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          {isPending ? t('traineeDetail.notes.saving') : t('traineeDetail.notes.save')}
+          {isPending ? t('traineeDetail.goals.saving') : t('traineeDetail.goals.save')}
         </button>
-        {successMessage && (
-          <p className="text-accent text-sm">{successMessage}</p>
-        )}
-        {errorMessage && (
-          <p className="text-error text-sm">{errorMessage}</p>
-        )}
+        {successMessage && <p className="text-accent text-sm">{successMessage}</p>}
+        {errorMessage && <p className="text-error text-sm">{errorMessage}</p>}
       </div>
     </section>
   );

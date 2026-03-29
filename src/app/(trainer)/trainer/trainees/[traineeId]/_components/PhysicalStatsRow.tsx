@@ -1,3 +1,5 @@
+import { getTranslations } from 'next-intl/server';
+
 interface PhysicalStatsRowProps {
   heightCm: number | null;
   weightKg: number | null;
@@ -13,12 +15,13 @@ function ageFromDob(dob: string): number {
   return age;
 }
 
-export function PhysicalStatsRow({ heightCm, weightKg, dateOfBirth }: PhysicalStatsRowProps) {
+export async function PhysicalStatsRow({ heightCm, weightKg, dateOfBirth }: PhysicalStatsRowProps) {
+  const t = await getTranslations('trainer');
   const chips: string[] = [];
 
-  if (heightCm != null) chips.push(`${heightCm} cm`);
-  if (weightKg != null) chips.push(`${weightKg} kg`);
-  if (dateOfBirth) chips.push(`Age ${ageFromDob(dateOfBirth)}`);
+  if (heightCm != null) chips.push(`${t('traineeDetail.stats.height')}: ${heightCm} cm`);
+  if (weightKg != null) chips.push(`${t('traineeDetail.stats.weight')}: ${weightKg} kg`);
+  if (dateOfBirth) chips.push(t('traineeDetail.stats.age', { age: ageFromDob(dateOfBirth) }));
 
   if (chips.length === 0) return null;
 

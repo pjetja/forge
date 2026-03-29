@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 import { ExerciseListFilterBar } from './ExerciseListFilterBar';
 
 interface ExercisesTabProps {
@@ -11,6 +12,7 @@ interface ExercisesTabProps {
 
 export async function ExercisesTab({ traineeId, searchQuery, muscleFilter }: ExercisesTabProps) {
   const supabase = await createClient();
+  const t = await getTranslations('trainer');
 
   // Step 1: Get all completed session IDs for this trainee
   const { data: sessions } = await supabase
@@ -85,14 +87,14 @@ export async function ExercisesTab({ traineeId, searchQuery, muscleFilter }: Exe
       {exerciseList.length === 0 ? (
         // Empty state — no exercises logged at all
         <div className="flex flex-col items-center justify-center p-12 bg-bg-surface border border-border rounded-sm text-center">
-          <h3 className="text-sm font-bold text-text-primary mb-1">No exercises logged yet</h3>
+          <h3 className="text-sm font-bold text-text-primary mb-1">{t('traineeDetail.exercises.emptyHeading')}</h3>
           <p className="text-sm text-text-primary opacity-60">
-            Completed workouts will appear here once sets are logged.
+            {t('traineeDetail.exercises.emptyBody')}
           </p>
         </div>
       ) : filtered.length === 0 ? (
         // No results after filtering
-        <p className="text-sm text-text-primary opacity-60">No exercises match your search.</p>
+        <p className="text-sm text-text-primary opacity-60">{t('traineeDetail.exercises.noMatch')}</p>
       ) : (
         <div className="space-y-2">
           {filtered.map((ex) => {
@@ -118,7 +120,7 @@ export async function ExercisesTab({ traineeId, searchQuery, muscleFilter }: Exe
                 <div className="flex flex-wrap gap-2">
                   <span className={`inline-flex items-center gap-1 text-xs px-2 py-1 rounded bg-bg-page border border-border ${ex.personalBest != null ? 'text-accent font-bold' : 'text-text-primary opacity-50'}`}>
                     <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
-                    {ex.personalBest != null ? `${ex.personalBest} kg` : 'No best'}
+                    {ex.personalBest != null ? `${ex.personalBest} kg` : t('traineeDetail.exercises.noBest')}
                   </span>
                   <span className="inline-flex items-center gap-1 text-xs px-2 py-1 rounded bg-bg-page border border-border text-text-primary">
                     <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>

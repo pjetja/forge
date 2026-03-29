@@ -1,5 +1,161 @@
 {
   "trainer": {
-    "_placeholder": true
+    "nav": {
+      "trainees": "Trainees",
+      "plans": "Plans",
+      "exerciseLibrary": "Exercise Library"
+    },
+    "trainees": {
+      "heading": "Trainees",
+      "inviteHeading": "Invite a trainee",
+      "inviteDescription": "Share this link with your trainee to connect them to your roster.",
+      "copyLink": "Copy invite link",
+      "linkCopied": "Link copied!",
+      "noTrainees": "No trainees yet",
+      "noTraineesDescription": "Share your invite link to add trainees to your roster.",
+      "plansCount": "{count} plans"
+    },
+    "traineeDetail": {
+      "backToAll": "All trainees",
+      "tabs": {
+        "plans": "Plans",
+        "exercises": "Exercises",
+        "goals": "Goals",
+        "notes": "Notes",
+        "bodyWeight": "Body Weight"
+      },
+      "plans": {
+        "currentPlan": "Current Plan",
+        "pastPlans": "Past Plans",
+        "noplan": "No plan assigned yet. Pick a plan to assign:",
+        "noPlansCreated": "No plans created yet.",
+        "createFirst": "Create a plan first",
+        "active": "Active",
+        "completed": "Completed",
+        "terminated": "Terminated",
+        "weeks": "{count} weeks",
+        "workoutsPerWeek": "{count} workouts/week",
+        "viewPlan": "View plan",
+        "editExercises": "Edit exercises"
+      },
+      "nextPlan": {
+        "heading": "Next Plan",
+        "queuePlan": "+ Queue plan",
+        "hidePicker": "Hide",
+        "assignWhileActive": "Assign a plan to prepare it while the current plan runs:",
+        "queueAnother": "Queue another plan:",
+        "noPlansCreated": "No plans created yet.",
+        "createFirst": "Create a plan first",
+        "dragReorder": "Drag to reorder",
+        "viewPlan": "View plan",
+        "editExercises": "Edit exercises"
+      },
+      "goals": {
+        "heading": "Goals",
+        "placeholder": "Add goals for this trainee...",
+        "save": "Save goals",
+        "saving": "Saving..."
+      },
+      "notes": {
+        "heading": "Trainer notes (private)",
+        "subtitle": "Only visible to you",
+        "placeholder": "Add private notes about this trainee...",
+        "save": "Save notes",
+        "saving": "Saving..."
+      },
+      "bodyWeight": {
+        "heading": "Body Weight",
+        "requestAccess": "Request body weight access",
+        "requesting": "Requesting...",
+        "accessRequested": "Body weight access requested",
+        "revokeRequest": "Revoke request",
+        "revokeAccess": "Revoke access",
+        "revoking": "Revoking...",
+        "noData": "No body weight entries recorded yet.",
+        "showChart": "Show chart",
+        "hideChart": "Hide chart",
+        "notEnoughData": "Not enough data to show a chart. At least 2 entries are needed."
+      },
+      "stats": {
+        "height": "Height",
+        "weight": "Weight",
+        "age": "Age {age}"
+      },
+      "plan": {
+        "startPlan": "Start plan",
+        "activating": "Activating...",
+        "deletePlanTitle": "Delete upcoming plan",
+        "deletePlanConfirm": "Are you sure you want to delete {planName}? This cannot be undone.",
+        "deleteAriaLabel": "Delete plan"
+      },
+      "exercises": {
+        "emptyHeading": "No exercises logged yet",
+        "emptyBody": "Completed workouts will appear here once sets are logged.",
+        "noMatch": "No exercises match your search.",
+        "noBest": "No best",
+        "searchPlaceholder": "Search exercises...",
+        "search": "Search"
+      },
+      "editPlan": {
+        "heading": "Editing {traineeName}'s assigned plan",
+        "status": "{status}",
+        "changesEffect": "Changes take effect immediately. Trainee will see a \"Plan updated\" notice.",
+        "noExercises": "No exercises in this plan.",
+        "sets": "Sets",
+        "reps": "Reps",
+        "changesSaved": "Changes saved"
+      },
+      "workout": {
+        "session": "Session",
+        "completed": "Workout completed",
+        "inProgress": "Workout in progress",
+        "workoutNumber": "Workout {number}",
+        "noExercises": "No exercises in this workout.",
+        "setsCount": "{logged}/{required} sets",
+        "backToPlan": "Back to plan",
+        "backToWorkout": "Back to workout",
+        "target": "Target: {sets} sets × {reps} reps",
+        "noSets": "No sets logged for this exercise.",
+        "repsHeader": "Reps",
+        "weightHeader": "Weight (kg)",
+        "failHeader": "Fail",
+        "exerciseVideo": "Exercise video",
+        "weightOverSessions": "Weight over sessions",
+        "repsOverSessions": "Reps over sessions",
+        "noSetHistory": "No logged sets for this exercise.",
+        "startLabel": "Start",
+        "finishLabel": "Finish",
+        "changeLabel": "Change",
+        "personalRecord": "Personal Record",
+        "topSetOverTime": "Top-set weight over time",
+        "noLogged": "No logged sets for this exercise yet.",
+        "noDataPeriod": "No data for this period."
+      },
+      "planView": {
+        "backTo": "Back to {traineeName}",
+        "workoutsPerWeek": "{count} workouts/week",
+        "weeksCount": "{count} weeks",
+        "planComplete": "Plan complete",
+        "planCompleteDescription": "{traineeName} finished all {weeks} weeks.",
+        "planNotStarted": "Plan not started yet",
+        "activeProgress": "Active · {done} of {total} workouts done",
+        "workoutsHeading": "Workouts",
+        "exercisesHeading": "Exercises",
+        "currentWeek": "Current week",
+        "doneOfTotal": "{done} of {n} done",
+        "inProgress": "In progress →",
+        "done": "Done",
+        "completedThisWeek": "Completed this week",
+        "pastWeeks": "Past weeks",
+        "weekNumber": "Week {number}",
+        "noCompletedWorkouts": "No completed workouts yet.",
+        "noExercises": "No exercises in this plan.",
+        "tapExercise": "Tap an exercise to view progress chart.",
+        "noWorkoutsInPlan": "No workouts in this plan yet.",
+        "backToPlan": "Back to plan",
+        "planNotStartedReadOnly": "Plan not started — read only",
+        "noExercisesInWorkout": "No exercises in this workout."
+      }
+    }
   }
 }

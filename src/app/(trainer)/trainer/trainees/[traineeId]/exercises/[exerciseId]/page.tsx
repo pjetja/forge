@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { getTranslations } from 'next-intl/server';
 import { CrossPlanChartSection } from './_components/CrossPlanChartSection';
 
 interface CrossPlanExercisePageProps {
@@ -12,6 +13,7 @@ export default async function CrossPlanExercisePage({ params }: CrossPlanExercis
   const { traineeId, exerciseId } = await params;
 
   const supabase = await createClient();
+  const t = await getTranslations('trainer');
 
   // Verify trainee is connected to this trainer (defense in depth)
   const { data: connection } = await supabase
@@ -109,7 +111,7 @@ export default async function CrossPlanExercisePage({ params }: CrossPlanExercis
         >
           <polyline points="15 18 9 12 15 6" />
         </svg>
-        Back
+        {t('traineeDetail.backToAll')}
       </Link>
 
       {/* Header */}
