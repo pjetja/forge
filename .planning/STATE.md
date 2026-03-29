@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: verifying
-stopped_at: Completed 09-01-PLAN.md — next-intl infrastructure, LanguageSwitcher, nav translations
-last_updated: "2026-03-29T18:13:25.782Z"
+stopped_at: Completed 09-02-PLAN.md — auth pages + public pages + shared components i18n
+last_updated: "2026-03-29T18:25:05.068Z"
 last_activity: 2026-03-29
 progress:
   total_phases: 18
   completed_phases: 15
   total_plans: 46
-  completed_plans: 42
+  completed_plans: 43
   percent: 74
 ---
 
@@ -83,6 +83,7 @@ Progress: [█████████░] 74%
 | Phase 08-training-logs-and-body-weight-progression-tracking P02 | 2 | 2 tasks | 5 files |
 | Phase 08-training-logs-and-body-weight-progression-tracking P03 | 2 | 1 tasks | 4 files |
 | Phase 09-internationalization P01 | 4 | 2 tasks | 17 files |
+| Phase 09-internationalization P02 | 15 | 2 tasks | 20 files |
 
 ## Accumulated Context
 
@@ -186,6 +187,9 @@ Recent decisions affecting current work:
 - [Phase 09-01]: Cookie-based locale (NEXT_LOCALE) without URL path segments — simpler routing, no [locale] segment needed
 - [Phase 09-01]: 4 namespace JSON files per locale spread-merged in request.ts — flat message object with top-level namespace keys prevents collision
 - [Phase 09-01]: Locale prop threaded from server layout through to client nav components — avoids client-side async, locale is server-authoritative
+- [Phase 09-02]: Client auth pages retain 'use client' and use useTranslations — avoids architectural changes for pages that already need client-side state
+- [Phase 09-02]: VerifyEmailFallback extracted as separate component — React hooks cannot be used inline in JSX props
+- [Phase 09-02]: CompletedPlanColumns converted to async server component for getTranslations — callers are all server components, no breaking change
 
 ### Roadmap Evolution
 
@@ -215,6 +219,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-03-29T18:13:25.777Z
-Stopped at: Completed 09-01-PLAN.md — next-intl infrastructure, LanguageSwitcher, nav translations
+Last session: 2026-03-29T18:25:05.064Z
+Stopped at: Completed 09-02-PLAN.md — auth pages + public pages + shared components i18n
 Resume file: None
