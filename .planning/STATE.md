@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: verifying
-stopped_at: Completed 08-03-PLAN.md — Phase 8 fully complete, human-verify approved
-last_updated: "2026-03-29T09:14:32.890Z"
+stopped_at: Completed 09-01-PLAN.md — next-intl infrastructure, LanguageSwitcher, nav translations
+last_updated: "2026-03-29T18:13:25.782Z"
 last_activity: 2026-03-29
 progress:
-  total_phases: 15
+  total_phases: 18
   completed_phases: 15
-  total_plans: 41
-  completed_plans: 41
+  total_plans: 46
+  completed_plans: 42
   percent: 74
 ---
 
@@ -82,6 +82,7 @@ Progress: [█████████░] 74%
 | Phase 08-training-logs-and-body-weight-progression-tracking P01 | 8 | 2 tasks | 4 files |
 | Phase 08-training-logs-and-body-weight-progression-tracking P02 | 2 | 2 tasks | 5 files |
 | Phase 08-training-logs-and-body-weight-progression-tracking P03 | 2 | 1 tasks | 4 files |
+| Phase 09-internationalization P01 | 4 | 2 tasks | 17 files |
 
 ## Accumulated Context
 
@@ -182,6 +183,9 @@ Recent decisions affecting current work:
 - [Phase 08-02]: Exercises tab reuses TraineeExercisesTab server component inline — standalone exercises route preserved for deep-link back navigation
 - [Phase 08-03]: BodyWeightTab created as separate copy (not reusing BodyWeightChart) — maintains no cross-route-group imports convention
 - [Phase 08-03]: Body Weight tab dynamically included in TabSwitcher only when access is approved; RequestBodyWeightAccessButton shown on Plans tab
+- [Phase 09-01]: Cookie-based locale (NEXT_LOCALE) without URL path segments — simpler routing, no [locale] segment needed
+- [Phase 09-01]: 4 namespace JSON files per locale spread-merged in request.ts — flat message object with top-level namespace keys prevents collision
+- [Phase 09-01]: Locale prop threaded from server layout through to client nav components — avoids client-side async, locale is server-authoritative
 
 ### Roadmap Evolution
 
@@ -211,6 +215,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-03-29T09:09:46.919Z
-Stopped at: Completed 08-03-PLAN.md — Phase 8 fully complete, human-verify approved
+Last session: 2026-03-29T18:13:25.777Z
+Stopped at: Completed 09-01-PLAN.md — next-intl infrastructure, LanguageSwitcher, nav translations
 Resume file: None
