@@ -14,6 +14,11 @@ A trainee can open the app mid-workout, see exactly what they did last week on e
 
 - [x] Public landing page drives trainer and trainee signups (Validated in Phase 07)
 - [x] In-app FAQ/Help page accessible to all users without login (Validated in Phase 07)
+- [x] Trainee can log enrichment data (training time, kcal burned, RPE) after finishing a workout (Validated in Phase 08)
+- [x] Trainee home shows 4-tab layout: Plans, Exercises, Log, Body Weight (Validated in Phase 08)
+- [x] Trainee training log shows completed sessions in reverse chronological order with enrichment data (Validated in Phase 08)
+- [x] Trainee can log and track daily body weight with chart visualisation (Validated in Phase 08)
+- [x] Trainer can request access to trainee body weight data; trainee approves or declines (Validated in Phase 08)
 
 ### Active
 
@@ -58,4 +63,4 @@ A trainee can open the app mid-workout, see exactly what they did last week on e
 | Multi-trainer platform from day 1 | Not personal use — multiple trainers with independent rosters | — Pending |
 
 ---
-*Last updated: 2026-03-28 — Phase 07 complete*
+*Last updated: 2026-03-29 — Phase 08 complete (final phase of v1.0 milestone)*
