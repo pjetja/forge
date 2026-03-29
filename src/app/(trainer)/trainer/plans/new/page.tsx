@@ -1,9 +1,12 @@
 'use client';
 import { useState, useTransition, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { createPlan } from '../actions';
 
 export default function NewPlanPage() {
+  const t = useTranslations('trainer');
+  const tc = useTranslations('common');
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -49,7 +52,7 @@ export default function NewPlanPage() {
       : tags;
 
     if (!name || isNaN(weekCount) || isNaN(workoutsPerWeek)) {
-      setError('Please fill in all required fields.');
+      setError(t('plans.fillRequiredFields'));
       return;
     }
 
@@ -70,22 +73,22 @@ export default function NewPlanPage() {
     <div className="max-w-md space-y-6">
       <div>
         <a href="/trainer/plans" className="text-sm text-text-primary hover:text-accent transition-colors">
-          &larr; Plans
+          &larr; {t('planDetail.backToPlans')}
         </a>
-        <h1 className="text-2xl font-bold text-text-primary mt-2">New plan</h1>
+        <h1 className="text-2xl font-bold text-text-primary mt-2">{t('plans.newPlanHeading')}</h1>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-text-primary mb-1">
-            Plan name
+            {t('plans.planNameLabel')}
           </label>
           <input
             id="name"
             name="name"
             type="text"
             required
-            placeholder="e.g. 8-Week Hypertrophy"
+            placeholder={t('plans.planNamePlaceholder')}
             className={inputClass}
           />
         </div>
@@ -93,7 +96,7 @@ export default function NewPlanPage() {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label htmlFor="weekCount" className="block text-sm font-medium text-text-primary mb-1">
-              Number of weeks
+              {t('plans.numberOfWeeksLabel')}
             </label>
             <input
               id="weekCount"
@@ -108,7 +111,7 @@ export default function NewPlanPage() {
           </div>
           <div>
             <label htmlFor="workoutsPerWeek" className="block text-sm font-medium text-text-primary mb-1">
-              Workouts per week
+              {t('plans.workoutsPerWeekLabel')}
             </label>
             <input
               id="workoutsPerWeek"
@@ -126,7 +129,7 @@ export default function NewPlanPage() {
         {/* Tags */}
         <div>
           <label className="block text-sm font-medium text-text-primary mb-1">
-            Tags <span className="font-normal opacity-60">(optional)</span>
+            {t('plans.tagsLabel')} <span className="font-normal opacity-60">{t('plans.tagsOptional')}</span>
           </label>
           <div
             className="flex flex-wrap gap-1.5 p-2 bg-bg-surface border border-border rounded-sm focus-within:border-accent cursor-text min-h-[40px]"
@@ -154,23 +157,23 @@ export default function NewPlanPage() {
               onChange={(e) => setTagInput(e.target.value)}
               onKeyDown={handleTagKeyDown}
               onBlur={() => addTag(tagInput)}
-              placeholder={tags.length === 0 ? 'e.g. strength, hypertrophy...' : ''}
+              placeholder={tags.length === 0 ? t('plans.tagsPlaceholder') : ''}
               className="flex-1 min-w-[120px] bg-transparent text-sm text-text-primary focus:outline-none placeholder:text-text-primary/40"
             />
           </div>
-          <p className="mt-1 text-xs text-text-primary opacity-50">Press Enter or comma to add a tag</p>
+          <p className="mt-1 text-xs text-text-primary opacity-50">{t('plans.tagsHint')}</p>
         </div>
 
         {/* Notes */}
         <div>
           <label htmlFor="notes" className="block text-sm font-medium text-text-primary mb-1">
-            Notes <span className="font-normal opacity-60">(optional)</span>
+            {t('plans.notesLabel')} <span className="font-normal opacity-60">{t('plans.notesOptional')}</span>
           </label>
           <textarea
             id="notes"
             name="notes"
             rows={3}
-            placeholder="Training goals, equipment needed, special instructions..."
+            placeholder={t('plans.notesPlaceholder')}
             className={`${inputClass} resize-none`}
           />
         </div>
@@ -186,7 +189,7 @@ export default function NewPlanPage() {
           disabled={isPending}
           className="w-full bg-accent hover:bg-accent-hover disabled:opacity-60 text-white rounded-sm py-2 text-sm font-medium transition-colors cursor-pointer"
         >
-          {isPending ? 'Creating...' : 'Create plan'}
+          {isPending ? t('plans.creating') : t('plans.createPlan')}
         </button>
       </form>
     </div>

@@ -1,11 +1,13 @@
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 import { InviteDialog } from './_components/InviteDialog';
 import { getCurrentWeekBounds } from '@/lib/utils/week';
 import { gravatarUrl } from '@/lib/gravatar';
 import { GravatarAvatar } from '@/components/GravatarAvatar';
 
 export default async function TrainerHomePage() {
+  const t = await getTranslations('trainer');
   const supabase = await createClient();
 
   // Fetch connected trainees — RLS filters to this trainer's connections only
@@ -75,23 +77,22 @@ export default async function TrainerHomePage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-text-primary">Your Trainees</h1>
+        <h1 className="text-2xl font-bold text-text-primary">{t('trainees.heading')}</h1>
         <InviteDialog />
       </div>
 
       {error && (
         <div className="bg-red-950 border border-red-800 rounded-sm p-4 text-sm text-red-400">
-          Failed to load trainees. Please refresh the page.
+          {t('trainees.failedToLoad')}
         </div>
       )}
 
       {!error && traineeIds.length === 0 && (
         <div className="bg-bg-surface border border-border rounded-sm p-12 text-center space-y-3">
           <div className="text-4xl">👥</div>
-          <h2 className="font-medium text-text-primary">No trainees yet</h2>
+          <h2 className="font-medium text-text-primary">{t('trainees.noTraineesYet')}</h2>
           <p className="text-sm text-text-primary max-w-sm mx-auto">
-            Invite your first client to get started. They&apos;ll receive a link to join your
-            roster.
+            {t('trainees.noTraineesBody')}
           </p>
         </div>
       )}
@@ -113,7 +114,7 @@ export default async function TrainerHomePage() {
                 {/* Info */}
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-text-primary truncate">
-                    {trainee?.name ?? 'Unknown trainee'}
+                    {trainee?.name ?? t('trainees.unknownTrainee')}
                   </p>
                   {currentPlan ? (
                     <p className="text-sm text-text-primary truncate">
@@ -122,23 +123,23 @@ export default async function TrainerHomePage() {
                           currentPlan.status === 'active' ? 'text-accent' : 'text-text-primary opacity-50'
                         }
                       >
-                        {currentPlan.status === 'active' ? 'Active' : 'Upcoming'}:
+                        {currentPlan.status === 'active' ? t('trainees.activePlan') : t('trainees.upcomingPlan')}:
                       </span>{' '}
                       {currentPlan.name}
                     </p>
                   ) : (
-                    <p className="text-sm text-text-primary opacity-40">No plan assigned</p>
+                    <p className="text-sm text-text-primary opacity-40">{t('trainees.noPlanAssigned')}</p>
                   )}
                   {(() => {
                     const stat = statsByTrainee[connection.trainee_auth_uid];
                     if (!stat || (!stat.lastSession && stat.thisWeek === 0)) {
-                      return <p className="text-sm text-text-primary opacity-50">No sessions yet</p>;
+                      return <p className="text-sm text-text-primary opacity-50">{t('trainees.noSessionsYet')}</p>;
                     }
                     const parts: string[] = [];
                     if (stat.lastSession) {
-                      parts.push(`Last workout: ${new Date(stat.lastSession).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}`);
+                      parts.push(`${t('trainees.lastWorkout')}: ${new Date(stat.lastSession).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}`);
                     }
-                    parts.push(`${stat.thisWeek} this week`);
+                    parts.push(t('trainees.thisWeek', { count: stat.thisWeek }));
                     return <p className="text-sm text-text-primary opacity-50">{parts.join(' \u00B7 ')}</p>;
                   })()}
                 </div>

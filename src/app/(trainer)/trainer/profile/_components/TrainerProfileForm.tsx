@@ -1,5 +1,6 @@
 'use client';
 import { useTransition, useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import { updateTrainerProfile } from '../actions';
 
 export function TrainerProfileForm({
@@ -9,6 +10,7 @@ export function TrainerProfileForm({
   initialName: string;
   initialBio: string;
 }) {
+  const t = useTranslations('trainer');
   const [isPending, startTransition] = useTransition();
   const [name, setName] = useState(initialName);
   const [bio, setBio] = useState(initialBio);
@@ -40,7 +42,7 @@ export function TrainerProfileForm({
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <label htmlFor="profile-name" className="text-sm text-text-primary mb-1 block">
-          Name
+          {t('profile.nameLabel')}
         </label>
         <input
           id="profile-name"
@@ -55,7 +57,7 @@ export function TrainerProfileForm({
 
       <div>
         <label htmlFor="profile-bio" className="text-sm text-text-primary mb-1 block">
-          Bio
+          {t('profile.bioLabel')}
         </label>
         <textarea
           id="profile-bio"
@@ -73,11 +75,11 @@ export function TrainerProfileForm({
           disabled={!name.trim() || isPending}
           className="bg-accent hover:bg-accent-hover text-white font-medium px-6 py-2 rounded-sm cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed w-full md:w-auto"
         >
-          {isPending ? 'Saving...' : 'Save changes'}
+          {isPending ? t('profile.saving') : t('profile.saveChanges')}
         </button>
 
         {success && (
-          <p className="text-accent text-sm mt-2">Changes saved.</p>
+          <p className="text-accent text-sm mt-2">{t('profile.changesSaved')}</p>
         )}
         {error && (
           <p className="text-error text-sm mt-2">{error}</p>

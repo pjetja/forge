@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 import { AssignPlanClientPage } from './AssignPlanClientPage';
 
 export default async function AssignPlanPage({
@@ -9,6 +10,7 @@ export default async function AssignPlanPage({
   params: Promise<{ planId: string }>;
 }) {
   const { planId } = await params;
+  const t = await getTranslations('trainer');
   const supabase = await createClient();
 
   // Fetch plan template
@@ -59,8 +61,8 @@ export default async function AssignPlanPage({
         >
           &larr; {planData.name}
         </Link>
-        <h1 className="text-2xl font-bold text-text-primary mt-1">Assign plan</h1>
-        <p className="text-sm text-text-primary opacity-60">Select a trainee to assign this plan to</p>
+        <h1 className="text-2xl font-bold text-text-primary mt-1">{t('assign.heading')}</h1>
+        <p className="text-sm text-text-primary opacity-60">{t('assign.selectTraineeDescription')}</p>
       </div>
 
       <AssignPlanClientPage
