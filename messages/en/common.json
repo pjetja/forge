@@ -1,0 +1,49 @@
+{
+  "common": {
+    "nav": {
+      "trainees": "Trainees",
+      "plans": "Plans",
+      "exerciseLibrary": "Exercise Library",
+      "exercises": "Exercises",
+      "help": "Help",
+      "language": "Language",
+      "profile": "Profile"
+    },
+    "button": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "add": "Add",
+      "edit": "Edit",
+      "close": "Close",
+      "back": "Back",
+      "confirm": "Confirm",
+      "duplicate": "Duplicate",
+      "assign": "Assign",
+      "activate": "Activate",
+      "signOut": "Sign out"
+    },
+    "empty": {
+      "heading": "Nothing here yet",
+      "body": "Check back after completing a session."
+    },
+    "error": {
+      "generic": "Something went wrong. Please refresh the page.",
+      "required": "This field is required.",
+      "invalidEmail": "Please enter a valid email address."
+    },
+    "label": {
+      "email": "Email",
+      "password": "Password",
+      "name": "Name",
+      "search": "Search",
+      "loading": "Loading..."
+    },
+    "aria": {
+      "openMenu": "Open menu",
+      "closeMenu": "Close menu",
+      "signOut": "Sign out",
+      "forgeHome": "Forge home"
+    }
+  }
+}
