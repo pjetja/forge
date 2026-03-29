@@ -227,3 +227,37 @@ Plans:
 - [x] 08-01-PLAN.md — DB migration (enrichment columns + body_weight_logs + body_weight_access_requests tables + RLS) + Drizzle schema + finishWorkout enrichment + FinishWorkoutButton UI
 - [x] 08-02-PLAN.md — Trainee home 4-tab restructuring (Plans | Exercises | Log | Body Weight) + training log feed + body weight tab (list + chart + inline form)
 - [x] 08-03-PLAN.md — Trainer body weight access permission flow (request/approve/decline/revoke) + trainer Body Weight tab on trainee profile + end-to-end verification
+
+### Phase 9: Internationalization — make app multi-language: extract all static labels into keys, add Polish language and translations, make Polish default, add lang switcher in header
+
+**Goal:** All user-visible UI text is extracted into i18n keys with Polish and English translations, Polish is the default locale, and a PL | EN language switcher toggle appears in both nav headers
+**Requirements**: I18N-01, I18N-02, I18N-03, I18N-04, I18N-05, I18N-06, I18N-07, I18N-08, I18N-09
+**Depends on:** Phase 8
+**Plans:** 5 plans
+
+Plans:
+- [ ] 09-01-PLAN.md — Install next-intl, i18n infrastructure (request config, next.config plugin, root layout provider), LanguageSwitcher component, translation JSON scaffolds, Lato latin-ext fix
+- [ ] 09-02-PLAN.md — String extraction: auth pages + shared components + landing/help/join pages
+- [ ] 09-03-PLAN.md — String extraction: trainer core pages + 19 trainer _components
+- [ ] 09-04-PLAN.md — String extraction: trainer trainee-detail pages + all trainee route group pages
+- [ ] 09-05-PLAN.md — End-to-end verification (automated scan + human walkthrough)
+
+### Phase 10: Demo users — create demo trainer and trainee seeded with random data, add login instructions so visitors can explore the app, demo users cannot change password
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 9
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 10 to break down)
+
+### Phase 11: Deploy — connect code to GitHub, deploy app for public beta testing and feedback gathering
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 10
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 11 to break down)
