@@ -125,9 +125,11 @@ export async function addSet(data: {
 /**
  * Marks the session as completed and returns a summary.
  * Counts sets completed vs total plan sets for the post-workout summary screen.
+ * Optionally saves enrichment fields (duration, kcal burned, RPE).
  */
 export async function finishWorkout(
-  sessionId: string
+  sessionId: string,
+  enrichment?: { durationMinutes?: number | null; kcalBurned?: number | null; rpe?: number | null }
 ): Promise<{ success: true; summary: { setsCompleted: number; totalPlanSets: number } } | { error: string }> {
   const supabase = await createClient();
   const claimsResult = await supabase.auth.getClaims();
@@ -168,6 +170,19 @@ export async function finishWorkout(
 
   if (error) return { error: 'Failed to finish workout. Please try again.' };
 
+  // Save optional enrichment fields
+  if (enrichment && (enrichment.durationMinutes != null || enrichment.kcalBurned != null || enrichment.rpe != null)) {
+    await supabase
+      .from('workout_sessions')
+      .update({
+        duration_minutes: enrichment.durationMinutes ?? null,
+        kcal_burned: enrichment.kcalBurned ?? null,
+        rpe: enrichment.rpe ?? null,
+      })
+      .eq('id', sessionId)
+      .eq('trainee_auth_uid', claims.sub);
+  }
+
   revalidatePath('/trainee');
   return {
     success: true,
@@ -198,6 +213,105 @@ export async function abandonWorkout(
 
   if (error) return { error: 'Failed to abandon workout. Please try again.' };
 
+  revalidatePath('/trainee');
+  return { success: true };
+}
+
+// ── Body Weight Actions ───────────────────────────────────────────────────────
+
+/**
+ * Logs or updates body weight for a specific date (upsert on trainee_auth_uid + logged_date).
+ */
+export async function logBodyWeight(
+  weightKg: number,
+  loggedDate?: string // YYYY-MM-DD format; defaults to today
+): Promise<{ success: true } | { error: string }> {
+  const supabase = await createClient();
+  const claimsResult = await supabase.auth.getClaims();
+  const claims = claimsResult.data?.claims;
+  if (!claims) return { error: 'Not authenticated' };
+
+  const date = loggedDate ?? new Date().toLocaleDateString('en-CA'); // "2026-03-28"
+
+  const { error } = await supabase.from('body_weight_logs').upsert(
+    {
+      trainee_auth_uid: claims.sub,
+      logged_date: date,
+      weight_kg: weightKg,
+    },
+    { onConflict: 'trainee_auth_uid,logged_date' }
+  );
+
+  if (error) return { error: 'Could not save your weight entry. Please try again.' };
+  revalidatePath('/trainee');
+  return { success: true };
+}
+
+/**
+ * Deletes a body weight entry by ID.
+ */
+export async function deleteBodyWeight(
+  entryId: string
+): Promise<{ success: true } | { error: string }> {
+  const supabase = await createClient();
+  const claimsResult = await supabase.auth.getClaims();
+  const claims = claimsResult.data?.claims;
+  if (!claims) return { error: 'Not authenticated' };
+
+  const { error } = await supabase
+    .from('body_weight_logs')
+    .delete()
+    .eq('id', entryId)
+    .eq('trainee_auth_uid', claims.sub);
+
+  if (error) return { error: 'Could not delete entry. Please try again.' };
+  revalidatePath('/trainee');
+  return { success: true };
+}
+
+// ── Body Weight Access Request Actions ────────────────────────────────────────
+
+/**
+ * Trainee approves or declines a body weight access request.
+ */
+export async function respondToBodyWeightAccessRequest(
+  requestId: string,
+  newStatus: 'approved' | 'declined'
+): Promise<{ success: true } | { error: string }> {
+  const supabase = await createClient();
+  const claimsResult = await supabase.auth.getClaims();
+  const claims = claimsResult.data?.claims;
+  if (!claims) return { error: 'Not authenticated' };
+
+  const { error } = await supabase
+    .from('body_weight_access_requests')
+    .update({ status: newStatus, updated_at: new Date().toISOString() })
+    .eq('id', requestId)
+    .eq('trainee_auth_uid', claims.sub);
+
+  if (error) return { error: 'Could not update request. Please try again.' };
+  revalidatePath('/trainee');
+  return { success: true };
+}
+
+/**
+ * Trainee revokes previously granted body weight access.
+ */
+export async function revokeBodyWeightAccess(
+  requestId: string
+): Promise<{ success: true } | { error: string }> {
+  const supabase = await createClient();
+  const claimsResult = await supabase.auth.getClaims();
+  const claims = claimsResult.data?.claims;
+  if (!claims) return { error: 'Not authenticated' };
+
+  const { error } = await supabase
+    .from('body_weight_access_requests')
+    .delete()
+    .eq('id', requestId)
+    .eq('trainee_auth_uid', claims.sub);
+
+  if (error) return { error: 'Could not revoke access. Please try again.' };
   revalidatePath('/trainee');
   return { success: true };
 }

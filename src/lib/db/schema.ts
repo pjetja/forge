@@ -169,6 +169,9 @@ export const workoutSessions = pgTable('workout_sessions', {
   startedAt: timestamp('started_at', { withTimezone: true }).notNull().defaultNow(),
   completedAt: timestamp('completed_at', { withTimezone: true }),
   notes: text('notes'),
+  durationMinutes: integer('duration_minutes'),
+  kcalBurned: integer('kcal_burned'),
+  rpe: integer('rpe'),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
 });
 
@@ -197,3 +200,26 @@ export type NewSessionSet = typeof sessionSets.$inferInsert;
 
 // Composite type for UI use
 export type SessionWithSets = WorkoutSession & { sets: SessionSet[] };
+
+// ── Phase 8: Training Logs and Body Weight Tracking ───────────────────────────
+
+export const bodyWeightLogs = pgTable('body_weight_logs', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  traineeAuthUid: uuid('trainee_auth_uid').notNull(),
+  loggedDate: text('logged_date').notNull(), // PostgreSQL DATE returned as string by PostgREST
+  weightKg: numeric('weight_kg', { precision: 5, scale: 2 }).notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+});
+
+export const bodyWeightAccessRequests = pgTable('body_weight_access_requests', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  trainerAuthUid: uuid('trainer_auth_uid').notNull(),
+  traineeAuthUid: uuid('trainee_auth_uid').notNull(),
+  status: text('status', { enum: ['pending', 'approved', 'declined'] }).notNull().default('pending'),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
+});
+
+export type BodyWeightLog = typeof bodyWeightLogs.$inferSelect;
+export type NewBodyWeightLog = typeof bodyWeightLogs.$inferInsert;
+export type BodyWeightAccessRequest = typeof bodyWeightAccessRequests.$inferSelect;
