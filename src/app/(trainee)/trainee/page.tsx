@@ -86,13 +86,13 @@ export default async function TraineeHomePage({
     duration_minutes: number | null;
     kcal_burned: number | null;
     rpe: number | null;
-    assigned_schemas: { name: string } | { name: string }[] | null;
+    assigned_schemas: { name: string; assigned_plan_id: string } | { name: string; assigned_plan_id: string }[] | null;
   }> | null = null;
 
   if (activeTab === 'log') {
     const { data } = await supabase
       .from('workout_sessions')
-      .select('id, completed_at, duration_minutes, kcal_burned, rpe, assigned_schemas!inner(name)')
+      .select('id, completed_at, duration_minutes, kcal_burned, rpe, assigned_schemas!inner(name, assigned_plan_id)')
       .eq('trainee_auth_uid', claims.sub)
       .eq('status', 'completed')
       .order('completed_at', { ascending: false });
@@ -288,9 +288,9 @@ export default async function TraineeHomePage({
             <div className="space-y-2">
               {logSessions.map((session) => {
                 const schemaData = session.assigned_schemas;
-                const workoutName = Array.isArray(schemaData)
-                  ? (schemaData[0] as { name: string } | undefined)?.name ?? '—'
-                  : (schemaData as { name: string } | null)?.name ?? '—';
+                const schemaObj = Array.isArray(schemaData) ? schemaData[0] : schemaData;
+                const workoutName = (schemaObj as { name: string } | null)?.name ?? '—';
+                const assignedPlanId = (schemaObj as { assigned_plan_id: string } | null)?.assigned_plan_id;
                 const dateStr = session.completed_at
                   ? new Date(session.completed_at).toLocaleDateString('en-US', {
                       month: 'short',
@@ -298,32 +298,39 @@ export default async function TraineeHomePage({
                     })
                   : '—';
 
-                const enrichmentParts: string[] = [];
-                if (session.duration_minutes != null) {
-                  enrichmentParts.push(`${session.duration_minutes} min`);
-                }
-                if (session.kcal_burned != null) {
-                  enrichmentParts.push(`${session.kcal_burned} kcal`);
-                }
-                if (session.rpe != null) {
-                  enrichmentParts.push(`RPE ${session.rpe}`);
-                }
-
                 return (
-                  <div
+                  <Link
                     key={session.id}
-                    className="bg-bg-surface border border-border rounded-sm px-4 py-3 flex items-center justify-between"
+                    href={assignedPlanId ? `/trainee/plans/${assignedPlanId}/workouts/${session.id}` : '#'}
+                    className="bg-bg-surface border border-border rounded-sm px-4 py-3 flex flex-col gap-2 hover:border-accent/50 transition-colors"
                   >
-                    <div className="space-y-0.5">
+                    <div className="flex items-center justify-between gap-2">
                       <p className="text-sm text-text-primary font-bold">{dateStr}</p>
-                      <p className="text-sm text-text-primary">{workoutName}</p>
+                      <p className="text-sm text-text-primary truncate">{workoutName}</p>
                     </div>
-                    {enrichmentParts.length > 0 && (
-                      <p className="text-xs text-text-primary opacity-70 flex-shrink-0 ml-4">
-                        {enrichmentParts.join(' · ')}
-                      </p>
+                    {(session.duration_minutes != null || session.kcal_burned != null || session.rpe != null) && (
+                      <div className="flex flex-wrap gap-2">
+                        {session.duration_minutes != null && (
+                          <span className="inline-flex items-center gap-1 text-xs px-2 py-1 rounded bg-bg-page border border-border text-text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            {session.duration_minutes} min
+                          </span>
+                        )}
+                        {session.kcal_burned != null && (
+                          <span className="inline-flex items-center gap-1 text-xs px-2 py-1 rounded bg-bg-page border border-border text-text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                            {session.kcal_burned} kcal
+                          </span>
+                        )}
+                        {session.rpe != null && (
+                          <span className="inline-flex items-center gap-1 text-xs px-2 py-1 rounded bg-bg-page border border-border text-text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                            RPE {session.rpe}/10
+                          </span>
+                        )}
+                      </div>
                     )}
-                  </div>
+                  </Link>
                 );
               })}
             </div>
