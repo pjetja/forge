@@ -7,6 +7,7 @@ import { TabSwitcher } from '@/components/TabSwitcher';
 import { ExercisesTab } from './_components/ExercisesTab';
 import { PhysicalStatsRow } from './_components/PhysicalStatsRow';
 import { TrainerNotesEditor } from './_components/TrainerNotesEditor';
+import { TraineeGoalsEditor } from './_components/TraineeGoalsEditor';
 import { gravatarUrl } from '@/lib/gravatar';
 import { GravatarAvatar } from '@/components/GravatarAvatar';
 
@@ -30,7 +31,9 @@ export default async function TraineeDetailPage({
 }) {
   const { traineeId } = await params;
   const resolvedSearch = await searchParams;
-  const activeTab = resolvedSearch?.tab === 'exercises' ? 'exercises' : 'plans';
+  const activeTab = ['exercises', 'goals', 'notes'].includes(resolvedSearch?.tab ?? '')
+    ? (resolvedSearch!.tab as string)
+    : 'plans';
   const supabase = await createClient();
 
   // Fetch trainee profile
@@ -95,25 +98,14 @@ export default async function TraineeDetailPage({
         </div>
       </div>
 
-      {/* Trainee goals */}
-      <section>
-        <h2 className="text-xl font-bold text-text-primary mb-2">Trainee goals</h2>
-        {traineeProfile.goals ? (
-          <p className="text-text-primary">{traineeProfile.goals}</p>
-        ) : (
-          <p className="text-text-primary opacity-50">No goals set.</p>
-        )}
-      </section>
-
-      {/* Trainer notes */}
-      <TrainerNotesEditor
-        traineeId={traineeId}
-        initialNotes={connectionRow?.trainer_notes ?? ''}
-      />
-
       {/* Tab switcher */}
       <TabSwitcher
-        tabs={[{ key: 'plans', label: 'Plans' }, { key: 'exercises', label: 'Exercises' }]}
+        tabs={[
+          { key: 'plans', label: 'Plans' },
+          { key: 'exercises', label: 'Exercises' },
+          { key: 'goals', label: 'Goals' },
+          { key: 'notes', label: 'Notes' },
+        ]}
         activeTab={activeTab}
       />
 
@@ -228,6 +220,22 @@ export default async function TraineeDetailPage({
           traineeId={traineeId}
           searchQuery={resolvedSearch?.q ?? ''}
           muscleFilter={resolvedSearch?.muscles ?? ''}
+        />
+      )}
+
+      {/* Goals tab content */}
+      {activeTab === 'goals' && (
+        <TraineeGoalsEditor
+          traineeId={traineeId}
+          initialGoals={traineeProfile.goals ?? ''}
+        />
+      )}
+
+      {/* Notes tab content */}
+      {activeTab === 'notes' && (
+        <TrainerNotesEditor
+          traineeId={traineeId}
+          initialNotes={connectionRow?.trainer_notes ?? ''}
         />
       )}
     </div>

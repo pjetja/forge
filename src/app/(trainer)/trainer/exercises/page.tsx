@@ -3,15 +3,17 @@ import { createClient } from '@/lib/supabase/server';
 import { Exercise } from '@/lib/db/schema';
 import { ExerciseGrid } from '../_components/ExerciseGrid';
 import { ExerciseFilterBar } from '../_components/ExerciseFilterBar';
+import { ExerciseAddButton } from '../_components/ExerciseAddButton';
 
 export default async function ExercisesPage({
   searchParams,
 }: {
-  searchParams?: Promise<{ q?: string; muscles?: string }>;
+  searchParams?: Promise<{ q?: string; muscles?: string; video?: string }>;
 }) {
   const params = await searchParams;
   const query = params?.q?.trim() ?? '';
   const muscleFilter = params?.muscles?.split(',').filter(Boolean) ?? [];
+  const videoParam = params?.video ?? '';
 
   const supabase = await createClient();
   let dbQuery = supabase
@@ -21,6 +23,8 @@ export default async function ExercisesPage({
 
   if (query) dbQuery = dbQuery.ilike('name', `%${query}%`);
   if (muscleFilter.length > 0) dbQuery = dbQuery.in('muscle_group', muscleFilter);
+  if (videoParam === 'yes') dbQuery = dbQuery.not('video_url', 'is', null);
+  if (videoParam === 'no') dbQuery = dbQuery.is('video_url', null);
 
   const { data, error } = await dbQuery;
 
@@ -37,12 +41,13 @@ export default async function ExercisesPage({
     updatedAt: row.updated_at ? new Date(row.updated_at) : null,
   }));
 
-  const isFiltered = query.length > 0 || muscleFilter.length > 0;
+  const isFiltered = query.length > 0 || muscleFilter.length > 0 || videoParam !== '';
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-10">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-text-primary">Exercise Library</h1>
+        <ExerciseAddButton />
       </div>
 
       {error && (
@@ -53,7 +58,7 @@ export default async function ExercisesPage({
 
       {!error && (
         <>
-          <ExerciseFilterBar initialQuery={query} initialMuscles={muscleFilter} />
+          <ExerciseFilterBar initialQuery={query} initialMuscles={muscleFilter} initialHasVideo={videoParam !== ''} />
 
           {exercises.length === 0 && !isFiltered && (
             <div className="bg-bg-surface border border-border rounded-sm p-12 text-center space-y-3">

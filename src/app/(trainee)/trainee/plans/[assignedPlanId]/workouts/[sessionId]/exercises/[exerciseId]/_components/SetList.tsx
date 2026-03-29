@@ -8,9 +8,10 @@ interface SetListProps {
   sets: SetRow[];
   sessionId: string;
   exerciseId: string; // assigned_schema_exercise_id
+  readOnly?: boolean;
 }
 
-export default function SetList({ sets, sessionId, exerciseId }: SetListProps) {
+export default function SetList({ sets, sessionId, exerciseId, readOnly = false }: SetListProps) {
   const router = useRouter();
 
   // Optimistic state: mark set as completed before server confirms
@@ -55,14 +56,16 @@ export default function SetList({ sets, sessionId, exerciseId }: SetListProps) {
   );
 
   const [isPending, startTransition] = useTransition();
+  const [submittingSet, setSubmittingSet] = useState<number | null>(null);
   const [errorBySet, setErrorBySet] = useState<Record<number, string>>({});
 
   const handleComplete = (setNumber: number) => {
+    if (submittingSet !== null) return; // block if any request in flight
     const edit = editState[setNumber];
     if (!edit) return;
     const weightVal = edit.weight === '' ? null : parseFloat(edit.weight);
 
-    // Clear any prior error for this set
+    setSubmittingSet(setNumber);
     setErrorBySet((prev) => {
       const next = { ...prev };
       delete next[setNumber];
@@ -79,8 +82,11 @@ export default function SetList({ sets, sessionId, exerciseId }: SetListProps) {
         actualWeightKg: weightVal,
         muscleFailure: edit.failure,
       });
+      setSubmittingSet(null);
       if ('error' in result) {
         setErrorBySet((prev) => ({ ...prev, [setNumber]: result.error }));
+      } else {
+        router.refresh();
       }
     });
   };
@@ -117,16 +123,46 @@ export default function SetList({ sets, sessionId, exerciseId }: SetListProps) {
     });
   };
 
+  if (readOnly) {
+    return (
+      <div className="space-y-1">
+        <div className="grid grid-cols-[2rem_1fr_1fr_auto] gap-2 px-1 pb-1 text-xs text-text-secondary font-medium">
+          <span className="text-center">#</span>
+          <span className="text-center">Reps</span>
+          <span className="text-center">Weight (kg)</span>
+          <span className="text-center">Fail</span>
+        </div>
+        {sets.map((set) => (
+          <div
+            key={set.setNumber}
+            className={`grid grid-cols-[2rem_1fr_1fr_auto] gap-2 items-center py-3 border-b border-border ${!set.completed ? 'opacity-30' : ''}`}
+          >
+            <span className="text-xs text-text-secondary font-medium text-center">{set.setNumber}</span>
+            <span className="text-sm text-center text-text-primary font-medium">
+              {set.completed ? set.actualReps : '—'}
+            </span>
+            <span className="text-sm text-center text-text-primary font-medium">
+              {set.completed && set.actualWeightKg != null ? set.actualWeightKg : set.completed ? 'bw' : '—'}
+            </span>
+            <span className="text-xs font-medium text-center">
+              {set.muscleFailure ? <span className="text-red-400">F</span> : <span className="opacity-20">—</span>}
+            </span>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-1">
       {/* Column headers */}
       <div className="grid grid-cols-[2rem_1fr_1fr_auto_2rem_5rem] gap-2 px-1 pb-1 text-xs text-text-secondary font-medium">
-        <span>#</span>
-        <span>Reps</span>
-        <span>Weight (kg)</span>
-        <span>Fail</span>
+        <span className="text-center">#</span>
+        <span className="text-center">Reps</span>
+        <span className="text-center">Weight (kg)</span>
+        <span className="text-center">Fail</span>
         <span></span>
-        <span className="text-right">Last wk</span>
+        <span className="text-right">Prev</span>
       </div>
 
       {/* Set rows */}
@@ -160,12 +196,18 @@ export default function SetList({ sets, sessionId, exerciseId }: SetListProps) {
                 max="100"
                 inputMode="numeric"
                 value={edit.reps}
-                onChange={(e) =>
-                  setEditState((prev) => ({
-                    ...prev,
-                    [set.setNumber]: { ...edit, reps: parseInt(e.target.value, 10) || 0 },
-                  }))
-                }
+                onChange={(e) => {
+                  const newReps = parseInt(e.target.value, 10) || 0;
+                  setEditState((prev) => {
+                    const next = { ...prev, [set.setNumber]: { ...edit, reps: newReps } };
+                    for (const s of optimisticSets) {
+                      if (s.setNumber > set.setNumber && !s.completed) {
+                        next[s.setNumber] = { ...(next[s.setNumber] ?? { reps: s.actualReps, weight: s.actualWeightKg?.toString() ?? '', failure: s.muscleFailure }), reps: newReps };
+                      }
+                    }
+                    return next;
+                  });
+                }}
                 className="w-full text-center bg-bg-page border border-border rounded-sm px-2 py-1.5 text-text-primary text-sm focus:border-accent focus:outline-none"
                 aria-label={`Set ${set.setNumber} reps`}
               />
@@ -177,12 +219,18 @@ export default function SetList({ sets, sessionId, exerciseId }: SetListProps) {
                 min="0"
                 inputMode="decimal"
                 value={edit.weight}
-                onChange={(e) =>
-                  setEditState((prev) => ({
-                    ...prev,
-                    [set.setNumber]: { ...edit, weight: e.target.value },
-                  }))
-                }
+                onChange={(e) => {
+                  const newWeight = e.target.value;
+                  setEditState((prev) => {
+                    const next = { ...prev, [set.setNumber]: { ...edit, weight: newWeight } };
+                    for (const s of optimisticSets) {
+                      if (s.setNumber > set.setNumber && !s.completed) {
+                        next[s.setNumber] = { ...(next[s.setNumber] ?? { reps: s.actualReps, weight: s.actualWeightKg?.toString() ?? '', failure: s.muscleFailure }), weight: newWeight };
+                      }
+                    }
+                    return next;
+                  });
+                }}
                 placeholder="—"
                 className="w-full text-center bg-bg-page border border-border rounded-sm px-2 py-1.5 text-text-primary text-sm focus:border-accent focus:outline-none"
                 aria-label={`Set ${set.setNumber} weight kg`}
@@ -208,27 +256,36 @@ export default function SetList({ sets, sessionId, exerciseId }: SetListProps) {
               <button
                 type="button"
                 onClick={() => handleComplete(set.setNumber)}
-                disabled={isPending}
+                disabled={submittingSet !== null}
                 aria-label={set.completed ? `Set ${set.setNumber} completed` : `Complete set ${set.setNumber}`}
-                className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors cursor-pointer ${
+                className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+                  submittingSet !== null ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'
+                } ${
                   set.completed
                     ? 'bg-accent text-white border border-accent'
                     : 'border border-border text-text-secondary hover:border-accent hover:text-accent'
                 }`}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-4 h-4"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
+                {submittingSet === set.setNumber ? (
+                  <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2.5" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-4 h-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                )}
               </button>
 
               {/* Last week column */}

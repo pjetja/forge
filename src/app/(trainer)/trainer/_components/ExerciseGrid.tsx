@@ -11,7 +11,6 @@ interface ExerciseGridProps {
 
 export function ExerciseGrid({ exercises }: ExerciseGridProps) {
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
-  const [showCreateModal, setShowCreateModal] = useState(false);
   const [editExercise, setEditExercise] = useState<Exercise | null>(null);
 
   function handleEdit(exercise: Exercise) {
@@ -22,15 +21,6 @@ export function ExerciseGrid({ exercises }: ExerciseGridProps) {
 
   return (
     <div>
-      <div className="flex justify-end mb-4">
-        <button
-          onClick={() => setShowCreateModal(true)}
-          className="bg-accent hover:bg-accent-hover text-white rounded-sm px-4 py-2 text-sm font-medium transition-colors cursor-pointer"
-        >
-          + Add exercise
-        </button>
-      </div>
-
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {exercises.map((exercise) => (
           <ExerciseCard
@@ -46,13 +36,6 @@ export function ExerciseGrid({ exercises }: ExerciseGridProps) {
           exercise={selectedExercise}
           onClose={() => setSelectedExercise(null)}
           onEdit={handleEdit}
-        />
-      )}
-
-      {showCreateModal && (
-        <ExerciseFormModal
-          mode="create"
-          onClose={() => setShowCreateModal(false)}
         />
       )}
 

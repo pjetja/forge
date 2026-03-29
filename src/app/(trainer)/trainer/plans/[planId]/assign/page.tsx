@@ -14,51 +14,29 @@ export default async function AssignPlanPage({
   // Fetch plan template
   const { data: planData } = await supabase
     .from('plans')
-    .select('id, name, week_count, workouts_per_week')
+    .select('id, name')
     .eq('id', planId)
     .single();
 
   if (!planData) notFound();
 
-  // Fetch all exercises for all schemas in this plan
-  const { data: schemaExercises } = await supabase
-    .from('schema_exercises')
-    .select(`
-      id,
-      exercise_id,
-      sets,
-      reps,
-      target_weight_kg,
-      per_set_weights,
-      exercises (id, name, muscle_group),
-      workout_schemas!inner (plan_id)
-    `)
-    .eq('workout_schemas.plan_id', planId)
-    .order('sort_order');
-
-  const exercises = (schemaExercises ?? []).map((row: any) => ({
-    schemaExerciseId: row.id,
-    exerciseId: row.exercise_id,
-    exerciseName: row.exercises?.name ?? 'Unknown',
-    muscleGroup: row.exercises?.muscle_group ?? '',
-    sets: row.sets,
-    reps: row.reps,
-    templateWeightKg: row.target_weight_kg ? parseFloat(row.target_weight_kg) : null,
-    templatePerSetWeights: Array.isArray(row.per_set_weights) ? row.per_set_weights : null,
-  }));
-
   // Fetch connected trainees
   const { data: connections } = await supabase
     .from('trainer_trainee_connections')
-    .select(`
-      trainee_auth_uid,
-      users!trainer_trainee_connections_trainee_auth_uid_fkey (name, email)
-    `);
+    .select('trainee_auth_uid');
 
-  const trainees = (connections ?? []).map((c: any) => ({
-    authUid: c.trainee_auth_uid,
-    name: c.users?.[0]?.name ?? 'Unknown',
-    email: c.users?.[0]?.email ?? '',
+  const traineeAuthUids = (connections ?? []).map((c: any) => c.trainee_auth_uid);
+
+  const { data: userRows } = traineeAuthUids.length > 0
+    ? await supabase.from('users').select('auth_uid, name, email').in('auth_uid', traineeAuthUids)
+    : { data: [] };
+
+  const usersByAuthUid = Object.fromEntries((userRows ?? []).map((u: any) => [u.auth_uid, u]));
+
+  const trainees = traineeAuthUids.map((uid: string) => ({
+    authUid: uid,
+    name: usersByAuthUid[uid]?.name ?? 'Unknown',
+    email: usersByAuthUid[uid]?.email ?? '',
   }));
 
   // Check which trainees have existing active/pending plans
@@ -87,10 +65,8 @@ export default async function AssignPlanPage({
 
       <AssignPlanClientPage
         planId={planId}
-        planName={planData.name}
         trainees={trainees}
         traineesWithActivePlan={[...traineesWithActivePlan]}
-        exercises={exercises}
       />
     </div>
   );

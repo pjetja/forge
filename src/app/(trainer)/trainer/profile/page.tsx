@@ -1,7 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import { gravatarUrl } from '@/lib/gravatar';
 import { GravatarAvatar } from '@/components/GravatarAvatar';
-import { signOut } from '@/app/(auth)/login/actions';
 import { TrainerProfileForm } from './_components/TrainerProfileForm';
 
 export default async function TrainerProfilePage() {
@@ -22,7 +21,7 @@ export default async function TrainerProfilePage() {
   const bio = trainer?.bio ?? '';
 
   return (
-    <div className="max-w-xl mx-auto space-y-8">
+    <div className="space-y-8">
       {/* Avatar + identity header */}
       <div className="flex items-center gap-4">
         <GravatarAvatar
@@ -46,15 +45,6 @@ export default async function TrainerProfilePage() {
         <TrainerProfileForm initialName={name} initialBio={bio} />
       </div>
 
-      {/* Sign out */}
-      <form action={signOut}>
-        <button
-          type="submit"
-          className="text-sm text-error hover:text-red-400 transition-colors cursor-pointer"
-        >
-          Sign out
-        </button>
-      </form>
     </div>
   );
 }

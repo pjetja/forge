@@ -92,10 +92,14 @@ export function ExerciseFormModal({
   const title = mode === 'create' ? 'Add exercise' : 'Edit exercise';
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-      <div className="bg-bg-surface border border-border rounded-sm w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50">
+      {/* Backdrop */}
+      <div className="fixed inset-0 bg-black/40" onClick={onClose} aria-hidden="true" />
+
+      {/* Panel — full screen on mobile, right-side panel on desktop */}
+      <div className="fixed inset-0 md:inset-y-0 md:left-auto md:right-0 md:w-[680px] bg-bg-surface md:border-l border-border flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between mb-5">
+        <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-border shrink-0">
           <h2 className="text-xl font-bold text-text-primary">{title}</h2>
           <button
             type="button"
@@ -107,99 +111,102 @@ export function ExerciseFormModal({
           </button>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
-          {/* Name */}
-          <div className="mb-4">
-            <label className="text-sm font-medium text-text-primary mb-1 block">
-              Exercise name <span className="text-error">*</span>
-            </label>
-            <input
-              {...register('name')}
-              type="text"
-              placeholder="e.g. Barbell Back Squat"
-              className="w-full bg-bg-page border border-border rounded-sm px-3 py-2 text-sm text-text-primary focus:border-accent focus:outline-none"
-            />
-            {errors.name && (
-              <p className="text-xs text-error mt-1">{errors.name.message}</p>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col flex-1 min-h-0">
+          {/* Scrollable body */}
+          <div className="flex-1 overflow-y-auto px-6 py-6 space-y-4">
+            {/* Name */}
+            <div>
+              <label className="text-sm font-medium text-text-primary mb-1 block">
+                Exercise name <span className="text-error">*</span>
+              </label>
+              <input
+                {...register('name')}
+                type="text"
+                placeholder="e.g. Barbell Back Squat"
+                className="w-full bg-bg-page border border-border rounded-sm px-3 py-2 text-sm text-text-primary focus:border-accent focus:outline-none"
+              />
+              {errors.name && (
+                <p className="text-xs text-error mt-1">{errors.name.message}</p>
+              )}
+            </div>
+
+            {/* Muscle group */}
+            <div>
+              <label className="text-sm font-medium text-text-primary mb-1 block">
+                Muscle group <span className="text-error">*</span>
+              </label>
+              <select
+                {...register('muscleGroup')}
+                className="w-full bg-bg-page border border-border rounded-sm px-3 py-2 text-sm text-text-primary focus:border-accent focus:outline-none"
+              >
+                <option value="">Select a muscle group</option>
+                {MUSCLE_GROUPS.map((group) => (
+                  <option key={group} value={group}>
+                    {group}
+                  </option>
+                ))}
+              </select>
+              {errors.muscleGroup && (
+                <p className="text-xs text-error mt-1">{errors.muscleGroup.message}</p>
+              )}
+            </div>
+
+            {/* Description */}
+            <div>
+              <label className="text-sm font-medium text-text-primary mb-1 block">
+                Description
+              </label>
+              <textarea
+                {...register('description')}
+                rows={3}
+                placeholder="Optional: describe the exercise technique..."
+                className="w-full bg-bg-page border border-border rounded-sm px-3 py-2 text-sm text-text-primary focus:border-accent focus:outline-none resize-none"
+              />
+              {errors.description && (
+                <p className="text-xs text-error mt-1">{errors.description.message}</p>
+              )}
+            </div>
+
+            {/* Notes */}
+            <div>
+              <label className="text-sm font-medium text-text-primary mb-1 block">
+                Coaching notes
+              </label>
+              <textarea
+                {...register('notes')}
+                rows={3}
+                placeholder="Optional: coaching cues, common mistakes..."
+                className="w-full bg-bg-page border border-border rounded-sm px-3 py-2 text-sm text-text-primary focus:border-accent focus:outline-none resize-none"
+              />
+              {errors.notes && (
+                <p className="text-xs text-error mt-1">{errors.notes.message}</p>
+              )}
+            </div>
+
+            {/* Video URL */}
+            <div>
+              <label className="text-sm font-medium text-text-primary mb-1 block">
+                Video URL (YouTube)
+              </label>
+              <input
+                {...register('videoUrl')}
+                type="url"
+                placeholder="https://www.youtube.com/watch?v=..."
+                className="w-full bg-bg-page border border-border rounded-sm px-3 py-2 text-sm text-text-primary focus:border-accent focus:outline-none"
+              />
+              {errors.videoUrl && (
+                <p className="text-xs text-error mt-1">{errors.videoUrl.message}</p>
+              )}
+            </div>
+
+            {/* Root / server error */}
+            {errors.root && (
+              <p className="text-xs text-error">{errors.root.message}</p>
             )}
           </div>
 
-          {/* Muscle group */}
-          <div className="mb-4">
-            <label className="text-sm font-medium text-text-primary mb-1 block">
-              Muscle group <span className="text-error">*</span>
-            </label>
-            <select
-              {...register('muscleGroup')}
-              className="w-full bg-bg-page border border-border rounded-sm px-3 py-2 text-sm text-text-primary focus:border-accent focus:outline-none"
-            >
-              <option value="">Select a muscle group</option>
-              {MUSCLE_GROUPS.map((group) => (
-                <option key={group} value={group}>
-                  {group}
-                </option>
-              ))}
-            </select>
-            {errors.muscleGroup && (
-              <p className="text-xs text-error mt-1">{errors.muscleGroup.message}</p>
-            )}
-          </div>
-
-          {/* Description */}
-          <div className="mb-4">
-            <label className="text-sm font-medium text-text-primary mb-1 block">
-              Description
-            </label>
-            <textarea
-              {...register('description')}
-              rows={3}
-              placeholder="Optional: describe the exercise technique..."
-              className="w-full bg-bg-page border border-border rounded-sm px-3 py-2 text-sm text-text-primary focus:border-accent focus:outline-none resize-none"
-            />
-            {errors.description && (
-              <p className="text-xs text-error mt-1">{errors.description.message}</p>
-            )}
-          </div>
-
-          {/* Notes */}
-          <div className="mb-4">
-            <label className="text-sm font-medium text-text-primary mb-1 block">
-              Coaching notes
-            </label>
-            <textarea
-              {...register('notes')}
-              rows={3}
-              placeholder="Optional: coaching cues, common mistakes..."
-              className="w-full bg-bg-page border border-border rounded-sm px-3 py-2 text-sm text-text-primary focus:border-accent focus:outline-none resize-none"
-            />
-            {errors.notes && (
-              <p className="text-xs text-error mt-1">{errors.notes.message}</p>
-            )}
-          </div>
-
-          {/* Video URL */}
-          <div className="mb-5">
-            <label className="text-sm font-medium text-text-primary mb-1 block">
-              Video URL (YouTube)
-            </label>
-            <input
-              {...register('videoUrl')}
-              type="url"
-              placeholder="https://www.youtube.com/watch?v=..."
-              className="w-full bg-bg-page border border-border rounded-sm px-3 py-2 text-sm text-text-primary focus:border-accent focus:outline-none"
-            />
-            {errors.videoUrl && (
-              <p className="text-xs text-error mt-1">{errors.videoUrl.message}</p>
-            )}
-          </div>
-
-          {/* Root / server error */}
-          {errors.root && (
-            <p className="text-xs text-error mb-4">{errors.root.message}</p>
-          )}
-
-          {/* Actions */}
-          <div className="flex items-center justify-end gap-3">
+          {/* Footer — sticky actions */}
+          <div className="shrink-0 px-6 py-4 border-t border-border flex items-center justify-end gap-3">
             <button
               type="button"
               onClick={onClose}

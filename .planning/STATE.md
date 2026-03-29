@@ -2,10 +2,10 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
+status: executing
 stopped_at: Completed 08-01-PLAN.md
 last_updated: "2026-03-29T00:04:06.304Z"
-last_activity: 2026-03-28
+last_activity: 2026-03-29 -- Phase 08 execution Wave 1 complete
 progress:
   total_phases: 15
   completed_phases: 14
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-28)
 
 **Core value:** A trainee can open the app mid-workout, see exactly what they did last week on each exercise, and log today's results in under a minute.
-**Current focus:** Phase 07 — main-page-landing-page-with-teasers-to-drive-app-adoption
+**Current focus:** Phase 08 — training-logs-and-body-weight-progression-tracking
 
 ## Current Position
 
-Phase: 08
-Plan: Not started
-Status: Phase 07 complete — all deliverables human-approved
-Last activity: 2026-03-28
+Phase: 08 (training-logs-and-body-weight-progression-tracking) — EXECUTING
+Plan: 1 of 3
+Status: Executing Phase 08
+Last activity: 2026-03-28 -- Phase 08 execution started
 
 Progress: [█████████░] 74%
 

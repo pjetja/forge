@@ -9,6 +9,7 @@ export async function GET(request: NextRequest) {
   const type = searchParams.get('type');
   const role = searchParams.get('role') as 'trainer' | 'trainee' | null;
   const inviteToken = searchParams.get('invite');
+  const next = searchParams.get('next');
 
   // Collect cookies here so we can write them directly onto the redirect response.
   // Using cookies() from next/headers does NOT attach cookies to NextResponse.redirect().
@@ -85,7 +86,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(`${origin}/login?error=no_role`);
   }
 
-  const destination = finalRole === 'trainer' ? '/trainer' : '/trainee';
+  const destination = next ?? (finalRole === 'trainer' ? '/trainer' : '/trainee');
   const response = NextResponse.redirect(`${origin}${destination}`);
 
   // Write session cookies directly onto the redirect response so the browser receives them.

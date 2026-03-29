@@ -42,5 +42,5 @@ export async function signUpTrainer(prevState: unknown, formData: FormData) {
     return { error: 'Signup failed — please try again' };
   }
 
-  redirect('/verify-email');
+  redirect(`/verify-email?email=${encodeURIComponent(email)}`);
 }

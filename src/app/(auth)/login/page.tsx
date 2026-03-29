@@ -14,6 +14,9 @@ export default function LoginPage() {
       </div>
       <LoginForm />
       <p className="text-center text-sm text-text-primary">
+        <a href="/forgot-password" className="text-accent hover:text-accent-hover">Forgot password?</a>
+      </p>
+      <p className="text-center text-sm text-text-primary">
         New here?{' '}
         <a href="/signup/trainer" className="text-accent hover:text-accent-hover">Trainer signup</a>
         {' '}·{' '}

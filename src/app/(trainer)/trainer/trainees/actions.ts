@@ -197,6 +197,25 @@ export async function terminateAssignedPlan(
   return { success: true };
 }
 
+export async function updateTraineeGoals(
+  traineeAuthUid: string,
+  goals: string
+): Promise<{ success: true } | { error: string }> {
+  const supabase = await createClient();
+  const claimsResult = await supabase.auth.getClaims();
+  const claims = claimsResult.data?.claims;
+  if (!claims) return { error: 'Not authenticated' };
+
+  const { error } = await supabase
+    .from('users')
+    .update({ goals: goals || null })
+    .eq('auth_uid', traineeAuthUid);
+
+  if (error) return { error: 'Failed to save goals. Please try again.' };
+  revalidatePath(`/trainer/trainees/${traineeAuthUid}`);
+  return { success: true };
+}
+
 export async function updateTrainerNotes(
   traineeAuthUid: string,
   notes: string

@@ -40,6 +40,8 @@ export default async function SchemaEditorPage({
        reps,
        target_weight_kg,
        per_set_weights,
+       tempo,
+       progression_mode,
        exercises (id, name, muscle_group)`
     )
     .eq('schema_id', schemaId)
@@ -57,6 +59,8 @@ export default async function SchemaEditorPage({
       reps: row.reps,
       targetWeightKg: row.target_weight_kg ? parseFloat(String(row.target_weight_kg)) : null,
       perSetWeights: Array.isArray(row.per_set_weights) ? (row.per_set_weights as number[]) : null,
+      tempo: (row as { tempo?: string | null }).tempo ?? null,
+      progressionMode: (row as { progression_mode?: string | null }).progression_mode ?? 'none',
     };
   });
 

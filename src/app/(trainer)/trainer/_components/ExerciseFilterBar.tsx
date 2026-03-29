@@ -2,18 +2,26 @@
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { MUSCLE_GROUPS } from '@/lib/db/schema';
 import { useState } from 'react';
+import { FilterDropdown } from '@/components/FilterDropdown';
+import { MultiFilterDropdown } from '@/components/MultiFilterDropdown';
+
+const VIDEO_OPTIONS = [
+  { value: '', label: 'All' },
+  { value: 'yes', label: 'Yes' },
+  { value: 'no', label: 'No' },
+];
 
 interface ExerciseFilterBarProps {
   initialQuery: string;
   initialMuscles: string[];
+  initialHasVideo: boolean;
 }
 
-export function ExerciseFilterBar({ initialQuery, initialMuscles }: ExerciseFilterBarProps) {
+export function ExerciseFilterBar({ initialQuery, initialMuscles, initialHasVideo }: ExerciseFilterBarProps) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
 
-  // Local state for the search input (not URL-synced until submit)
   const [inputValue, setInputValue] = useState(initialQuery);
 
   function handleSearch(e: React.FormEvent<HTMLFormElement>) {
@@ -41,10 +49,46 @@ export function ExerciseFilterBar({ initialQuery, initialMuscles }: ExerciseFilt
     replace(`${pathname}?${params.toString()}`);
   }
 
-  const activeMuscles = searchParams.get('muscles')?.split(',').filter(Boolean) ?? [];
+  function handleVideoFilter(val: string) {
+    const params = new URLSearchParams(searchParams.toString());
+    if (val) {
+      params.set('video', val);
+    } else {
+      params.delete('video');
+    }
+    replace(`${pathname}?${params.toString()}`);
+  }
 
-  // Suppress unused variable warning — initialMuscles is used for SSR consistency
+  const activeMuscles = searchParams.get('muscles')?.split(',').filter(Boolean) ?? [];
+  const videoFilter = searchParams.get('video') ?? '';
+  const hasActiveFilters = activeMuscles.length > 0 || (searchParams.get('q') ?? '').length > 0 || videoFilter !== '';
+
+  function clearFilters() {
+    setInputValue('');
+    replace(pathname);
+  }
+
   void initialMuscles;
+  void initialHasVideo;
+
+  const muscleOptions = MUSCLE_GROUPS.map((g) => ({ value: g, label: g }));
+
+  const chipClass = (active: boolean) =>
+    `px-3 py-1 rounded-full text-sm border transition-colors cursor-pointer ${
+      active
+        ? 'bg-accent text-white border-accent'
+        : 'bg-bg-surface text-text-primary border-border hover:border-accent'
+    }`;
+
+  function handleMusclesChange(values: string[]) {
+    const params = new URLSearchParams(searchParams.toString());
+    if (values.length > 0) {
+      params.set('muscles', values.join(','));
+    } else {
+      params.delete('muscles');
+    }
+    replace(`${pathname}?${params.toString()}`);
+  }
 
   return (
     <div className="space-y-3 mb-6">
@@ -55,6 +99,7 @@ export function ExerciseFilterBar({ initialQuery, initialMuscles }: ExerciseFilt
           name="q"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
+          autoComplete="off"
           placeholder="Search exercises..."
           className="flex-1 bg-bg-page border border-border rounded-sm px-3 py-2 text-sm text-text-primary focus:border-accent focus:outline-none"
         />
@@ -64,20 +109,35 @@ export function ExerciseFilterBar({ initialQuery, initialMuscles }: ExerciseFilt
         >
           Search
         </button>
+        <button
+          type="button"
+          onClick={clearFilters}
+          disabled={!hasActiveFilters}
+          aria-label="Clear filters"
+          className="border border-border rounded-sm px-3 py-2 transition-colors disabled:opacity-40 disabled:cursor-not-allowed enabled:text-text-primary enabled:hover:border-accent enabled:cursor-pointer"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
       </form>
 
-      {/* Muscle group chips */}
-      <div className="flex flex-wrap gap-2">
+      {/* Mobile: dropdowns only */}
+      <div className="flex md:hidden items-center gap-2">
+        <FilterDropdown label="Video" options={VIDEO_OPTIONS} value={videoFilter} onChange={handleVideoFilter} />
+        <MultiFilterDropdown label="Muscles" options={muscleOptions} values={activeMuscles} onChange={handleMusclesChange} />
+      </div>
+
+      {/* Desktop: Video dropdown + muscle chips */}
+      <div className="hidden md:flex flex-wrap items-center gap-2">
+        <FilterDropdown label="Video" options={VIDEO_OPTIONS} value={videoFilter} onChange={handleVideoFilter} />
         {MUSCLE_GROUPS.map((muscle) => (
           <button
             key={muscle}
             type="button"
             onClick={() => toggleMuscle(muscle)}
-            className={`px-3 py-1 rounded-full text-sm border transition-colors cursor-pointer ${
-              activeMuscles.includes(muscle)
-                ? 'bg-accent text-white border-accent'
-                : 'bg-bg-surface text-text-primary border-border hover:border-accent'
-            }`}
+            className={chipClass(activeMuscles.includes(muscle))}
           >
             {muscle}
           </button>

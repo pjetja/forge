@@ -20,7 +20,7 @@ export default async function TrainerLayout({ children }: { children: React.Reac
   }
 
   return (
-    <div className="min-h-screen bg-bg-page">
+    <div className="min-h-screen min-w-[768px] bg-bg-page">
       <NavHeader avatarUrl={avatarUrl} userName={trainerName} />
       <main className="max-w-[1280px] mx-auto px-4 py-8">{children}</main>
     </div>

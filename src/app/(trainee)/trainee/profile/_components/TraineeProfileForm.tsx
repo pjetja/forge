@@ -72,49 +72,51 @@ export function TraineeProfileForm({
         />
       </div>
 
-      <div>
-        <label htmlFor="profile-height" className="text-sm text-text-primary mb-1 block">
-          Height (cm)
-        </label>
-        <input
-          id="profile-height"
-          type="number"
-          name="heightCm"
-          min="50"
-          max="300"
-          step="1"
-          defaultValue={initialHeightCm ?? undefined}
-          className="bg-bg-surface border border-border rounded-sm px-3 py-2 text-text-primary focus:border-accent focus:outline-none w-full"
-        />
-      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label htmlFor="profile-height" className="text-sm text-text-primary mb-1 block">
+            Height (cm)
+          </label>
+          <input
+            id="profile-height"
+            type="number"
+            name="heightCm"
+            min="50"
+            max="300"
+            step="1"
+            defaultValue={initialHeightCm ?? undefined}
+            className="bg-bg-surface border border-border rounded-sm px-3 py-2 text-text-primary focus:border-accent focus:outline-none w-full"
+          />
+        </div>
 
-      <div>
-        <label htmlFor="profile-weight" className="text-sm text-text-primary mb-1 block">
-          Weight (kg)
-        </label>
-        <input
-          id="profile-weight"
-          type="number"
-          name="weightKg"
-          min="20"
-          max="500"
-          step="0.1"
-          defaultValue={initialWeightKg ?? undefined}
-          className="bg-bg-surface border border-border rounded-sm px-3 py-2 text-text-primary focus:border-accent focus:outline-none w-full"
-        />
-      </div>
+        <div>
+          <label htmlFor="profile-weight" className="text-sm text-text-primary mb-1 block">
+            Weight (kg)
+          </label>
+          <input
+            id="profile-weight"
+            type="number"
+            name="weightKg"
+            min="20"
+            max="500"
+            step="0.1"
+            defaultValue={initialWeightKg ?? undefined}
+            className="bg-bg-surface border border-border rounded-sm px-3 py-2 text-text-primary focus:border-accent focus:outline-none w-full"
+          />
+        </div>
 
-      <div>
-        <label htmlFor="profile-dob" className="text-sm text-text-primary mb-1 block">
-          Date of birth
-        </label>
-        <input
-          id="profile-dob"
-          type="date"
-          name="dateOfBirth"
-          defaultValue={initialDateOfBirth ?? undefined}
-          className="bg-bg-surface border border-border rounded-sm px-3 py-2 text-text-primary focus:border-accent focus:outline-none w-full"
-        />
+        <div>
+          <label htmlFor="profile-dob" className="text-sm text-text-primary mb-1 block">
+            Date of birth
+          </label>
+          <input
+            id="profile-dob"
+            type="date"
+            name="dateOfBirth"
+            defaultValue={initialDateOfBirth ?? undefined}
+            className="bg-bg-surface border border-border rounded-sm px-3 py-2 text-text-primary focus:border-accent focus:outline-none w-full"
+          />
+        </div>
       </div>
 
       <div>

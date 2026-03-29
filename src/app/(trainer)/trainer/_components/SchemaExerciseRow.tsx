@@ -3,6 +3,8 @@ import { useState, useTransition } from 'react';
 import { CSS } from '@dnd-kit/utilities';
 import { useSortable } from '@dnd-kit/sortable';
 import { updateSchemaExercise, removeExerciseFromSchema } from '../plans/actions';
+import { ProgressionDropdown } from '@/components/ProgressionDropdown';
+import { FilterDropdown } from '@/components/FilterDropdown';
 
 export interface SchemaExerciseItem {
   id: string;
@@ -13,7 +15,10 @@ export interface SchemaExerciseItem {
   reps: number;
   targetWeightKg: number | null;
   perSetWeights: number[] | null;
+  tempo: string | null;
+  progressionMode: string;
 }
+
 
 interface SchemaExerciseRowProps {
   item: SchemaExerciseItem;
@@ -47,6 +52,8 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
       ? item.perSetWeights.map(numStr)
       : Array(item.sets).fill(numStr(item.targetWeightKg))
   );
+  const [tempo, setTempo] = useState(item.tempo ?? '');
+  const [progressionMode, setProgressionMode] = useState(item.progressionMode);
   const [confirmRemove, setConfirmRemove] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -166,9 +173,23 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
         )}
       </div>
 
-      {/* Inputs: sets | reps | weight + per-set toggle */}
-      <div className="flex items-center gap-2 pl-7 flex-wrap">
-        <div className="flex items-center gap-1">
+      {/* Inputs: sets | reps | weight | tempo | progression */}
+      <div className="flex items-end gap-3 pl-7 flex-wrap">
+        <div className="flex flex-col gap-1">
+          <label className="text-xs text-text-primary opacity-60">Weight mode</label>
+          <FilterDropdown
+            label=""
+            options={[
+              { value: 'single', label: 'Single weight' },
+              { value: 'per-set', label: 'Per-set weights' },
+            ]}
+            value={perSetMode ? 'per-set' : 'single'}
+            onChange={(val) => { if ((val === 'per-set') !== perSetMode) togglePerSetMode(); }}
+            buttonClassName="h-7 py-0 text-xs min-w-[126px]"
+          />
+        </div>
+
+        <div className="flex flex-col gap-1">
           <label className="text-xs text-text-primary opacity-60">Sets</label>
           <input
             type="number"
@@ -181,7 +202,7 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
             onBlur={(e) => handleSetsBlur(parseInt(e.target.value, 10) || 1)}
           />
         </div>
-        <div className="flex items-center gap-1">
+        <div className="flex flex-col gap-1">
           <label className="text-xs text-text-primary opacity-60">Reps</label>
           <input
             type="number"
@@ -195,37 +216,50 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
           />
         </div>
 
-        {!perSetMode && (
-          <div className="flex items-center gap-1">
-            <label className="text-xs text-text-primary opacity-60">kg</label>
-            <input
-              type="text"
-              inputMode="decimal"
-              className={inputClass}
-              value={targetWeight}
-              placeholder="0"
-              onFocus={(e) => e.target.select()}
-              onChange={(e) => setTargetWeight(e.target.value)}
-              onBlur={handleWeightBlur}
-            />
-          </div>
-        )}
+        <div className={`flex flex-col gap-1 ${perSetMode ? 'invisible' : ''}`}>
+          <label className="text-xs text-text-primary opacity-60">Weight (kg)</label>
+          <input
+            type="text"
+            inputMode="decimal"
+            className={inputClass}
+            value={targetWeight}
+            placeholder="0"
+            onFocus={(e) => e.target.select()}
+            onChange={(e) => setTargetWeight(e.target.value)}
+            onBlur={handleWeightBlur}
+            tabIndex={perSetMode ? -1 : 0}
+          />
+        </div>
 
-        <button
-          type="button"
-          onClick={togglePerSetMode}
-          className="text-xs text-accent hover:underline cursor-pointer flex-shrink-0"
-        >
-          {perSetMode ? 'Single weight' : 'Per-set weights'}
-        </button>
+        <div className="flex flex-col gap-1">
+          <label className="text-xs text-text-primary opacity-60">Tempo</label>
+          <input
+            type="text"
+            className={inputClass}
+            value={tempo}
+            placeholder="3010"
+            onFocus={(e) => e.target.select()}
+            onChange={(e) => setTempo(e.target.value)}
+            onBlur={() => saveField({ tempo: tempo || null })}
+          />
+        </div>
+
+        <ProgressionDropdown
+          value={progressionMode}
+          onChange={(val) => {
+            setProgressionMode(val);
+            saveField({ progressionMode: val });
+          }}
+          buttonClassName="h-7 py-0 text-xs"
+        />
       </div>
 
       {/* Per-set weight inputs */}
       {perSetMode && (
         <div className="pl-7 flex flex-wrap gap-2">
           {perSetWeights.map((w, i) => (
-            <div key={i} className="flex items-center gap-1">
-              <label className="text-xs text-text-primary opacity-60">S{i + 1}</label>
+            <div key={i} className="flex flex-col gap-1">
+              <label className="text-xs text-text-primary opacity-60">S{i + 1} (kg)</label>
               <input
                 type="text"
                 inputMode="decimal"
@@ -240,7 +274,6 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
                 }}
                 onBlur={() => handlePerSetWeightBlur(i)}
               />
-              <span className="text-xs text-text-primary opacity-60">kg</span>
             </div>
           ))}
         </div>

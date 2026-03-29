@@ -2,15 +2,22 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { gravatarUrl } from '@/lib/gravatar';
 import { GravatarAvatar } from '@/components/GravatarAvatar';
-import { signOut } from '@/app/(auth)/login/actions';
+import { TabSwitcher } from '@/components/TabSwitcher';
 import { TraineeProfileForm } from './_components/TraineeProfileForm';
 import { TrainerCard } from './_components/TrainerCard';
 
-export default async function TraineeProfilePage() {
+export default async function TraineeProfilePage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ tab?: string }>;
+}) {
   const supabase = await createClient();
   const claimsResult = await supabase.auth.getClaims();
   const claims = claimsResult.data?.claims;
   if (!claims) redirect('/login');
+
+  const resolvedSearch = await searchParams;
+  const activeTab = resolvedSearch?.tab === 'trainer' ? 'trainer' : 'profile';
 
   const { data: profile } = await supabase
     .from('users')
@@ -21,7 +28,7 @@ export default async function TraineeProfilePage() {
   const name = profile?.name ?? '';
   const email = profile?.email ?? '';
 
-  // Fetch trainer connection for "My Trainer" card
+  // Fetch trainer connection for "My Trainer" tab
   const { data: connection } = await supabase
     .from('trainer_trainee_connections')
     .select('trainer_auth_uid')
@@ -44,27 +51,30 @@ export default async function TraineeProfilePage() {
   }
 
   return (
-    <div className="max-w-xl mx-auto space-y-8">
+    <div className="space-y-6">
       {/* Avatar + identity header */}
       <div className="flex items-center gap-4">
         <GravatarAvatar
           url={gravatarUrl(email)}
           name={name}
-          size={80}
+          size={64}
           className="ring-2 ring-accent shrink-0"
         />
         <div>
-          <h1 className="text-[28px] font-bold text-text-primary">{name}</h1>
+          <h1 className="text-2xl font-bold text-text-primary">{name}</h1>
           <p className="text-sm text-text-primary opacity-50">{email}</p>
-          <p className="text-sm text-text-primary opacity-50">
-            Set your avatar at gravatar.com
-          </p>
         </div>
       </div>
 
-      {/* Profile section */}
-      <div className="space-y-4">
-        <h2 className="text-xl font-bold text-text-primary">Profile</h2>
+      <TabSwitcher
+        tabs={[
+          { key: 'profile', label: 'Profile' },
+          { key: 'trainer', label: 'My Trainer' },
+        ]}
+        activeTab={activeTab}
+      />
+
+      {activeTab === 'profile' && (
         <TraineeProfileForm
           initialName={name}
           initialGoals={profile?.goals ?? ''}
@@ -72,20 +82,13 @@ export default async function TraineeProfilePage() {
           initialWeightKg={profile?.weight_kg ? Number(profile.weight_kg) : null}
           initialDateOfBirth={profile?.date_of_birth ?? null}
         />
-      </div>
+      )}
 
-      {/* My Trainer section — only shown when a connection exists */}
-      {trainerInfo && <TrainerCard trainer={trainerInfo} />}
-
-      {/* Sign out */}
-      <form action={signOut}>
-        <button
-          type="submit"
-          className="text-sm text-error hover:text-red-400 transition-colors cursor-pointer"
-        >
-          Sign out
-        </button>
-      </form>
+      {activeTab === 'trainer' && (
+        trainerInfo
+          ? <TrainerCard trainer={trainerInfo} />
+          : <p className="text-text-primary opacity-50">No trainer connected yet.</p>
+      )}
     </div>
   );
 }

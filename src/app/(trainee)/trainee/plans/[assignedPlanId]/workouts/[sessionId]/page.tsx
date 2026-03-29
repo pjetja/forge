@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { redirect, notFound } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import FinishWorkoutButton from './_components/FinishWorkoutButton';
 
 interface SessionPageProps {
@@ -25,11 +26,11 @@ export default async function WorkoutSessionPage({ params }: SessionPageProps) {
 
   if (!session) notFound();
 
-  // Fetch the schema with exercises (joined to exercises table for name/muscle_group)
+  // Fetch the schema with exercises (no exercises join — RLS blocks trainee from reading exercises table)
   const { data: rawSchema } = await supabase
     .from('assigned_schemas')
     .select(
-      'id, name, assigned_plan_id, slot_index, assigned_schema_exercises(id, exercise_id, sort_order, sets, reps, target_weight_kg, per_set_weights, exercises(name, muscle_group))'
+      'id, name, assigned_plan_id, slot_index, assigned_schema_exercises(id, exercise_id, sort_order, sets, reps, target_weight_kg, per_set_weights)'
     )
     .eq('id', session.assigned_schema_id)
     .single();
@@ -43,7 +44,6 @@ export default async function WorkoutSessionPage({ params }: SessionPageProps) {
     .eq('id', assignedPlanId)
     .maybeSingle();
 
-  // Normalise the schema: PostgREST join may return array or object for nested relations
   type RawExercise = {
     id: string;
     exercise_id: string;
@@ -52,7 +52,6 @@ export default async function WorkoutSessionPage({ params }: SessionPageProps) {
     reps: number;
     target_weight_kg: string | null;
     per_set_weights: number[] | null;
-    exercises: { name: string; muscle_group: string } | { name: string; muscle_group: string }[] | null;
   };
 
   const rawExercises = Array.isArray(rawSchema.assigned_schema_exercises)
@@ -61,11 +60,17 @@ export default async function WorkoutSessionPage({ params }: SessionPageProps) {
       ? ([rawSchema.assigned_schema_exercises] as unknown as RawExercise[])
       : [];
 
+  // Fetch exercise names/muscle groups via admin client (bypasses exercises RLS which is trainer-only)
+  const exerciseIds = rawExercises.map((ex) => ex.exercise_id);
+  const admin = createAdminClient();
+  const { data: exerciseRows } = exerciseIds.length > 0
+    ? await admin.from('exercises').select('id, name, muscle_group').in('id', exerciseIds)
+    : { data: [] };
+  const exerciseMap = Object.fromEntries((exerciseRows ?? []).map((e) => [e.id, e]));
+
   const exercises = rawExercises
     .map((ex) => {
-      const exerciseInfo = Array.isArray(ex.exercises)
-        ? ex.exercises[0] ?? { name: 'Unknown', muscle_group: '' }
-        : ex.exercises ?? { name: 'Unknown', muscle_group: '' };
+      const info = exerciseMap[ex.exercise_id];
       return {
         id: ex.id,
         exerciseId: ex.exercise_id,
@@ -73,8 +78,8 @@ export default async function WorkoutSessionPage({ params }: SessionPageProps) {
         sets: ex.sets,
         reps: ex.reps,
         targetWeightKg: ex.target_weight_kg,
-        name: exerciseInfo.name,
-        muscleGroup: exerciseInfo.muscle_group,
+        name: info?.name ?? 'Unknown',
+        muscleGroup: info?.muscle_group ?? '',
       };
     })
     .sort((a, b) => a.sortOrder - b.sortOrder);

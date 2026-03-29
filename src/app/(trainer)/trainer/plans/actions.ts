@@ -215,6 +215,8 @@ export type SchemaExerciseData = {
   reps: number;
   targetWeightKg?: number | null;
   perSetWeights?: number[] | null;
+  tempo?: string | null;
+  progressionMode?: string;
   sortOrder: number;
 };
 
@@ -265,6 +267,8 @@ export async function updateSchemaExercise(
   if ('perSetWeights' in data) {
     updates.per_set_weights = data.perSetWeights ?? null;
   }
+  if ('tempo' in data) updates.tempo = data.tempo?.trim() || null;
+  if (data.progressionMode !== undefined) updates.progression_mode = data.progressionMode;
 
   const { error } = await supabase.from('schema_exercises').update(updates).eq('id', exerciseRowId);
   if (error) return { error: 'Failed to update exercise.' };

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { redirect, notFound } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
-import { getPreviousWeekBounds } from '@/lib/utils/week';
+import { createAdminClient } from '@/lib/supabase/admin';
 import SetList from './_components/SetList';
 
 interface ExerciseDetailPageProps {
@@ -39,33 +39,35 @@ export default async function ExerciseDetailPage({ params }: ExerciseDetailPageP
 
   if (!session) notFound();
 
-  // Fetch the assigned schema exercise with joined exercise details
-  type RawExerciseJoin = {
-    id: string;
-    sets: number;
-    reps: number;
-    target_weight_kg: string | null;
-    per_set_weights: number[] | null;
-    exercises:
-      | { name: string; muscle_group: string; description: string | null }
-      | { name: string; muscle_group: string; description: string | null }[]
-      | null;
-  };
-
+  // Fetch the assigned schema exercise (no exercises join — RLS blocks trainee from reading exercises table)
   const { data: rawExercise } = await supabase
     .from('assigned_schema_exercises')
-    .select('id, sets, reps, target_weight_kg, per_set_weights, exercises(name, muscle_group, description)')
+    .select('id, exercise_id, sets, reps, target_weight_kg, per_set_weights, tempo, progression_mode')
     .eq('id', exerciseId)
     .single();
 
   if (!rawExercise) notFound();
 
-  const ex = rawExercise as unknown as RawExerciseJoin;
+  const ex = rawExercise as {
+    id: string;
+    exercise_id: string;
+    sets: number;
+    reps: number;
+    target_weight_kg: string | null;
+    per_set_weights: number[] | null;
+    tempo: string | null;
+    progression_mode: string;
+  };
 
-  // Array.isArray guard for the exercises join (RESEARCH Pitfall 4)
-  const exerciseInfo = Array.isArray(ex.exercises)
-    ? ex.exercises[0] ?? { name: 'Unknown', muscle_group: '', description: null }
-    : ex.exercises ?? { name: 'Unknown', muscle_group: '', description: null };
+  // Fetch exercise name/muscle_group/video via admin client (bypasses trainer-only RLS on exercises table)
+  const admin = createAdminClient();
+  const { data: exerciseRow } = await admin
+    .from('exercises')
+    .select('name, muscle_group, description, video_url')
+    .eq('id', ex.exercise_id)
+    .single();
+
+  const exerciseInfo = exerciseRow ?? { name: 'Unknown', muscle_group: '', description: null, video_url: null };
 
   // Fetch already-logged sets for this exercise in this session
   const { data: loggedSetsData } = await supabase
@@ -89,18 +91,68 @@ export default async function ExerciseDetailPage({ params }: ExerciseDetailPageP
     ])
   );
 
-  // Fetch last week's results scoped to this assigned_schema_exercise_id
-  const { weekStart: prevStart, weekEnd: prevEnd } = getPreviousWeekBounds();
+  // Fetch previous session's results for this exercise.
+  // Priority 1: same assigned_schema_exercise_id (same plan, previous week).
+  // Priority 2: same physical exercise_id from any completed session (cross-plan).
+  //
+  // Security: we first fetch all the trainee's completed session IDs so that
+  // session_sets are always filtered to sessions owned by this trainee.
+  const { data: completedSessionsRaw } = await supabase
+    .from('workout_sessions')
+    .select('id, completed_at')
+    .eq('trainee_auth_uid', claims.sub)
+    .eq('status', 'completed')
+    .neq('id', sessionId)
+    .order('completed_at', { ascending: false });
 
-  const { data: lastSetsData } = await supabase
-    .from('session_sets')
-    .select('set_number, actual_reps, actual_weight_kg, muscle_failure')
-    .eq('assigned_schema_exercise_id', exerciseId)
-    .gte('completed_at', prevStart.toISOString())
-    .lte('completed_at', prevEnd.toISOString())
-    .order('set_number');
+  const completedSessions = completedSessionsRaw ?? [];
+  const completedSessionIds = completedSessions.map((s) => s.id);
+  // Map session_id → rank (0 = most recent) for picking the latest
+  const sessionRecency = new Map(completedSessions.map((s, i) => [s.id, i]));
 
-  const lastSets = lastSetsData ?? [];
+  type RawSet = { session_id: string; set_number: number; actual_reps: number; actual_weight_kg: string | null; muscle_failure: boolean };
+
+  let lastSets: Array<{ set_number: number; actual_reps: number; actual_weight_kg: string | null; muscle_failure: boolean }> = [];
+
+  if (completedSessionIds.length > 0) {
+    // Priority 1: same assigned_schema_exercise_id
+    const { data: samePrev } = await supabase
+      .from('session_sets')
+      .select('session_id, set_number, actual_reps, actual_weight_kg, muscle_failure')
+      .eq('assigned_schema_exercise_id', exerciseId)
+      .in('session_id', completedSessionIds) as { data: RawSet[] | null };
+
+    if (samePrev && samePrev.length > 0) {
+      const mostRecentId = samePrev.reduce((best, s) =>
+        (sessionRecency.get(s.session_id) ?? 999) < (sessionRecency.get(best.session_id) ?? 999) ? s : best
+      ).session_id;
+      lastSets = samePrev.filter((s) => s.session_id === mostRecentId);
+    } else {
+      // Priority 2: same physical exercise_id across other plans
+      const { data: otherAses } = await supabase
+        .from('assigned_schema_exercises')
+        .select('id')
+        .eq('exercise_id', ex.exercise_id)
+        .neq('id', exerciseId);
+
+      const otherAseIds = (otherAses ?? []).map((a) => a.id);
+
+      if (otherAseIds.length > 0) {
+        const { data: crossPrev } = await supabase
+          .from('session_sets')
+          .select('session_id, set_number, actual_reps, actual_weight_kg, muscle_failure')
+          .in('assigned_schema_exercise_id', otherAseIds)
+          .in('session_id', completedSessionIds) as { data: RawSet[] | null };
+
+        if (crossPrev && crossPrev.length > 0) {
+          const mostRecentId = crossPrev.reduce((best, s) =>
+            (sessionRecency.get(s.session_id) ?? 999) < (sessionRecency.get(best.session_id) ?? 999) ? s : best
+          ).session_id;
+          lastSets = crossPrev.filter((s) => s.session_id === mostRecentId);
+        }
+      }
+    }
+  }
 
   // Per-set weights pre-fill
   const perSetWeights = Array.isArray(ex.per_set_weights) ? (ex.per_set_weights as number[]) : null;
@@ -177,11 +229,26 @@ export default async function ExerciseDetailPage({ params }: ExerciseDetailPageP
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-text-primary">{exerciseInfo.name}</h1>
-        {exerciseInfo.muscle_group && (
-          <span className="inline-block mt-1 text-xs text-text-primary border border-border rounded-sm px-1.5 py-0.5">
-            {exerciseInfo.muscle_group}
-          </span>
-        )}
+        <div className="flex flex-wrap items-center gap-1.5 mt-1">
+          {exerciseInfo.muscle_group && (
+            <span className="text-xs text-text-primary border border-border rounded-sm px-1.5 py-0.5">
+              {exerciseInfo.muscle_group}
+            </span>
+          )}
+          {ex.tempo && (
+            <span className="text-xs text-text-primary border border-border rounded-sm px-1.5 py-0.5">
+              Tempo {ex.tempo}
+            </span>
+          )}
+          {ex.progression_mode && ex.progression_mode !== 'none' && (
+            <span className="text-xs text-accent border border-accent/30 rounded-sm px-1.5 py-0.5">
+              {ex.progression_mode === 'linear' && 'Linear progression'}
+              {ex.progression_mode === 'double_progression' && 'Double progression'}
+              {ex.progression_mode === 'rpe' && 'RPE'}
+              {ex.progression_mode === 'rir' && 'RIR'}
+            </span>
+          )}
+        </div>
         {exerciseInfo.description && (
           <p className="mt-2 text-sm text-text-secondary">{exerciseInfo.description}</p>
         )}
@@ -195,21 +262,41 @@ export default async function ExerciseDetailPage({ params }: ExerciseDetailPageP
       )}
 
       {/* Set list */}
-      <SetList sets={setRows} sessionId={sessionId} exerciseId={exerciseId} />
+      <SetList sets={setRows} sessionId={sessionId} exerciseId={exerciseId} readOnly={session.status === 'completed'} />
 
-      {/* Notes placeholder */}
-      <div className="space-y-1">
-        <label className="text-xs text-text-secondary font-medium">
-          Notes <span className="text-text-secondary/60">(coming soon)</span>
-        </label>
-        <textarea
-          disabled
-          rows={3}
-          placeholder="Exercise notes will be saved in a future update"
-          className="w-full bg-bg-surface border border-border rounded-sm px-3 py-2 text-sm text-text-secondary resize-none opacity-50 cursor-not-allowed"
-          aria-disabled="true"
-        />
-      </div>
+      {/* Done button */}
+      {session.status === 'in_progress' && (
+        <Link
+          href={`/trainee/plans/${assignedPlanId}/workouts/${sessionId}`}
+          className="block w-full text-center bg-accent hover:bg-accent-hover text-white rounded-sm py-2.5 text-sm font-semibold transition-colors"
+        >
+          Done
+        </Link>
+      )}
+
+      {/* Video */}
+      {exerciseInfo.video_url && (
+        <div className="space-y-2">
+          <p className="text-xs font-medium text-text-primary opacity-60 uppercase tracking-wide">Exercise video</p>
+          <div className="aspect-video w-full rounded-sm overflow-hidden bg-black">
+            {exerciseInfo.video_url.includes('youtube.com') || exerciseInfo.video_url.includes('youtu.be') ? (
+              <iframe
+                src={exerciseInfo.video_url.replace('watch?v=', 'embed/').replace('youtu.be/', 'youtube.com/embed/')}
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                title={`${exerciseInfo.name} video`}
+              />
+            ) : (
+              <video
+                src={exerciseInfo.video_url}
+                controls
+                className="w-full h-full object-contain"
+              />
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

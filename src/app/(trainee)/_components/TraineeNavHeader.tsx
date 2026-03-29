@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ForgeLogo } from '@/components/ForgeLogo';
 import { GravatarAvatar } from '@/components/GravatarAvatar';
+import { signOut } from '@/app/(auth)/login/actions';
 
 const navLinks = [
   {
@@ -43,14 +44,27 @@ export function TraineeNavHeader({ avatarUrl, userName }: { avatarUrl: string; u
           </Link>
 
           <div className="flex items-center gap-3">
-            {/* Avatar linking to profile — desktop only */}
-            <div className="hidden md:block">
+            {/* Avatar + Sign out — desktop only */}
+            <div className="hidden md:flex items-center gap-3">
               <Link
                 href="/trainee/profile"
                 className="block rounded-full hover:ring-2 hover:ring-accent hover:ring-offset-2 hover:ring-offset-bg-page transition-shadow"
               >
                 <GravatarAvatar url={avatarUrl} name={userName} size={32} />
               </Link>
+              <form action={signOut}>
+                <button
+                  type="submit"
+                  className="text-text-primary hover:text-accent transition-colors cursor-pointer"
+                  aria-label="Sign out"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                  </svg>
+                </button>
+              </form>
             </div>
 
             {/* Hamburger — mobile only */}
@@ -138,8 +152,8 @@ export function TraineeNavHeader({ avatarUrl, userName }: { avatarUrl: string; u
               ))}
             </nav>
 
-            {/* Profile link at bottom */}
-            <div className="px-4 py-4 border-t border-border">
+            {/* Profile + Sign out at bottom */}
+            <div className="px-4 py-4 border-t border-border space-y-3">
               <Link
                 href="/trainee/profile"
                 onClick={() => setSidebarOpen(false)}
@@ -148,6 +162,19 @@ export function TraineeNavHeader({ avatarUrl, userName }: { avatarUrl: string; u
                 <GravatarAvatar url={avatarUrl} name={userName} size={32} />
                 Profile
               </Link>
+              <form action={signOut}>
+                <button
+                  type="submit"
+                  className="text-text-primary hover:text-accent transition-colors cursor-pointer"
+                  aria-label="Sign out"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                  </svg>
+                </button>
+              </form>
             </div>
           </div>
         </div>

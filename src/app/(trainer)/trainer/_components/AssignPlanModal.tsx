@@ -55,8 +55,12 @@ export function AssignPlanModal({
     startTransition(async () => {
       const overrides: WeightOverride[] = exercises.map((ex) => ({
         exerciseId: ex.exerciseId,
+        sets: ex.sets,
+        reps: ex.reps,
         targetWeightKg: weightOverrides[ex.exerciseId] ?? null,
-        perSetWeights: null, // Phase 3: single weight override only in review step
+        perSetWeights: null,
+        tempo: null,
+        progressionMode: 'none',
       }));
       const result = await assignPlan(planId, traineeAuthUid, overrides);
       if ('error' in result) {
@@ -105,8 +109,7 @@ export function AssignPlanModal({
         {/* Exercise weight review */}
         <div className="overflow-y-auto flex-1 p-4 space-y-3">
           <p className="text-xs text-text-primary opacity-60">
-            Adjust target weights for {traineeName}. These are copied from the plan template.
-            {/* Phase 4 inject point: will show last-logged weight from history when available */}
+            Adjust target weights for {traineeName}. Pre-filled from their last time on this plan where available, otherwise from the plan template.
           </p>
           {exercises.map((ex) => (
             <div
@@ -135,7 +138,7 @@ export function AssignPlanModal({
                   onChange={(e) =>
                     setWeightOverrides((prev) => ({
                       ...prev,
-                      [ex.exerciseId]: parseFloat(e.target.value) || null,
+                      [ex.exerciseId]: e.target.value === '' ? null : parseFloat(e.target.value),
                     }))
                   }
                   className="w-20 bg-bg-surface border border-border rounded-sm px-2 py-1 text-sm text-text-primary text-center focus:border-accent focus:outline-none"

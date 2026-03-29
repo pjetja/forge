@@ -1,5 +1,6 @@
 'use server';
 import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { revalidatePath } from 'next/cache';
 
 // ── Workout Session Actions ───────────────────────────────────────────────────
@@ -181,6 +182,55 @@ export async function finishWorkout(
       })
       .eq('id', sessionId)
       .eq('trainee_auth_uid', claims.sub);
+  }
+
+  // Check if the plan is now fully complete (all weeks × workouts done)
+  if (sessionRow) {
+    // Get the assigned plan via the schema
+    const { data: schemaRow } = await supabase
+      .from('assigned_schemas')
+      .select('assigned_plan_id')
+      .eq('id', sessionRow.assigned_schema_id)
+      .single();
+
+    if (schemaRow) {
+      const { data: assignedPlan } = await supabase
+        .from('assigned_plans')
+        .select('id, week_count, workouts_per_week')
+        .eq('id', schemaRow.assigned_plan_id)
+        .eq('trainee_auth_uid', claims.sub)
+        .single();
+
+      if (assignedPlan) {
+        const totalRequired = assignedPlan.week_count * assignedPlan.workouts_per_week;
+
+        // Count all completed sessions for this plan's schemas
+        const { data: planSchemas } = await supabase
+          .from('assigned_schemas')
+          .select('id')
+          .eq('assigned_plan_id', assignedPlan.id);
+
+        const planSchemaIds = (planSchemas ?? []).map((s) => s.id);
+
+        if (planSchemaIds.length > 0) {
+          const { count: completedCount } = await supabase
+            .from('workout_sessions')
+            .select('id', { count: 'exact', head: true })
+            .eq('trainee_auth_uid', claims.sub)
+            .eq('status', 'completed')
+            .in('assigned_schema_id', planSchemaIds);
+
+          if ((completedCount ?? 0) >= totalRequired) {
+            // Use admin client — trainee RLS only allows SELECT on assigned_plans
+            const admin = createAdminClient();
+            await admin
+              .from('assigned_plans')
+              .update({ status: 'completed' })
+              .eq('id', assignedPlan.id);
+          }
+        }
+      }
+    }
   }
 
   revalidatePath('/trainee');
