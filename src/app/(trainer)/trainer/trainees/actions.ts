@@ -235,3 +235,54 @@ export async function updateTrainerNotes(
   revalidatePath(`/trainer/trainees/${traineeAuthUid}`);
   return { success: true };
 }
+
+// ── Body Weight Access Request Actions ────────────────────────────────────────
+
+/**
+ * Trainer requests access to a trainee's body weight data.
+ * Uses upsert to handle re-requesting after a decline.
+ */
+export async function requestBodyWeightAccess(
+  traineeId: string
+): Promise<{ success: true } | { error: string }> {
+  const supabase = await createClient();
+  const claimsResult = await supabase.auth.getClaims();
+  const claims = claimsResult.data?.claims;
+  if (!claims) return { error: 'Not authenticated' };
+
+  const { error } = await supabase.from('body_weight_access_requests').upsert(
+    {
+      trainer_auth_uid: claims.sub,
+      trainee_auth_uid: traineeId,
+      status: 'pending',
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: 'trainer_auth_uid,trainee_auth_uid' }
+  );
+
+  if (error) return { error: 'Could not send request. Please try again.' };
+  revalidatePath(`/trainer/trainees/${traineeId}`);
+  return { success: true };
+}
+
+/**
+ * Trainer revokes their own body weight access request (pending or approved).
+ */
+export async function revokeBodyWeightRequest(
+  traineeId: string
+): Promise<{ success: true } | { error: string }> {
+  const supabase = await createClient();
+  const claimsResult = await supabase.auth.getClaims();
+  const claims = claimsResult.data?.claims;
+  if (!claims) return { error: 'Not authenticated' };
+
+  const { error } = await supabase
+    .from('body_weight_access_requests')
+    .delete()
+    .eq('trainer_auth_uid', claims.sub)
+    .eq('trainee_auth_uid', traineeId);
+
+  if (error) return { error: 'Could not revoke request. Please try again.' };
+  revalidatePath(`/trainer/trainees/${traineeId}`);
+  return { success: true };
+}

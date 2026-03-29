@@ -8,6 +8,8 @@ import { ExercisesTab } from './_components/ExercisesTab';
 import { PhysicalStatsRow } from './_components/PhysicalStatsRow';
 import { TrainerNotesEditor } from './_components/TrainerNotesEditor';
 import { TraineeGoalsEditor } from './_components/TraineeGoalsEditor';
+import { RequestBodyWeightAccessButton } from './_components/RequestBodyWeightAccessButton';
+import { BodyWeightTab } from './_components/BodyWeightTab';
 import { gravatarUrl } from '@/lib/gravatar';
 import { GravatarAvatar } from '@/components/GravatarAvatar';
 
@@ -31,7 +33,7 @@ export default async function TraineeDetailPage({
 }) {
   const { traineeId } = await params;
   const resolvedSearch = await searchParams;
-  const activeTab = ['exercises', 'goals', 'notes'].includes(resolvedSearch?.tab ?? '')
+  const activeTab = ['exercises', 'goals', 'notes', 'body-weight'].includes(resolvedSearch?.tab ?? '')
     ? (resolvedSearch!.tab as string)
     : 'plans';
   const supabase = await createClient();
@@ -75,6 +77,27 @@ export default async function TraineeDetailPage({
     .eq('status', 'active')
     .order('created_at', { ascending: false });
 
+  // Check body weight access status for this trainee
+  const { data: accessRequest } = await supabase
+    .from('body_weight_access_requests')
+    .select('id, status')
+    .eq('trainer_auth_uid', claims?.sub ?? '')
+    .eq('trainee_auth_uid', traineeId)
+    .maybeSingle();
+
+  const bodyWeightAccess = accessRequest?.status ?? null; // null | 'pending' | 'approved' | 'declined'
+
+  // Fetch weight entries if access is approved (RLS policy grants trainer SELECT when approved)
+  let weightEntries: Array<{ id: string; logged_date: string; weight_kg: string; created_at: string }> | null = null;
+  if (bodyWeightAccess === 'approved') {
+    const { data } = await supabase
+      .from('body_weight_logs')
+      .select('id, logged_date, weight_kg, created_at')
+      .eq('trainee_auth_uid', traineeId)
+      .order('logged_date', { ascending: false });
+    weightEntries = data;
+  }
+
   return (
     <div className="space-y-6">
       {/* Back link */}
@@ -105,6 +128,7 @@ export default async function TraineeDetailPage({
           { key: 'exercises', label: 'Exercises' },
           { key: 'goals', label: 'Goals' },
           { key: 'notes', label: 'Notes' },
+          ...(bodyWeightAccess === 'approved' ? [{ key: 'body-weight', label: 'Body Weight' }] : []),
         ]}
         activeTab={activeTab}
       />
@@ -211,6 +235,11 @@ export default async function TraineeDetailPage({
           </div>
         </section>
       )}
+      {/* Body weight access request button — shown on Plans tab */}
+      <RequestBodyWeightAccessButton
+        traineeId={traineeId}
+        accessStatus={bodyWeightAccess}
+      />
       </>
       )}
 
@@ -237,6 +266,11 @@ export default async function TraineeDetailPage({
           traineeId={traineeId}
           initialNotes={connectionRow?.trainer_notes ?? ''}
         />
+      )}
+
+      {/* Body Weight tab content */}
+      {activeTab === 'body-weight' && bodyWeightAccess === 'approved' && weightEntries && (
+        <BodyWeightTab entries={weightEntries} traineeId={traineeId} />
       )}
     </div>
   );
