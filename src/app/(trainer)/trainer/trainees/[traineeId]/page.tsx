@@ -149,7 +149,7 @@ export default async function TraineeDetailPage({
               <div>
                 <p className="font-medium text-text-primary">{activePlan.name}</p>
                 <p className="text-sm text-text-primary mt-1">
-                  {activePlan.week_count} {t('traineeDetail.plans.weeks', { count: activePlan.week_count })} &middot; {activePlan.workouts_per_week} {t('traineeDetail.plans.workoutsPerWeek', { count: activePlan.workouts_per_week })}
+                  {t('traineeDetail.plans.weeks', { count: activePlan.week_count })} &middot; {t('traineeDetail.plans.workoutsPerWeek', { count: activePlan.workouts_per_week })}
                 </p>
               </div>
               <span className="text-xs px-2 py-1 rounded-full font-medium bg-accent/20 text-accent flex-shrink-0">
@@ -214,7 +214,7 @@ export default async function TraineeDetailPage({
                   <div>
                     <p className="font-medium text-text-primary">{plan.name}</p>
                     <p className="text-xs text-text-primary opacity-60 mt-1">
-                      {plan.week_count} {t('traineeDetail.plans.weeks', { count: plan.week_count })} &middot; {t('traineeDetail.plans.completed')}
+                      {t('traineeDetail.plans.weeks', { count: plan.week_count })} &middot; {t('traineeDetail.plans.completed')}
                     </p>
                   </div>
                   <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-text-primary opacity-40 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -229,7 +229,7 @@ export default async function TraineeDetailPage({
                   <div>
                     <p className="font-medium text-text-primary">{plan.name}</p>
                     <p className="text-xs text-text-primary opacity-60 mt-1">
-                      {plan.week_count} {t('traineeDetail.plans.weeks', { count: plan.week_count })} &middot; {t('traineeDetail.plans.terminated')}
+                      {t('traineeDetail.plans.weeks', { count: plan.week_count })} &middot; {t('traineeDetail.plans.terminated')}
                     </p>
                   </div>
                 </div>
