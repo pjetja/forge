@@ -74,7 +74,10 @@ export function ExerciseFilterBar({ initialQuery, initialMuscles, initialHasVide
   void initialMuscles;
   void initialHasVideo;
 
-  const muscleOptions = MUSCLE_GROUPS.map((g) => ({ value: g, label: g }));
+  const toMuscleKey = (name: string) =>
+    name.replace(/\s+(\w)/g, (_, c: string) => c.toUpperCase()).replace(/^(.)/, (c: string) => c.toLowerCase());
+
+  const muscleOptions = MUSCLE_GROUPS.map((g) => ({ value: g, label: tc(`muscleGroup.${toMuscleKey(g)}`) }));
 
   const chipClass = (active: boolean) =>
     `px-3 py-1 rounded-full text-sm border transition-colors cursor-pointer ${
@@ -142,7 +145,7 @@ export function ExerciseFilterBar({ initialQuery, initialMuscles, initialHasVide
             onClick={() => toggleMuscle(muscle)}
             className={chipClass(activeMuscles.includes(muscle))}
           >
-            {muscle}
+            {tc(`muscleGroup.${toMuscleKey(muscle)}`)}
           </button>
         ))}
       </div>

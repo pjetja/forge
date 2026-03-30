@@ -3,132 +3,132 @@
     "nav": {
       "trainees": "Podopieczni",
       "plans": "Plany",
-      "exerciseLibrary": "Biblioteka cwiczen",
-      "exercises": "Cwiczenia",
+      "exerciseLibrary": "Biblioteka ćwiczeń",
+      "exercises": "Ćwiczenia",
       "help": "Pomoc",
-      "language": "Jezyk",
+      "language": "Język",
       "profile": "Profil"
     },
     "button": {
       "save": "Zapisz",
       "cancel": "Anuluj",
-      "delete": "Usun",
+      "delete": "Usuń",
       "add": "Dodaj",
       "edit": "Edytuj",
       "close": "Zamknij",
       "back": "Wstecz",
-      "confirm": "Potwierdz",
+      "confirm": "Potwierdź",
       "duplicate": "Duplikuj",
       "assign": "Przypisz",
       "activate": "Aktywuj",
-      "signOut": "Wyloguj sie"
+      "signOut": "Wyloguj się"
     },
     "empty": {
       "heading": "Brak danych",
-      "body": "Sprawdz ponownie po ukonczeniu treningu."
+      "body": "Sprawdź ponownie po ukończeniu treningu."
     },
     "error": {
-      "generic": "Cos poszlo nie tak. Odswiez strone.",
+      "generic": "Coś poszło nie tak. Odśwież stronę.",
       "required": "To pole jest wymagane.",
-      "invalidEmail": "Podaj prawidlowy adres e-mail."
+      "invalidEmail": "Podaj prawidłowy adres e-mail."
     },
     "label": {
       "email": "E-mail",
-      "password": "Haslo",
-      "name": "Imie",
+      "password": "Hasło",
+      "name": "Imię",
       "search": "Szukaj",
-      "loading": "Ladowanie..."
+      "loading": "Ładowanie..."
     },
     "aria": {
-      "openMenu": "Otworz menu",
+      "openMenu": "Otwórz menu",
       "closeMenu": "Zamknij menu",
-      "signOut": "Wyloguj sie",
-      "forgeHome": "Forge - strona glowna",
+      "signOut": "Wyloguj się",
+      "forgeHome": "Forge - strona główna",
       "close": "Zamknij"
     },
     "landing": {
-      "heroHeading": "Zastap arkusz kalkulacyjny.",
-      "heroSubheading": "Trenerzy tworza plany. Podopieczni rejestruja treningi. W niecala minute.",
-      "ctaTrainer": "Zarejestruj sie jako trener",
-      "ctaTrainee": "Dolacz jako podopieczny",
+      "heroHeading": "Zastąp arkusz kalkulacyjny.",
+      "heroSubheading": "Trenerzy tworzą plany. Podopieczni rejestrują treningi. W niecałą minutę.",
+      "ctaTrainer": "Zarejestruj się jako trener",
+      "ctaTrainee": "Dołącz jako podopieczny",
       "whyForge": "Dlaczego Forge?",
       "feature1Title": "Twórz strukturalne plany",
-      "feature1Description": "Projektuj wielotygodniowe programy z seriami, powtórzeniami i ciezarami.",
+      "feature1Description": "Projektuj wielotygodniowe programy z seriami, powtórzeniami i ciężarami.",
       "feature2Title": "Rejestruj treningi w sekundy",
-      "feature2Description": "Widzisz wyniki z ubieglego tygodnia i szybko zapisujesz dzisiejsze serie.",
-      "feature3Title": "Sledz postepy w czasie",
-      "feature3Description": "Trenerzy monitoruja kazda sesje. Podopieczni obserwuja jak rosna ich ciezary.",
-      "footerLogin": "Masz juz konto? Zaloguj sie",
+      "feature2Description": "Widzisz wyniki z ubiegłego tygodnia i szybko zapisujesz dzisiejsze serie.",
+      "feature3Title": "Śledź postępy w czasie",
+      "feature3Description": "Trenerzy monitorują każdą sesję. Podopieczni obserwują jak rosną ich ciężary.",
+      "footerLogin": "Masz już konto? Zaloguj się",
       "footerHelp": "Pomoc / FAQ"
     },
     "help": {
       "heading": "Pomoc i FAQ",
-      "backToHome": "\u2190 Powrót do strony glównej",
+      "backToHome": "← Powrót do strony głównej",
       "trainers": {
         "sectionHeading": "Dla trenerów",
-        "q1": "Jak stworzyc plan treningowy?",
-        "a1": "Przejdz do zakladki Plany i kliknij 'Nowy plan'. Nadaj planowi nazwe i ustaw liczbe tygodni. Nastepnie dodaj schematy treningowe (np. 'Dzien Push' lub 'Dzien Pull') do kazdego tygodnia. W kazdym schemacie dodaj cwiczenia z biblioteki z docelowymi seriami, powtórzeniami i ciezarem.",
-        "q2": "Jak przypisac plan do podopiecznego?",
-        "a2": "Otwórz dowolny plan i kliknij 'Przypisz'. Wybierz podopiecznego ze swojej listy. Sprawdz ciezary cwiczen i w razie potrzeby dostosuj je dla tego konkretnego podopiecznego. Po przypisaniu podopieczny od razu zobaczy swoje zaplanowane treningi.",
-        "q3": "Jak podejrzec postepy podopiecznego?",
-        "a3": "Przejdz do zakladki Podopieczni i kliknij na imie dowolnego podopiecznego. Zobaczysz jego historie treningów ze wszystkimi sesjami, cwiczeniami oraz faktycznie zalogowanymi seriami, powtórzeniami i ciezarami. Uzyj zakladki Cwiczenia, aby zobaczyc wykresy postepu w wielu planach dla poszczególnych cwiczen."
+        "q1": "Jak stworzyć plan treningowy?",
+        "a1": "Przejdź do zakładki Plany i kliknij 'Nowy plan'. Nadaj planowi nazwę i ustaw liczbę tygodni. Następnie dodaj schematy treningowe (np. 'Dzień Push' lub 'Dzień Pull') do każdego tygodnia. W każdym schemacie dodaj ćwiczenia z biblioteki z docelowymi seriami, powtórzeniami i ciężarem.",
+        "q2": "Jak przypisać plan do podopiecznego?",
+        "a2": "Otwórz dowolny plan i kliknij 'Przypisz'. Wybierz podopiecznego ze swojej listy. Sprawdź ciężary ćwiczeń i w razie potrzeby dostosuj je dla tego konkretnego podopiecznego. Po przypisaniu podopieczny od razu zobaczy swoje zaplanowane treningi.",
+        "q3": "Jak podejrzeć postępy podopiecznego?",
+        "a3": "Przejdź do zakładki Podopieczni i kliknij na imię dowolnego podopiecznego. Zobaczysz jego historię treningów ze wszystkimi sesjami, ćwiczeniami oraz faktycznie zalogowanymi seriami, powtórzeniami i ciężarami. Użyj zakładki Ćwiczenia, aby zobaczyć wykresy postępu w wielu planach dla poszczególnych ćwiczeń."
       },
       "trainees": {
         "sectionHeading": "Dla podopiecznych",
-        "q1": "Jak dolaczyc do trenera?",
-        "a1": "Twój trener wysle Ci link lub kod zaproszenia. Kliknij link lub wpisz kod na stronie dolaczania. Po polaczeniu zobaczysz plany treningowe przypisane przez trenera.",
-        "q2": "Jak zalogowac trening?",
-        "a2": "Otwórz aktualny plan z zakladki Plany. Stuknij trening zaplanowany na dzisiaj, aby rozpoczac sesje. Dla kazdego cwiczenia zobaczysz wyniki z ubieglego tygodnia. Wpisz rzeczywisty ciezar, powtórzenia i serie dla kazdego cwiczenia. Po skonczeniu stuknij 'Zakoncz trening'."
+        "q1": "Jak dołączyć do trenera?",
+        "a1": "Twój trener wyśle Ci link lub kod zaproszenia. Kliknij link lub wpisz kod na stronie dołączania. Po połączeniu zobaczysz plany treningowe przypisane przez trenera.",
+        "q2": "Jak zalogować trening?",
+        "a2": "Otwórz aktualny plan z zakładki Plany. Stuknij trening zaplanowany na dzisiaj, aby rozpocząć sesję. Dla każdego ćwiczenia zobaczysz wyniki z ubiegłego tygodnia. Wpisz rzeczywisty ciężar, powtórzenia i serie dla każdego ćwiczenia. Po skończeniu stuknij 'Zakończ trening'."
       }
     },
     "join": {
-      "invalidHeading": "Nieprawidlowy link zaproszenia",
-      "invalidBody": "Ten link zaproszenia jest nieprawidlowy lub zostal odwolany. Popros trenera o wyslanie nowego.",
-      "alreadyConnectedHeading": "Juz polaczony",
-      "alreadyConnectedBody": "Jestes juz polaczony z trenerem. Musisz sie rozlaczyc z obecnym trenerem, zanim dolaczysz do nowego.",
-      "goToDashboard": "Przejdz do pulpitu",
-      "connectionFailedHeading": "Blad polaczenia",
-      "connectionFailedBody": "Cos poszlo nie tak podczas laczenia z trenerem. Spróbuj ponownie kliknac link."
+      "invalidHeading": "Nieprawidłowy link zaproszenia",
+      "invalidBody": "Ten link zaproszenia jest nieprawidłowy lub został odwołany. Poproś trenera o wysłanie nowego.",
+      "alreadyConnectedHeading": "Już połączony",
+      "alreadyConnectedBody": "Jesteś już połączony z trenerem. Musisz się rozłączyć z obecnym trenerem, zanim dołączysz do nowego.",
+      "goToDashboard": "Przejdź do pulpitu",
+      "connectionFailedHeading": "Błąd połączenia",
+      "connectionFailedBody": "Coś poszło nie tak podczas łączenia z trenerem. Spróbuj ponownie kliknąć link."
     },
     "dateRange": {
-      "allTime": "Caly czas",
-      "last3Months": "Ostatnie 3 miesiace",
-      "lastMonth": "Ostatni miesiac"
+      "allTime": "Cały czas",
+      "last3Months": "Ostatnie 3 miesiące",
+      "lastMonth": "Ostatni miesiąc"
     },
     "completedPlan": {
       "workoutsHeading": "Treningi",
-      "exercisesHeading": "Cwiczenia",
-      "noCompletedWeeks": "Brak ukonczonych tygodni.",
-      "noExercises": "Brak cwiczen w tym planie.",
-      "week": "Tydzien {number}",
-      "tapExercise": "Stuknij cwiczenie, aby wyswietlic wykres postepu."
+      "exercisesHeading": "Ćwiczenia",
+      "noCompletedWeeks": "Brak ukończonych tygodni.",
+      "noExercises": "Brak ćwiczeń w tym planie.",
+      "week": "Tydzień {number}",
+      "tapExercise": "Stuknij ćwiczenie, aby wyświetlić wykres postępu."
     },
     "progression": {
       "label": "Progresja",
-      "infoAriaLabel": "Co to sa tryby progresji?",
+      "infoAriaLabel": "Co to są tryby progresji?",
       "modesModalTitle": "Tryby progresji",
       "fixed": {
-        "label": "Staly",
-        "description": "Ciezar i powtórzenia sa takie same przy kazdej sesji. Uzywaj do treningu techniki, rozgrzewki lub gdy chcesz miec pelna kontrole reczna."
+        "label": "Stały",
+        "description": "Ciężar i powtórzenia są takie same przy każdej sesji. Używaj do treningu techniki, rozgrzewki lub gdy chcesz mieć pełną kontrolę ręczną."
       },
       "linear": {
         "label": "Liniowa",
-        "description": "Dodaj stala ilosc ciezaru przy kazdej sesji (np. +2,5 kg). Najlepsza dla poczatkujacych, którzy rosna w sile przy kazdym treningu.",
+        "description": "Dodaj stałą ilość ciężaru przy każdej sesji (np. +2,5 kg). Najlepsza dla początkujących, którzy rosną w sile przy każdym treningu.",
         "aboutAriaLabel": "O progresji liniowej"
       },
       "doubleProgression": {
         "label": "Podwójna progresja",
-        "description": "Najpierw progresuj powtórzenia w docelowym zakresie (np. 3\u00d78\u201312), nastepnie zwieksz ciezar i wróc do dolnej granicy zakresu. Dobra dla srednio zaawansowanych.",
+        "description": "Najpierw progresuj powtórzenia w docelowym zakresie (np. 3×8–12), następnie zwiększ ciężar i wróć do dolnej granicy zakresu. Dobra dla średnio zaawansowanych.",
         "aboutAriaLabel": "O podwójnej progresji"
       },
       "rpe": {
         "label": "RPE",
-        "description": "Subiektywna ocena wysilku (1\u201310). Trener ustala docelowe RPE (np. RPE 8 = 2 powtórzenia w zapasie). Obciazenie zmienia sie z sesji na sesje na podstawie aktualnej gotowosci.",
+        "description": "Subiektywna ocena wysiłku (1–10). Trener ustala docelowe RPE (np. RPE 8 = 2 powtórzenia w zapasie). Obciążenie zmienia się z sesji na sesję na podstawie aktualnej gotowości.",
         "aboutAriaLabel": "O progresji RPE"
       },
       "rir": {
         "label": "RIR",
-        "description": "Powtórzenia w rezerwie \u2014 ile powtórzen mozna by jeszcze wykonac przed niepowodzeniem. RIR 2 oznacza zatrzymanie sie przy 2 powtórzeniach w zapasie. Podobny do RPE, ale czesto bardziej intuicyjny.",
+        "description": "Powtórzenia w rezerwie — ile powtórzeń można by jeszcze wykonać przed niepowodzeniem. RIR 2 oznacza zatrzymanie się przy 2 powtórzeniach w zapasie. Podobny do RPE, ale często bardziej intuicyjny.",
         "aboutAriaLabel": "O progresji RIR"
       }
     },
@@ -137,26 +137,30 @@
     },
     "muscleGroup": {
       "chest": "Klatka piersiowa",
-      "back": "Plecy",
-      "shoulders": "Barki",
+      "upperBack": "Górna część pleców",
+      "lats": "Najszersze grzbietu",
+      "frontDelts": "Przednie barki",
+      "sideDelts": "Boczne barki",
+      "rearDelts": "Tylne barki",
       "biceps": "Biceps",
       "triceps": "Triceps",
-      "legs": "Nogi",
-      "core": "Core",
-      "cardio": "Kardio",
-      "other": "Inne"
+      "quads": "Czworogłowy uda",
+      "hamstrings": "Dwugłowy uda",
+      "glutes": "Pośladki",
+      "calves": "Łydki",
+      "core": "Mięśnie tułowia"
     },
     "day": {
-      "monday": "Poniedzialek",
+      "monday": "Poniedziałek",
       "tuesday": "Wtorek",
-      "wednesday": "Sroda",
+      "wednesday": "Środa",
       "thursday": "Czwartek",
-      "friday": "Piatek",
+      "friday": "Piątek",
       "saturday": "Sobota",
       "sunday": "Niedziela",
       "mon": "Pon",
       "tue": "Wt",
-      "wed": "Sr",
+      "wed": "Śr",
       "thu": "Czw",
       "fri": "Pt",
       "sat": "Sob",

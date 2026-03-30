@@ -15,6 +15,7 @@ export function TraineeExerciseFilterBar({ initialQuery, initialMuscles }: Train
   const pathname = usePathname();
   const { replace } = useRouter();
   const t = useTranslations('trainee');
+  const tc = useTranslations('common');
 
   const [inputValue, setInputValue] = useState(initialQuery);
 
@@ -65,7 +66,10 @@ export function TraineeExerciseFilterBar({ initialQuery, initialMuscles }: Train
     replace(`${pathname}?${params.toString()}`);
   }
 
-  const muscleOptions = MUSCLE_GROUPS.map((g) => ({ value: g, label: g }));
+  const toMuscleKey = (name: string) =>
+    name.replace(/\s+(\w)/g, (_, c: string) => c.toUpperCase()).replace(/^(.)/, (c: string) => c.toLowerCase());
+
+  const muscleOptions = MUSCLE_GROUPS.map((g) => ({ value: g, label: tc(`muscleGroup.${toMuscleKey(g)}`) }));
 
   const chipClass = (active: boolean) =>
     `px-3 py-1 rounded-full text-sm border transition-colors cursor-pointer ${
@@ -111,7 +115,7 @@ export function TraineeExerciseFilterBar({ initialQuery, initialMuscles }: Train
 
       {/* Mobile: dropdown only */}
       <div className="flex md:hidden items-center gap-2">
-        <MultiFilterDropdown label="Muscles" options={muscleOptions} values={activeMuscles} onChange={handleMusclesChange} />
+        <MultiFilterDropdown label={tc('nav.exercises')} options={muscleOptions} values={activeMuscles} onChange={handleMusclesChange} />
       </div>
 
       {/* Desktop: muscle chips */}
@@ -123,7 +127,7 @@ export function TraineeExerciseFilterBar({ initialQuery, initialMuscles }: Train
             onClick={() => toggleMuscle(muscle)}
             className={chipClass(activeMuscles.includes(muscle))}
           >
-            {muscle}
+            {tc(`muscleGroup.${toMuscleKey(muscle)}`)}
           </button>
         ))}
       </div>

@@ -137,14 +137,18 @@
     },
     "muscleGroup": {
       "chest": "Chest",
-      "back": "Back",
-      "shoulders": "Shoulders",
+      "upperBack": "Upper Back",
+      "lats": "Lats",
+      "frontDelts": "Front Delts",
+      "sideDelts": "Side Delts",
+      "rearDelts": "Rear Delts",
       "biceps": "Biceps",
       "triceps": "Triceps",
-      "legs": "Legs",
-      "core": "Core",
-      "cardio": "Cardio",
-      "other": "Other"
+      "quads": "Quads",
+      "hamstrings": "Hamstrings",
+      "glutes": "Glutes",
+      "calves": "Calves",
+      "core": "Core"
     },
     "day": {
       "monday": "Monday",
