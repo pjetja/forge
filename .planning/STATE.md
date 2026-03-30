@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: verifying
-stopped_at: Completed 09-02-PLAN.md — auth pages + public pages + shared components i18n
-last_updated: "2026-03-29T18:25:05.068Z"
+stopped_at: Completed 09-04-PLAN.md — trainer trainee-detail pages and complete trainee route group i18n
+last_updated: "2026-03-29T19:10:00.000Z"
 last_activity: 2026-03-29
 progress:
   total_phases: 18
@@ -25,9 +25,9 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 
 ## Current Position
 
-Phase: 08
-Plan: Not started
-Status: Phase complete — ready for verification
+Phase: 09
+Plan: 04 complete
+Status: In progress — plan 04 complete, plan 05 next
 Last activity: 2026-03-29
 
 Progress: [█████████░] 74%
@@ -84,6 +84,7 @@ Progress: [█████████░] 74%
 | Phase 08-training-logs-and-body-weight-progression-tracking P03 | 2 | 1 tasks | 4 files |
 | Phase 09-internationalization P01 | 4 | 2 tasks | 17 files |
 | Phase 09-internationalization P02 | 15 | 2 tasks | 20 files |
+| Phase 09-internationalization P04 | 45min | 2 tasks | 46 files |
 
 ## Accumulated Context
 
@@ -190,6 +191,8 @@ Recent decisions affecting current work:
 - [Phase 09-02]: Client auth pages retain 'use client' and use useTranslations — avoids architectural changes for pages that already need client-side state
 - [Phase 09-02]: VerifyEmailFallback extracted as separate component — React hooks cannot be used inline in JSX props
 - [Phase 09-02]: CompletedPlanColumns converted to async server component for getTranslations — callers are all server components, no breaking change
+- [Phase 09-04]: TrainerCard converted from sync to async server component for getTranslations — no breaking change, pure presentational server component
+- [Phase 09-04]: workoutsPerWeek and weeks format strings extracted as separate i18n keys with {count} interpolation — enables proper Polish pluralization in future
 
 ### Roadmap Evolution
 
