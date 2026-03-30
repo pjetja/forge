@@ -238,9 +238,9 @@ Plans:
 Plans:
 - [x] 09-01-PLAN.md — Install next-intl, i18n infrastructure (request config, next.config plugin, root layout provider), LanguageSwitcher component, translation JSON scaffolds, Lato latin-ext fix
 - [x] 09-02-PLAN.md — String extraction: auth pages + shared components + landing/help/join pages
-- [ ] 09-03-PLAN.md — String extraction: trainer core pages + 19 trainer _components
+- [x] 09-03-PLAN.md — String extraction: trainer core pages + 19 trainer _components
 - [x] 09-04-PLAN.md — String extraction: trainer trainee-detail pages + all trainee route group pages
-- [ ] 09-05-PLAN.md — End-to-end verification (automated scan + human walkthrough)
+- [x] 09-05-PLAN.md — End-to-end verification (automated scan + human walkthrough)
 
 ### Phase 10: Demo users — create demo trainer and trainee seeded with random data, add login instructions so visitors can explore the app, demo users cannot change password
 
