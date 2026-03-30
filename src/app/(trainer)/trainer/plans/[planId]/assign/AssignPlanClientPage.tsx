@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 
 interface Trainee {
   authUid: string;
@@ -12,17 +13,18 @@ interface AssignPlanClientPageProps {
   traineesWithActivePlan: string[];
 }
 
-export function AssignPlanClientPage({
+export async function AssignPlanClientPage({
   planId,
   trainees,
   traineesWithActivePlan,
 }: AssignPlanClientPageProps) {
+  const t = await getTranslations('trainer');
   const activePlanSet = new Set(traineesWithActivePlan);
 
   if (trainees.length === 0) {
     return (
       <div className="bg-bg-surface border border-border rounded-sm p-8 text-center">
-        <p className="text-sm text-text-primary opacity-60">No trainees connected yet.</p>
+        <p className="text-sm text-text-primary opacity-60">{t('assign.noTraineesConnected')}</p>
       </div>
     );
   }
@@ -43,7 +45,7 @@ export function AssignPlanClientPage({
             </div>
             {hasActivePlan && (
               <span className="text-xs bg-yellow-900/40 text-yellow-300 px-2 py-0.5 rounded-full flex-shrink-0">
-                Has active plan
+                {t('assign.hasActivePlan')}
               </span>
             )}
           </Link>

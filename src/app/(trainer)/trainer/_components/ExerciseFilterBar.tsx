@@ -2,14 +2,9 @@
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { MUSCLE_GROUPS } from '@/lib/db/schema';
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { FilterDropdown } from '@/components/FilterDropdown';
 import { MultiFilterDropdown } from '@/components/MultiFilterDropdown';
-
-const VIDEO_OPTIONS = [
-  { value: '', label: 'All' },
-  { value: 'yes', label: 'Yes' },
-  { value: 'no', label: 'No' },
-];
 
 interface ExerciseFilterBarProps {
   initialQuery: string;
@@ -18,11 +13,19 @@ interface ExerciseFilterBarProps {
 }
 
 export function ExerciseFilterBar({ initialQuery, initialMuscles, initialHasVideo }: ExerciseFilterBarProps) {
+  const t = useTranslations('trainer');
+  const tc = useTranslations('common');
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
 
   const [inputValue, setInputValue] = useState(initialQuery);
+
+  const VIDEO_OPTIONS = [
+    { value: '', label: tc('video.all') },
+    { value: 'yes', label: tc('video.yes') },
+    { value: 'no', label: tc('video.no') },
+  ];
 
   function handleSearch(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -100,20 +103,20 @@ export function ExerciseFilterBar({ initialQuery, initialMuscles, initialHasVide
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           autoComplete="off"
-          placeholder="Search exercises..."
+          placeholder={t('exercises.searchPlaceholder')}
           className="flex-1 bg-bg-page border border-border rounded-sm px-3 py-2 text-sm text-text-primary focus:border-accent focus:outline-none"
         />
         <button
           type="submit"
           className="bg-accent hover:bg-accent-hover text-white rounded-sm px-4 py-2 text-sm font-medium transition-colors cursor-pointer"
         >
-          Search
+          {t('exercises.searchButton')}
         </button>
         <button
           type="button"
           onClick={clearFilters}
           disabled={!hasActiveFilters}
-          aria-label="Clear filters"
+          aria-label={tc('label.search')}
           className="border border-border rounded-sm px-3 py-2 transition-colors disabled:opacity-40 disabled:cursor-not-allowed enabled:text-text-primary enabled:hover:border-accent enabled:cursor-pointer"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -125,13 +128,13 @@ export function ExerciseFilterBar({ initialQuery, initialMuscles, initialHasVide
 
       {/* Mobile: dropdowns only */}
       <div className="flex md:hidden items-center gap-2">
-        <FilterDropdown label="Video" options={VIDEO_OPTIONS} value={videoFilter} onChange={handleVideoFilter} />
-        <MultiFilterDropdown label="Muscles" options={muscleOptions} values={activeMuscles} onChange={handleMusclesChange} />
+        <FilterDropdown label={t('exercises.videoLabel')} options={VIDEO_OPTIONS} value={videoFilter} onChange={handleVideoFilter} />
+        <MultiFilterDropdown label={tc('nav.exercises')} options={muscleOptions} values={activeMuscles} onChange={handleMusclesChange} />
       </div>
 
       {/* Desktop: Video dropdown + muscle chips */}
       <div className="hidden md:flex flex-wrap items-center gap-2">
-        <FilterDropdown label="Video" options={VIDEO_OPTIONS} value={videoFilter} onChange={handleVideoFilter} />
+        <FilterDropdown label={t('exercises.videoLabel')} options={VIDEO_OPTIONS} value={videoFilter} onChange={handleVideoFilter} />
         {MUSCLE_GROUPS.map((muscle) => (
           <button
             key={muscle}

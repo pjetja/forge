@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { getTranslations } from 'next-intl/server';
 import { SchemaExerciseList } from '../../../../_components/SchemaExerciseList';
 import { SchemaEditorAddButton } from '../../../../_components/SchemaEditorAddButton';
 import type { SchemaExerciseItem } from '../../../../_components/SchemaExerciseRow';
@@ -11,6 +12,7 @@ export default async function SchemaEditorPage({
   params: Promise<{ planId: string; schemaId: string }>;
 }) {
   const { planId, schemaId } = await params;
+  const t = await getTranslations('trainer');
   const supabase = await createClient();
 
   const { data: schemaData } = await supabase
@@ -86,7 +88,7 @@ export default async function SchemaEditorPage({
           &larr; {planData.name}
         </Link>
         <h1 className="text-2xl font-bold text-text-primary mt-1">{schemaData.name}</h1>
-        <p className="text-sm text-text-primary opacity-60">Workout {schemaData.slot_index}</p>
+        <p className="text-sm text-text-primary opacity-60">{t('schemas.workoutLabel', { slot: schemaData.slot_index })}</p>
       </div>
 
       <SchemaExerciseList initialItems={items} schemaId={schemaId} planId={planId} />

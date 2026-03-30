@@ -1,6 +1,7 @@
 'use client';
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { updatePlan, duplicatePlan, deletePlan } from '../plans/actions';
 
 interface PlanDetailHeaderProps {
@@ -29,6 +30,8 @@ const IconTrash = () => (
 );
 
 export function PlanDetailHeader({ planId, initialName, weekCount, workoutsPerWeek, assignedCount }: PlanDetailHeaderProps) {
+  const t = useTranslations('trainer');
+  const tc = useTranslations('common');
   const router = useRouter();
   const [, startTransition] = useTransition();
 
@@ -47,7 +50,7 @@ export function PlanDetailHeader({ planId, initialName, weekCount, workoutsPerWe
 
   function handleDuplicate() {
     startTransition(async () => {
-      const result = await duplicatePlan(planId, `Copy of ${name}`);
+      const result = await duplicatePlan(planId, t('plans.copyOf', { name }));
       if (!('error' in result)) router.push(`/trainer/plans/${result.planId}`);
     });
   }
@@ -69,21 +72,21 @@ export function PlanDetailHeader({ planId, initialName, weekCount, workoutsPerWe
     <div className="space-y-2">
       <div className="flex items-center justify-between gap-2">
         <a href="/trainer/plans" className="text-sm text-text-primary hover:text-accent transition-colors">
-          &larr; Plans
+          &larr; {t('planDetail.backToPlans')}
         </a>
         <div className="flex items-center gap-1">
-          <button type="button" onClick={handleDuplicate} title="Duplicate plan" className={`${iconBtn} hover:text-accent`}>
+          <button type="button" onClick={handleDuplicate} title={t('planDetail.duplicatePlanTitle')} className={`${iconBtn} hover:text-accent`}>
             <IconCopy />
           </button>
           {confirmDelete ? (
             <>
               <button type="button" onClick={handleDelete} className="text-xs text-red-400 hover:text-red-300 px-2 py-1.5 cursor-pointer">
-                {assignedCount > 0 ? 'Archive' : 'Delete'}
+                {assignedCount > 0 ? t('plans.archive') : tc('button.delete')}
               </button>
-              <button type="button" onClick={() => setConfirmDelete(false)} className="text-xs text-text-primary opacity-50 px-2 py-1.5 cursor-pointer">Cancel</button>
+              <button type="button" onClick={() => setConfirmDelete(false)} className="text-xs text-text-primary opacity-50 px-2 py-1.5 cursor-pointer">{tc('button.cancel')}</button>
             </>
           ) : (
-            <button type="button" onClick={() => setConfirmDelete(true)} title={assignedCount > 0 ? 'Archive plan' : 'Delete plan'} className={`${iconBtn} hover:text-red-400`}>
+            <button type="button" onClick={() => setConfirmDelete(true)} title={assignedCount > 0 ? t('planDetail.archivePlanTitle') : t('planDetail.deletePlanTitle')} className={`${iconBtn} hover:text-red-400`}>
               <IconTrash />
             </button>
           )}
@@ -99,7 +102,7 @@ export function PlanDetailHeader({ planId, initialName, weekCount, workoutsPerWe
         />
       ) : (
         <button type="button" onClick={() => { setNameDraft(name); setEditingName(true); }}
-          title="Click to rename"
+          title={t('planDetail.clickToRename')}
           className="group text-left text-2xl font-bold text-text-primary hover:text-accent transition-colors cursor-pointer w-full flex items-center gap-2">
           <span>{name}</span>
           <span className="opacity-0 group-hover:opacity-40 transition-opacity flex-shrink-0">
@@ -109,7 +112,7 @@ export function PlanDetailHeader({ planId, initialName, weekCount, workoutsPerWe
       )}
 
       <p className="text-sm text-text-primary opacity-60">
-        {weekCount} {weekCount === 1 ? 'week' : 'weeks'} &middot; {workoutsPerWeek} {workoutsPerWeek === 1 ? 'workout' : 'workouts'} per week
+        {weekCount} {weekCount === 1 ? t('plans.weekSingular') : t('plans.weekPlural')} &middot; {workoutsPerWeek} {workoutsPerWeek === 1 ? t('plans.workoutSingular') : t('plans.workoutPlural')} {t('plans.perWeek')}
       </p>
     </div>
   );

@@ -1,4 +1,5 @@
 'use client';
+import { useTranslations } from 'next-intl';
 import { Exercise } from '@/lib/db/schema';
 
 interface ExerciseCardProps {
@@ -7,13 +8,15 @@ interface ExerciseCardProps {
 }
 
 export function ExerciseCard({ exercise, onClick }: ExerciseCardProps) {
+  const t = useTranslations('trainer');
+
   return (
     <div
       onClick={onClick}
       className="relative bg-bg-surface border border-border rounded-sm p-4 cursor-pointer hover:border-accent transition-colors"
     >
       {exercise.videoUrl && (
-        <span className="absolute top-3 right-3 text-accent" aria-label="Has video">
+        <span className="absolute top-3 right-3 text-accent" aria-label={t('exercises.hasVideoAriaLabel')}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="w-4 h-4"

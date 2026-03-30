@@ -2,6 +2,7 @@
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { MUSCLE_GROUPS } from '@/lib/db/schema';
+import { useTranslations } from 'next-intl';
 import { addExerciseToSchema } from '../plans/actions';
 
 interface ExerciseOption {
@@ -25,6 +26,8 @@ export function ExercisePickerModal({
   allExercises,
   onClose,
 }: ExercisePickerModalProps) {
+  const t = useTranslations('trainer');
+  const tc = useTranslations('common');
   const router = useRouter();
   const [search, setSearch] = useState('');
   const [selectedMuscle, setSelectedMuscle] = useState<string | null>(null);
@@ -64,11 +67,12 @@ export function ExercisePickerModal({
       <div className="bg-bg-surface border-t sm:border border-border rounded-t-lg sm:rounded-sm w-full sm:max-w-md flex flex-col h-[92vh] sm:h-auto sm:max-h-[80vh]">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-border flex-shrink-0">
-          <h2 className="font-semibold text-text-primary">Add exercise</h2>
+          <h2 className="font-semibold text-text-primary">{t('schemas.addExerciseModal')}</h2>
           <button
             type="button"
             onClick={onClose}
             className="text-text-primary hover:text-accent transition-colors text-xl leading-none cursor-pointer"
+            aria-label={tc('aria.close')}
           >
             &times;
           </button>
@@ -81,7 +85,7 @@ export function ExercisePickerModal({
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search exercises..."
+            placeholder={t('exercises.searchPlaceholder')}
             className="w-full bg-bg-page border border-border rounded-sm px-3 py-2 text-sm text-text-primary focus:border-accent focus:outline-none"
           />
         </div>
@@ -98,7 +102,7 @@ export function ExercisePickerModal({
                   : 'bg-bg-surface text-text-primary border-border hover:border-accent'
               }`}
             >
-              All
+              {t('exercises.allMuscleGroups')}
             </button>
             {MUSCLE_GROUPS.map((g) => (
               <button
@@ -124,7 +128,7 @@ export function ExercisePickerModal({
         {/* Exercise list — min-h prevents layout shift when filter reduces results */}
         <div className="overflow-y-auto flex-1 min-h-[120px]">
           {filtered.length === 0 ? (
-            <p className="p-4 text-sm text-text-primary opacity-60 text-center">No exercises found.</p>
+            <p className="p-4 text-sm text-text-primary opacity-60 text-center">{t('exercises.noExercisesInPicker')}</p>
           ) : (
             filtered.map((exercise) => (
               <button

@@ -14,6 +14,7 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
+import { useTranslations } from 'next-intl';
 import { SchemaExerciseRow, type SchemaExerciseItem } from './SchemaExerciseRow';
 import { reorderSchemaExercises } from '../plans/actions';
 
@@ -24,6 +25,7 @@ interface SchemaExerciseListProps {
 }
 
 export function SchemaExerciseList({ initialItems, schemaId, planId }: SchemaExerciseListProps) {
+  const t = useTranslations('trainer');
   const [items, setItems] = useState(initialItems);
   const [, startTransition] = useTransition();
 
@@ -62,7 +64,7 @@ export function SchemaExerciseList({ initialItems, schemaId, planId }: SchemaExe
   if (items.length === 0) {
     return (
       <div className="bg-bg-surface border border-dashed border-border rounded-sm p-8 text-center">
-        <p className="text-sm text-text-primary opacity-60">No exercises yet. Add your first exercise below.</p>
+        <p className="text-sm text-text-primary opacity-60">{t('schemas.noExercisesYet')}</p>
       </div>
     );
   }

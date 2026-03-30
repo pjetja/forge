@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { getTranslations } from 'next-intl/server';
 import { PlanWeekView } from '../../_components/PlanWeekView';
 import { AddSchemaButton } from '../../_components/AddSchemaButton';
 import { PlanNotesEditor } from '../../_components/PlanNotesEditor';
@@ -12,6 +13,7 @@ interface ActiveTrainee { traineeAuthUid: string; traineeName: string; status: s
 
 export default async function PlanEditorPage({ params }: { params: Promise<{ planId: string }> }) {
   const { planId } = await params;
+  const t = await getTranslations('trainer');
   const supabase = await createClient();
 
   // Try with metadata columns; fall back if migration 0004 not applied
@@ -76,7 +78,7 @@ export default async function PlanEditorPage({ params }: { params: Promise<{ pla
 
       {/* Section 3: Workouts */}
       <div className="space-y-3">
-        <p className="text-base font-medium text-text-primary">Workouts</p>
+        <p className="text-base font-medium text-text-primary">{t('planDetail.workoutsSection')}</p>
         <PlanWeekView
           planId={planId}
           workoutsPerWeek={planData.workouts_per_week}
@@ -95,28 +97,28 @@ export default async function PlanEditorPage({ params }: { params: Promise<{ pla
       <div className="space-y-3">
         <div className="flex items-center justify-between gap-3">
           <p className="text-base font-medium text-text-primary">
-            Trainees ({activeTrainees.length})
+            {t('planDetail.traineesSection', { count: activeTrainees.length })}
           </p>
           <Link
             href={`/trainer/plans/${planId}/assign`}
             className="bg-accent hover:bg-accent-hover text-white rounded-sm px-3 py-1.5 text-sm font-medium transition-colors flex-shrink-0"
           >
-            + Assign trainee
+            {t('planDetail.assignTrainee')}
           </Link>
         </div>
         {activeTrainees.length === 0 ? (
-          <p className="text-sm text-text-primary opacity-50">No trainees assigned yet.</p>
+          <p className="text-sm text-text-primary opacity-50">{t('planDetail.noTraineesAssigned')}</p>
         ) : (
           <div className="bg-bg-surface border border-border rounded-sm p-4 space-y-2">
-            {activeTrainees.map((t) => (
-              <div key={t.traineeAuthUid} className="flex items-center justify-between">
-                <Link href={`/trainer/trainees/${t.traineeAuthUid}`}
+            {activeTrainees.map((trainee) => (
+              <div key={trainee.traineeAuthUid} className="flex items-center justify-between">
+                <Link href={`/trainer/trainees/${trainee.traineeAuthUid}`}
                   className="text-sm text-text-primary hover:text-accent transition-colors">
-                  {t.traineeName}
+                  {trainee.traineeName}
                 </Link>
                 <span className={`text-xs px-2 py-0.5 rounded-full border ${
-                  t.status === 'active' ? 'border-green-700 text-green-400' : 'border-border text-text-primary opacity-60'
-                }`}>{t.status}</span>
+                  trainee.status === 'active' ? 'border-green-700 text-green-400' : 'border-border text-text-primary opacity-60'
+                }`}>{trainee.status}</span>
               </div>
             ))}
           </div>

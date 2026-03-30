@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useTransition, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { duplicatePlan, deletePlan } from '../plans/actions';
 import { useRouter } from 'next/navigation';
 
@@ -31,6 +32,8 @@ const IconChevron = () => (
 );
 
 export function PlanCard({ id, name, weekCount, workoutsPerWeek, assignedCount, tags }: PlanCardProps) {
+  const t = useTranslations('trainer');
+  const tc = useTranslations('common');
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -39,7 +42,7 @@ export function PlanCard({ id, name, weekCount, workoutsPerWeek, assignedCount, 
     e.preventDefault();
     e.stopPropagation();
     startTransition(async () => {
-      const result = await duplicatePlan(id, `Copy of ${name}`);
+      const result = await duplicatePlan(id, t('plans.copyOf', { name }));
       if (!('error' in result)) router.push(`/trainer/plans/${result.planId}`);
     });
   }
@@ -80,8 +83,8 @@ export function PlanCard({ id, name, weekCount, workoutsPerWeek, assignedCount, 
         <p className="font-medium text-text-primary truncate">{name}</p>
         <div className="flex items-center flex-wrap gap-x-2 gap-y-1 mt-0.5">
           <span className="text-sm text-text-primary opacity-60 whitespace-nowrap">
-            {weekCount} {weekCount === 1 ? 'week' : 'weeks'} &middot; {workoutsPerWeek} {workoutsPerWeek === 1 ? 'workout' : 'workouts'} per week
-            {assignedCount > 0 && <> &middot; {assignedCount} trainee{assignedCount !== 1 ? 's' : ''}</>}
+            {weekCount} {weekCount === 1 ? t('plans.weekSingular') : t('plans.weekPlural')} &middot; {workoutsPerWeek} {workoutsPerWeek === 1 ? t('plans.workoutSingular') : t('plans.workoutPlural')} {t('plans.perWeek')}
+            {assignedCount > 0 && <> &middot; {assignedCount} {assignedCount !== 1 ? t('plans.traineePlural') : t('plans.traineeSingular')}</>}
           </span>
           {tags.map((tag) => (
             <span key={tag} className="px-1.5 py-0.5 rounded-full text-xs bg-bg-page border border-border text-text-primary flex-shrink-0">
@@ -96,22 +99,22 @@ export function PlanCard({ id, name, weekCount, workoutsPerWeek, assignedCount, 
           <>
             <button type="button" onClick={handleDeleteConfirm} disabled={isPending}
               className="text-xs text-red-400 hover:text-red-300 px-2 py-1 cursor-pointer disabled:opacity-30">
-              {isPending ? '…' : assignedCount > 0 ? 'Archive' : 'Delete'}
+              {isPending ? '…' : assignedCount > 0 ? t('plans.archive') : tc('button.delete')}
             </button>
             <button type="button" onClick={handleDeleteCancel}
               className="text-xs text-text-primary opacity-50 hover:opacity-100 px-2 py-1 cursor-pointer">
-              Cancel
+              {tc('button.cancel')}
             </button>
           </>
         ) : (
           <>
             <button type="button" onClick={handleDuplicate} disabled={isPending}
-              title="Duplicate plan"
+              title={t('plans.duplicatePlan')}
               className="p-1.5 text-text-primary opacity-40 hover:opacity-100 hover:text-accent transition-opacity cursor-pointer disabled:opacity-20">
               {isPending ? '…' : <IconCopy />}
             </button>
             <button type="button" onClick={handleDeleteClick} disabled={isPending}
-              title={assignedCount > 0 ? 'Archive plan' : 'Delete plan'}
+              title={assignedCount > 0 ? t('plans.archivePlan') : t('plans.deletePlan')}
               className="p-1.5 text-text-primary opacity-40 hover:opacity-100 hover:text-red-400 transition-opacity cursor-pointer disabled:opacity-20">
               <IconTrash />
             </button>

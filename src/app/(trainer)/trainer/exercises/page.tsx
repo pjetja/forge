@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
+import { getTranslations } from 'next-intl/server';
 import { Exercise } from '@/lib/db/schema';
 import { ExerciseGrid } from '../_components/ExerciseGrid';
 import { ExerciseFilterBar } from '../_components/ExerciseFilterBar';
@@ -10,6 +11,7 @@ export default async function ExercisesPage({
 }: {
   searchParams?: Promise<{ q?: string; muscles?: string; video?: string }>;
 }) {
+  const t = await getTranslations('trainer');
   const params = await searchParams;
   const query = params?.q?.trim() ?? '';
   const muscleFilter = params?.muscles?.split(',').filter(Boolean) ?? [];
@@ -46,13 +48,13 @@ export default async function ExercisesPage({
   return (
     <div className="space-y-10">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-text-primary">Exercise Library</h1>
+        <h1 className="text-2xl font-bold text-text-primary">{t('exercises.heading')}</h1>
         <ExerciseAddButton />
       </div>
 
       {error && (
         <div className="bg-red-950 border border-red-800 rounded-sm p-4 text-sm text-red-400">
-          Failed to load exercises. Please refresh the page.
+          {t('exercises.failedToLoad')}
         </div>
       )}
 
@@ -63,21 +65,21 @@ export default async function ExercisesPage({
           {exercises.length === 0 && !isFiltered && (
             <div className="bg-bg-surface border border-border rounded-sm p-12 text-center space-y-3">
               <div className="text-4xl">🏋️</div>
-              <h2 className="font-medium text-text-primary">Your exercise library is empty</h2>
+              <h2 className="font-medium text-text-primary">{t('exercises.emptyLibraryHeading')}</h2>
               <p className="text-sm text-text-primary max-w-sm mx-auto">
-                Add exercises to build your library and reuse them across all your workout plans.
+                {t('exercises.emptyLibraryBody')}
               </p>
             </div>
           )}
 
           {exercises.length === 0 && isFiltered && (
             <div className="bg-bg-surface border border-border rounded-sm p-12 text-center space-y-3">
-              <p className="text-text-primary font-medium">No exercises found</p>
+              <p className="text-text-primary font-medium">{t('exercises.noExercisesFound')}</p>
               <Link
                 href="/trainer/exercises"
                 className="inline-block bg-bg-surface hover:bg-bg-page border border-border rounded-sm px-4 py-2 text-sm text-text-primary transition-colors"
               >
-                Clear filters
+                {t('exercises.clearFilters')}
               </Link>
             </div>
           )}

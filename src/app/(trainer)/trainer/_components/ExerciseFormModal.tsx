@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { MUSCLE_GROUPS } from '@/lib/db/schema';
+import { useTranslations } from 'next-intl';
 import { createExercise, updateExercise, ExerciseFormData } from '../exercises/actions';
 
 function extractYouTubeId(url: string): string | null {
@@ -43,6 +44,8 @@ export function ExerciseFormModal({
   exerciseId,
   onClose,
 }: ExerciseFormModalProps) {
+  const t = useTranslations('trainer');
+  const tc = useTranslations('common');
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -89,7 +92,7 @@ export function ExerciseFormModal({
     });
   }
 
-  const title = mode === 'create' ? 'Add exercise' : 'Edit exercise';
+  const title = mode === 'create' ? t('exercises.addExercise') : t('exercises.editExercise');
 
   return (
     <div className="fixed inset-0 z-50">
@@ -105,7 +108,7 @@ export function ExerciseFormModal({
             type="button"
             onClick={onClose}
             className="text-text-primary hover:text-accent transition-colors text-xl leading-none cursor-pointer"
-            aria-label="Close"
+            aria-label={tc('aria.close')}
           >
             &times;
           </button>
@@ -117,12 +120,12 @@ export function ExerciseFormModal({
             {/* Name */}
             <div>
               <label className="text-sm font-medium text-text-primary mb-1 block">
-                Exercise name <span className="text-error">*</span>
+                {t('exercises.nameLabel')} <span className="text-error">*</span>
               </label>
               <input
                 {...register('name')}
                 type="text"
-                placeholder="e.g. Barbell Back Squat"
+                placeholder={t('exercises.namePlaceholder')}
                 className="w-full bg-bg-page border border-border rounded-sm px-3 py-2 text-sm text-text-primary focus:border-accent focus:outline-none"
               />
               {errors.name && (
@@ -133,13 +136,13 @@ export function ExerciseFormModal({
             {/* Muscle group */}
             <div>
               <label className="text-sm font-medium text-text-primary mb-1 block">
-                Muscle group <span className="text-error">*</span>
+                {t('exercises.muscleGroupLabel')} <span className="text-error">*</span>
               </label>
               <select
                 {...register('muscleGroup')}
                 className="w-full bg-bg-page border border-border rounded-sm px-3 py-2 text-sm text-text-primary focus:border-accent focus:outline-none"
               >
-                <option value="">Select a muscle group</option>
+                <option value="">{t('exercises.muscleGroupPlaceholder')}</option>
                 {MUSCLE_GROUPS.map((group) => (
                   <option key={group} value={group}>
                     {group}
@@ -154,12 +157,12 @@ export function ExerciseFormModal({
             {/* Description */}
             <div>
               <label className="text-sm font-medium text-text-primary mb-1 block">
-                Description
+                {t('exercises.descriptionLabel')}
               </label>
               <textarea
                 {...register('description')}
                 rows={3}
-                placeholder="Optional: describe the exercise technique..."
+                placeholder={t('exercises.descriptionPlaceholder')}
                 className="w-full bg-bg-page border border-border rounded-sm px-3 py-2 text-sm text-text-primary focus:border-accent focus:outline-none resize-none"
               />
               {errors.description && (
@@ -170,12 +173,12 @@ export function ExerciseFormModal({
             {/* Notes */}
             <div>
               <label className="text-sm font-medium text-text-primary mb-1 block">
-                Coaching notes
+                {t('exercises.coachingNotesLabel')}
               </label>
               <textarea
                 {...register('notes')}
                 rows={3}
-                placeholder="Optional: coaching cues, common mistakes..."
+                placeholder={t('exercises.coachingNotesPlaceholder')}
                 className="w-full bg-bg-page border border-border rounded-sm px-3 py-2 text-sm text-text-primary focus:border-accent focus:outline-none resize-none"
               />
               {errors.notes && (
@@ -186,12 +189,12 @@ export function ExerciseFormModal({
             {/* Video URL */}
             <div>
               <label className="text-sm font-medium text-text-primary mb-1 block">
-                Video URL (YouTube)
+                {t('exercises.videoUrlLabel')}
               </label>
               <input
                 {...register('videoUrl')}
                 type="url"
-                placeholder="https://www.youtube.com/watch?v=..."
+                placeholder={t('exercises.videoUrlPlaceholder')}
                 className="w-full bg-bg-page border border-border rounded-sm px-3 py-2 text-sm text-text-primary focus:border-accent focus:outline-none"
               />
               {errors.videoUrl && (
@@ -212,14 +215,14 @@ export function ExerciseFormModal({
               onClick={onClose}
               className="border border-border text-text-primary hover:border-accent rounded-sm px-4 py-2 text-sm cursor-pointer"
             >
-              Cancel
+              {tc('button.cancel')}
             </button>
             <button
               type="submit"
               disabled={isPending}
               className="bg-accent hover:bg-accent-hover text-white rounded-sm px-4 py-2 text-sm font-medium transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              {isPending ? 'Saving...' : mode === 'create' ? 'Add exercise' : 'Save changes'}
+              {isPending ? t('exercises.addingExercise') : mode === 'create' ? t('exercises.addExercise') : t('exercises.saveChanges')}
             </button>
           </div>
         </form>

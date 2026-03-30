@@ -1,5 +1,6 @@
 'use client';
 import { useState, useTransition } from 'react';
+import { useTranslations } from 'next-intl';
 import { Exercise } from '@/lib/db/schema';
 import { deleteExercise } from '../exercises/actions';
 
@@ -17,6 +18,8 @@ interface ExerciseDetailModalProps {
 }
 
 export function ExerciseDetailModal({ exercise, onClose, onEdit }: ExerciseDetailModalProps) {
+  const t = useTranslations('trainer');
+  const tc = useTranslations('common');
   const [deleteConfirming, setDeleteConfirming] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -54,7 +57,7 @@ export function ExerciseDetailModal({ exercise, onClose, onEdit }: ExerciseDetai
           <button
             onClick={onClose}
             className="text-text-primary hover:text-accent transition-colors text-xl leading-none cursor-pointer shrink-0 mt-0.5"
-            aria-label="Close"
+            aria-label={tc('aria.close')}
           >
             &times;
           </button>
@@ -65,7 +68,7 @@ export function ExerciseDetailModal({ exercise, onClose, onEdit }: ExerciseDetai
           {/* Description */}
           {exercise.description && (
             <div>
-              <p className="text-sm font-bold text-text-primary mb-1">Description</p>
+              <p className="text-sm font-bold text-text-primary mb-1">{t('exercises.descriptionSection')}</p>
               <p className="text-sm text-text-primary opacity-80 whitespace-pre-wrap">
                 {exercise.description}
               </p>
@@ -75,7 +78,7 @@ export function ExerciseDetailModal({ exercise, onClose, onEdit }: ExerciseDetai
           {/* Notes */}
           {exercise.notes && (
             <div>
-              <p className="text-sm font-bold text-text-primary mb-1">Coaching notes</p>
+              <p className="text-sm font-bold text-text-primary mb-1">{t('exercises.coachingNotesSection')}</p>
               <p className="text-sm text-text-primary opacity-80 whitespace-pre-wrap">
                 {exercise.notes}
               </p>
@@ -85,12 +88,12 @@ export function ExerciseDetailModal({ exercise, onClose, onEdit }: ExerciseDetai
           {/* Video */}
           {exercise.videoUrl && (
             <div>
-              <p className="text-sm font-bold text-text-primary mb-2">Video</p>
+              <p className="text-sm font-bold text-text-primary mb-2">{t('exercises.videoLabel')}</p>
               {videoId ? (
                 <div className="relative aspect-video w-full">
                   <iframe
                     src={`https://www.youtube-nocookie.com/embed/${videoId}`}
-                    title="Exercise video"
+                    title={t('exercises.videoLabel')}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                     className="absolute inset-0 w-full h-full rounded-sm"
@@ -103,7 +106,7 @@ export function ExerciseDetailModal({ exercise, onClose, onEdit }: ExerciseDetai
                   rel="noopener noreferrer"
                   className="text-sm text-accent hover:underline"
                 >
-                  Watch video
+                  {t('exercises.watchVideo')}
                 </a>
               )}
             </div>
@@ -120,7 +123,7 @@ export function ExerciseDetailModal({ exercise, onClose, onEdit }: ExerciseDetai
               onClick={() => onEdit(exercise)}
               className="bg-accent hover:bg-accent-hover text-white rounded-sm px-4 py-2 text-sm font-medium transition-colors cursor-pointer"
             >
-              Edit
+              {tc('button.edit')}
             </button>
 
             {!deleteConfirming ? (
@@ -128,7 +131,7 @@ export function ExerciseDetailModal({ exercise, onClose, onEdit }: ExerciseDetai
                 onClick={() => setDeleteConfirming(true)}
                 className="border border-red-800 text-red-400 hover:bg-red-950 rounded-sm px-4 py-2 text-sm font-medium transition-colors cursor-pointer"
               >
-                Delete
+                {tc('button.delete')}
               </button>
             ) : (
               <>
@@ -137,14 +140,14 @@ export function ExerciseDetailModal({ exercise, onClose, onEdit }: ExerciseDetai
                   disabled={isPending}
                   className="bg-red-700 hover:bg-red-800 text-white rounded-sm px-4 py-2 text-sm font-medium transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  {isPending ? 'Deleting...' : 'Confirm delete?'}
+                  {isPending ? t('exercises.deleting') : t('exercises.deleteConfirm')}
                 </button>
                 <button
                   onClick={() => setDeleteConfirming(false)}
                   disabled={isPending}
                   className="border border-border text-text-primary hover:border-accent rounded-sm px-4 py-2 text-sm cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  Cancel
+                  {tc('button.cancel')}
                 </button>
               </>
             )}

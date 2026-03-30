@@ -233,12 +233,12 @@ Plans:
 **Goal:** All user-visible UI text is extracted into i18n keys with Polish and English translations, Polish is the default locale, and a PL | EN language switcher toggle appears in both nav headers
 **Requirements**: I18N-01, I18N-02, I18N-03, I18N-04, I18N-05, I18N-06, I18N-07, I18N-08, I18N-09
 **Depends on:** Phase 8
-**Plans:** 5 plans
+**Plans:** 3/5 plans executed
 
 Plans:
 - [x] 09-01-PLAN.md — Install next-intl, i18n infrastructure (request config, next.config plugin, root layout provider), LanguageSwitcher component, translation JSON scaffolds, Lato latin-ext fix
 - [x] 09-02-PLAN.md — String extraction: auth pages + shared components + landing/help/join pages
-- [ ] 09-03-PLAN.md — String extraction: trainer core pages + 19 trainer _components
+- [x] 09-03-PLAN.md — String extraction: trainer core pages + 19 trainer _components
 - [ ] 09-04-PLAN.md — String extraction: trainer trainee-detail pages + all trainee route group pages
 - [ ] 09-05-PLAN.md — End-to-end verification (automated scan + human walkthrough)
 

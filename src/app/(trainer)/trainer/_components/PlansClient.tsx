@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { PlanCard } from './PlanCard';
 
 interface Plan {
@@ -19,6 +20,7 @@ interface PlansClientProps {
 }
 
 export function PlansClient({ plans, allTags, migrationPending }: PlansClientProps) {
+  const t = useTranslations('trainer');
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
   const filtered = selectedTag
@@ -29,17 +31,16 @@ export function PlansClient({ plans, allTags, migrationPending }: PlansClientPro
     <div className="space-y-6">
       {migrationPending && (
         <div className="bg-yellow-950 border border-yellow-700 rounded-sm p-3 text-sm text-yellow-300">
-          Apply <strong>migration 0004</strong> in Supabase SQL Editor to enable tags, notes, and archive features.
-          Plans are shown without filtering until then.
+          {t('plans.migrationNotice')}
         </div>
       )}
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-text-primary">Plans</h1>
+        <h1 className="text-2xl font-bold text-text-primary">{t('plans.heading')}</h1>
         <Link
           href="/trainer/plans/new"
           className="bg-accent hover:bg-accent-hover text-white rounded-sm px-4 py-2 text-sm font-medium transition-colors"
         >
-          + New plan
+          {t('plans.newPlan')}
         </Link>
       </div>
 
@@ -54,7 +55,7 @@ export function PlansClient({ plans, allTags, migrationPending }: PlansClientPro
                 : 'bg-bg-surface text-text-primary border-border hover:border-accent'
             }`}
           >
-            All
+            {t('plans.allFilter')}
           </button>
           {allTags.map((tag) => (
             <button
@@ -75,22 +76,22 @@ export function PlansClient({ plans, allTags, migrationPending }: PlansClientPro
       {plans.length === 0 && (
         <div className="bg-bg-surface border border-border rounded-sm p-12 text-center space-y-3">
           <div className="text-4xl">📋</div>
-          <h2 className="font-medium text-text-primary">No plans yet</h2>
+          <h2 className="font-medium text-text-primary">{t('plans.noPlansYet')}</h2>
           <p className="text-sm text-text-primary opacity-60 max-w-sm mx-auto">
-            Create your first workout plan template. You can assign it to trainees after building it.
+            {t('plans.noPlansBody')}
           </p>
           <Link
             href="/trainer/plans/new"
             className="inline-block mt-2 bg-accent hover:bg-accent-hover text-white rounded-sm px-4 py-2 text-sm font-medium transition-colors"
           >
-            Create a plan
+            {t('plans.createFirstPlan')}
           </Link>
         </div>
       )}
 
       {plans.length > 0 && filtered.length === 0 && (
         <p className="text-sm text-text-primary opacity-60 text-center py-8">
-          No plans with tag &ldquo;{selectedTag}&rdquo;.
+          {t('plans.noPlansWithTag', { tag: selectedTag ?? '' })}
         </p>
       )}
 
