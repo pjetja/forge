@@ -1,5 +1,6 @@
 'use client';
 import { useState, useTransition } from 'react';
+import { useTranslations } from 'next-intl';
 import { editAssignedPlan, type AssignedExerciseUpdate } from '../../../../actions';
 
 interface AssignedExercise {
@@ -26,6 +27,7 @@ export function EditAssignedPlanClient({
 }: EditAssignedPlanClientProps) {
   const [, startTransition] = useTransition();
   const [saved, setSaved] = useState(false);
+  const t = useTranslations('trainer');
 
   function saveUpdates(updates: AssignedExerciseUpdate[]) {
     startTransition(async () => {
@@ -42,7 +44,7 @@ export function EditAssignedPlanClient({
     <div className="space-y-3">
       {saved && (
         <div className="text-sm text-accent bg-accent/10 border border-accent/30 rounded-sm px-3 py-2">
-          Changes saved
+          {t('traineeDetail.editPlan.changesSaved')}
         </div>
       )}
       {exercises.map((ex) => (
@@ -51,10 +53,12 @@ export function EditAssignedPlanClient({
           exercise={ex}
           onSave={(updates) => saveUpdates([updates])}
           inputClass={inputClass}
+          setsLabel={t('traineeDetail.editPlan.sets')}
+          repsLabel={t('traineeDetail.editPlan.reps')}
         />
       ))}
       {exercises.length === 0 && (
-        <p className="text-sm text-text-primary opacity-60">No exercises in this plan.</p>
+        <p className="text-sm text-text-primary opacity-60">{t('traineeDetail.editPlan.noExercises')}</p>
       )}
     </div>
   );
@@ -64,10 +68,14 @@ function ExerciseEditRow({
   exercise,
   onSave,
   inputClass,
+  setsLabel,
+  repsLabel,
 }: {
   exercise: AssignedExercise;
   onSave: (update: AssignedExerciseUpdate) => void;
   inputClass: string;
+  setsLabel: string;
+  repsLabel: string;
 }) {
   const [sets, setSets] = useState(exercise.sets);
   const [reps, setReps] = useState(exercise.reps);
@@ -81,7 +89,7 @@ function ExerciseEditRow({
       </div>
       <div className="flex items-center gap-2 flex-shrink-0">
         <div className="flex flex-col items-center gap-0.5">
-          <span className="text-xs text-text-primary opacity-50">Sets</span>
+          <span className="text-xs text-text-primary opacity-50">{setsLabel}</span>
           <input
             type="number"
             className={inputClass}
@@ -95,7 +103,7 @@ function ExerciseEditRow({
           />
         </div>
         <div className="flex flex-col items-center gap-0.5">
-          <span className="text-xs text-text-primary opacity-50">Reps</span>
+          <span className="text-xs text-text-primary opacity-50">{repsLabel}</span>
           <input
             type="number"
             className={inputClass}

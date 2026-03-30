@@ -1,6 +1,7 @@
 'use client';
 import { useOptimistic, useTransition, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { completeSet, addSet } from '@/app/(trainee)/trainee/actions';
 import type { SetRow } from '../page';
 
@@ -13,6 +14,7 @@ interface SetListProps {
 
 export default function SetList({ sets, sessionId, exerciseId, readOnly = false }: SetListProps) {
   const router = useRouter();
+  const t = useTranslations('trainee');
 
   // Optimistic state: mark set as completed before server confirms
   const [optimisticSets, addOptimistic] = useOptimistic(
@@ -127,10 +129,10 @@ export default function SetList({ sets, sessionId, exerciseId, readOnly = false 
     return (
       <div className="space-y-1">
         <div className="grid grid-cols-[2rem_1fr_1fr_auto] gap-2 px-1 pb-1 text-xs text-text-secondary font-medium">
-          <span className="text-center">#</span>
-          <span className="text-center">Reps</span>
-          <span className="text-center">Weight (kg)</span>
-          <span className="text-center">Fail</span>
+          <span className="text-center">{t('setList.colNumber')}</span>
+          <span className="text-center">{t('setList.colReps')}</span>
+          <span className="text-center">{t('setList.colWeight')}</span>
+          <span className="text-center">{t('setList.colFail')}</span>
         </div>
         {sets.map((set) => (
           <div
@@ -157,12 +159,12 @@ export default function SetList({ sets, sessionId, exerciseId, readOnly = false 
     <div className="space-y-1">
       {/* Column headers */}
       <div className="grid grid-cols-[2rem_1fr_1fr_auto_2rem_5rem] gap-2 px-1 pb-1 text-xs text-text-secondary font-medium">
-        <span className="text-center">#</span>
-        <span className="text-center">Reps</span>
-        <span className="text-center">Weight (kg)</span>
-        <span className="text-center">Fail</span>
+        <span className="text-center">{t('setList.colNumber')}</span>
+        <span className="text-center">{t('setList.colReps')}</span>
+        <span className="text-center">{t('setList.colWeight')}</span>
+        <span className="text-center">{t('setList.colFail')}</span>
         <span></span>
-        <span className="text-right">Prev</span>
+        <span className="text-right">{t('setList.colPrev')}</span>
       </div>
 
       {/* Set rows */}
@@ -330,7 +332,7 @@ export default function SetList({ sets, sessionId, exerciseId, readOnly = false 
             <line x1="12" y1="5" x2="12" y2="19" />
             <line x1="5" y1="12" x2="19" y2="12" />
           </svg>
-          Add set
+          {t('setList.addSet')}
         </button>
       </div>
     </div>

@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { finishWorkout } from '@/app/(trainee)/trainee/actions';
 
 interface FinishWorkoutButtonProps {
@@ -23,6 +24,7 @@ export default function FinishWorkoutButton({
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const t = useTranslations('trainee');
 
   // Enrichment state (Phase 8)
   const [durationMinutes, setDurationMinutes] = useState<string>('');
@@ -76,7 +78,7 @@ export default function FinishWorkoutButton({
         onClick={handleFinishClick}
         className="w-full py-3 bg-accent text-white font-semibold rounded-sm hover:bg-accent/90 transition-colors"
       >
-        Finish Workout
+        {t('finishWorkout.button')}
       </button>
     );
   }
@@ -84,7 +86,7 @@ export default function FinishWorkoutButton({
   if (uiState === 'done') {
     return (
       <div className="w-full py-3 bg-accent/10 border border-accent/30 rounded-sm text-center text-sm text-accent font-medium">
-        Workout finished — redirecting...
+        {t('finishWorkout.redirecting')}
       </div>
     );
   }
@@ -92,29 +94,29 @@ export default function FinishWorkoutButton({
   // confirming or submitting
   return (
     <div className="bg-bg-surface border border-border rounded-sm p-4 space-y-3">
-      <h2 className="text-base font-semibold text-text-primary">Finish this workout?</h2>
+      <h2 className="text-base font-semibold text-text-primary">{t('finishWorkout.confirmHeading')}</h2>
 
       <p className="text-sm text-text-primary">
-        {loggedSetCount} of {totalPlanSets} sets logged
+        {t('finishWorkout.setsLogged', { logged: loggedSetCount, total: totalPlanSets })}
       </p>
 
       {!allSetsLogged && (
         <p className="text-sm text-amber-400">
-          You haven&apos;t logged all planned sets. Finish anyway?
+          {t('finishWorkout.notAllLogged')}
         </p>
       )}
 
       {allSetsLogged && (
-        <p className="text-sm text-accent font-medium">All sets completed!</p>
+        <p className="text-sm text-accent font-medium">{t('finishWorkout.allSetsComplete')}</p>
       )}
 
       {/* ── Enrichment fields (Phase 8) ── */}
       <div className="border-t border-border pt-3 mt-1 space-y-3">
-        <p className="text-xs text-text-primary opacity-60 mb-2">Optional session notes</p>
+        <p className="text-xs text-text-primary opacity-60 mb-2">{t('finishWorkout.optionalNotes')}</p>
 
         {/* Training time */}
         <div>
-          <label className="text-xs text-text-primary opacity-60 mb-1 block">Training time (min)</label>
+          <label className="text-xs text-text-primary opacity-60 mb-1 block">{t('finishWorkout.trainingTime')}</label>
           <input
             type="number"
             inputMode="numeric"
@@ -130,7 +132,7 @@ export default function FinishWorkoutButton({
 
         {/* Kcal burned */}
         <div>
-          <label className="text-xs text-text-primary opacity-60 mb-1 block">Kcal burned</label>
+          <label className="text-xs text-text-primary opacity-60 mb-1 block">{t('finishWorkout.kcalBurned')}</label>
           <input
             type="number"
             inputMode="numeric"
@@ -146,7 +148,7 @@ export default function FinishWorkoutButton({
 
         {/* Difficulty (RPE 1-10) */}
         <div>
-          <label className="text-xs text-text-primary opacity-60 mb-1 block">Difficulty (1–10)</label>
+          <label className="text-xs text-text-primary opacity-60 mb-1 block">{t('finishWorkout.difficulty')}</label>
           <div className="flex gap-1">
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
               <button
@@ -177,7 +179,7 @@ export default function FinishWorkoutButton({
           disabled={isPending || uiState === 'submitting'}
           className="flex-1 py-2.5 bg-accent text-white font-semibold rounded-sm hover:bg-accent/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          {isPending || uiState === 'submitting' ? 'Finishing...' : 'Confirm & Finish'}
+          {isPending || uiState === 'submitting' ? t('finishWorkout.finishing') : t('finishWorkout.confirmFinish')}
         </button>
 
         <button
@@ -185,7 +187,7 @@ export default function FinishWorkoutButton({
           disabled={isPending || uiState === 'submitting'}
           className="flex-1 py-2.5 border border-border text-text-primary font-medium rounded-sm hover:border-accent/50 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          Keep going
+          {t('finishWorkout.keepGoing')}
         </button>
       </div>
     </div>

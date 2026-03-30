@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { DateRangeToggle } from '@/components/DateRangeToggle';
 import {
   LineChart,
@@ -20,6 +21,7 @@ interface BodyWeightChartProps {
 export function BodyWeightChart({ entries }: BodyWeightChartProps) {
   const [showChart, setShowChart] = useState(false);
   const [dateRange, setDateRange] = useState<DateRange>('all');
+  const t = useTranslations('trainee');
 
   function getCutoffDate(range: DateRange): Date | null {
     if (range === 'all') return null;
@@ -55,7 +57,7 @@ export function BodyWeightChart({ entries }: BodyWeightChartProps) {
         onClick={() => setShowChart((prev) => !prev)}
         className="text-sm text-accent font-bold hover:text-accent-hover transition-colors underline-offset-4 hover:underline cursor-pointer"
       >
-        {showChart ? 'Hide chart' : 'Show chart'}
+        {showChart ? t('bodyWeight.hideChart') : t('bodyWeight.showChart')}
       </button>
 
       {showChart && (
@@ -63,7 +65,7 @@ export function BodyWeightChart({ entries }: BodyWeightChartProps) {
           <DateRangeToggle value={dateRange} onChange={setDateRange} />
           {chartData.length < 2 ? (
             <p className="text-sm text-text-primary opacity-60">
-              Not enough data to show a chart. Log at least 2 entries to see your trend.
+              {t('bodyWeight.notEnoughData')}
             </p>
           ) : (
             <ResponsiveContainer width="100%" height={240}>

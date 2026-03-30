@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 import { EditAssignedPlanClient } from './EditAssignedPlanClient';
 
 export default async function EditAssignedPlanPage({
@@ -10,6 +11,7 @@ export default async function EditAssignedPlanPage({
 }) {
   const { traineeId, assignedPlanId } = await params;
   const supabase = await createClient();
+  const t = await getTranslations('trainer');
 
   const { data: assignedPlan } = await supabase
     .from('assigned_plans')
@@ -54,6 +56,8 @@ export default async function EditAssignedPlanPage({
     perSetWeights: Array.isArray(row.per_set_weights) ? row.per_set_weights : null,
   }));
 
+  const traineeName = traineeProfile?.name ?? 'Trainee';
+
   return (
     <div className="space-y-6">
       <div>
@@ -61,17 +65,17 @@ export default async function EditAssignedPlanPage({
           href={`/trainer/trainees/${traineeId}`}
           className="text-sm text-text-primary hover:text-accent transition-colors"
         >
-          &larr; {traineeProfile?.name ?? 'Trainee'}
+          &larr; {traineeName}
         </Link>
         <h1 className="text-2xl font-bold text-text-primary mt-1">{assignedPlan.name}</h1>
         <p className="text-sm text-text-primary opacity-60">
-          Editing {traineeProfile?.name ?? 'trainee'}&apos;s assigned plan &middot;{' '}
+          {t('traineeDetail.editPlan.heading', { traineeName })}{' '}
           <span className={assignedPlan.status === 'active' ? 'text-accent' : 'text-text-primary'}>
-            {assignedPlan.status}
+            {t('traineeDetail.editPlan.status', { status: assignedPlan.status })}
           </span>
         </p>
         <p className="text-xs text-text-primary opacity-50 mt-1">
-          Changes take effect immediately. Trainee will see a &ldquo;Plan updated&rdquo; notice.
+          {t('traineeDetail.editPlan.changesEffect')}
         </p>
       </div>
 

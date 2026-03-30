@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
+import { getTranslations } from 'next-intl/server';
 import { gravatarUrl } from '@/lib/gravatar';
 import { GravatarAvatar } from '@/components/GravatarAvatar';
 import { TabSwitcher } from '@/components/TabSwitcher';
@@ -25,6 +26,7 @@ export default async function TraineeProfilePage({
     .eq('auth_uid', claims.sub)
     .single();
 
+  const t = await getTranslations('trainee');
   const name = profile?.name ?? '';
   const email = profile?.email ?? '';
 
@@ -68,8 +70,8 @@ export default async function TraineeProfilePage({
 
       <TabSwitcher
         tabs={[
-          { key: 'profile', label: 'Profile' },
-          { key: 'trainer', label: 'My Trainer' },
+          { key: 'profile', label: t('profile.tabProfile') },
+          { key: 'trainer', label: t('profile.tabMyTrainer') },
         ]}
         activeTab={activeTab}
       />
@@ -87,7 +89,7 @@ export default async function TraineeProfilePage({
       {activeTab === 'trainer' && (
         trainerInfo
           ? <TrainerCard trainer={trainerInfo} />
-          : <p className="text-text-primary opacity-50">No trainer connected yet.</p>
+          : <p className="text-text-primary opacity-50">{t('profile.noTrainer')}</p>
       )}
     </div>
   );

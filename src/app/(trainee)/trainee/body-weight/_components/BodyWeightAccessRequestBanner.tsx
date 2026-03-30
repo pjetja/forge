@@ -1,5 +1,6 @@
 'use client';
 import { useTransition } from 'react';
+import { useTranslations } from 'next-intl';
 import { respondToBodyWeightAccessRequest } from '@/app/(trainee)/trainee/actions';
 
 interface Props {
@@ -8,6 +9,7 @@ interface Props {
 
 export function BodyWeightAccessRequestBanner({ requests }: Props) {
   const [isPending, startTransition] = useTransition();
+  const t = useTranslations('trainee');
 
   // Show banner for the first pending request
   const request = requests[0];
@@ -28,7 +30,7 @@ export function BodyWeightAccessRequestBanner({ requests }: Props) {
   return (
     <div className="bg-bg-surface border border-border rounded-sm px-4 py-3 mb-4 flex flex-col sm:flex-row sm:items-center gap-3">
       <p className="text-sm text-text-primary flex-1">
-        Your trainer has requested access to your body weight data.
+        {t('bodyWeight.trainerRequestedAccess')}
       </p>
       <div className="flex items-center gap-2 flex-shrink-0">
         <button
@@ -37,7 +39,7 @@ export function BodyWeightAccessRequestBanner({ requests }: Props) {
           disabled={isPending}
           className="bg-accent text-white text-xs px-3 py-1 rounded-sm cursor-pointer disabled:opacity-60 hover:bg-accent/90 transition-colors"
         >
-          Approve access
+          {t('bodyWeight.approveAccess')}
         </button>
         <button
           type="button"
@@ -45,7 +47,7 @@ export function BodyWeightAccessRequestBanner({ requests }: Props) {
           disabled={isPending}
           className="border border-border text-text-primary text-xs px-3 py-1 rounded-sm hover:border-error/50 cursor-pointer disabled:opacity-60 transition-colors"
         >
-          Decline request
+          {t('bodyWeight.declineRequest')}
         </button>
       </div>
     </div>

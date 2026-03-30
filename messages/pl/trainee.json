@@ -1,5 +1,149 @@
 {
   "trainee": {
-    "_placeholder": true
+    "home": {
+      "heading": "Twoj Trening",
+      "inProgressLabel": "Trening w toku",
+      "resume": "Wznow",
+      "tabPlans": "Plany",
+      "tabExercises": "Cwiczenia",
+      "tabLog": "Historia",
+      "tabBodyWeight": "Masa ciala",
+      "waitingHeading": "Czekaj na trenera",
+      "waitingBody": "Twoj trener wkrotce przypisze Ci plan treningowy. Po przypisaniu Twoj harmonogram pojawi sie tutaj.",
+      "currentPlan": "Aktualny plan",
+      "upcomingPlans": "Nadchodzace plany",
+      "pastPlans": "Minione plany",
+      "notStartedYet": "Nie rozpoczety",
+      "completed": "Ukonczony",
+      "ended": "Zakonczony",
+      "doneThisWeek": "{done} z {total} zrobionych w tym tygodniu",
+      "workoutsPerWeek": "{count} treningow/tydz.",
+      "weeks": "{count} tygodnie",
+      "noSessionsHeading": "Brak sesji",
+      "noSessionsBody": "Ukonczony pierwszy trening, aby zobaczyc tutaj swoja historie.",
+      "noWeightHeading": "Brak wpisow masy ciala",
+      "noWeightBody": "Zaloguj swoja pierwsza wage, aby zaczac sledzic postepy."
+    },
+    "exercises": {
+      "heading": "Cwiczenia",
+      "back": "Wstecz",
+      "searchPlaceholder": "Szukaj cwiczen...",
+      "search": "Szukaj",
+      "noExercisesHeading": "Brak zalogowanych cwiczen",
+      "noExercisesBody": "Ukonczone treningi pojawia sie tutaj po zalogowaniu serii.",
+      "noMatch": "Brak cwiczen pasujacych do wyszukiwania.",
+      "noBest": "Brak rekordu"
+    },
+    "plan": {
+      "backToPlans": "Powrot do planow",
+      "workoutsHeading": "Treningi",
+      "exercisesHeading": "Cwiczenia",
+      "planComplete": "Plan ukonczony!",
+      "planCompleteBody": "Ukonczyles wszystkie {weeks} tygodnie. Swietna robota!",
+      "currentWeek": "Aktualny tydzien",
+      "doneOfTotal": "{done} z {n} zrobionych",
+      "inProgress": "W toku",
+      "resume": "Wznow",
+      "completedThisWeek": "Ukonczone w tym tygodniu",
+      "done": "Gotowe",
+      "pastWeeks": "Minione tygodnie",
+      "weekLabel": "Tydzien {n}",
+      "noCompletedWeeks": "Brak ukonczonych tygodni.",
+      "noExercisesInPlan": "Brak cwiczen w tym planie.",
+      "tapToViewChart": "Dotknij cwiczenie, aby zobaczyc wykres postepu.",
+      "noWorkoutsInPlan": "Brak treningow w tym planie.",
+      "finishCurrentFirst": "Najpierw ukonczono aktualny trening"
+    },
+    "workout": {
+      "backToPlan": "Powrot do planu",
+      "workoutNumber": "Trening {n}",
+      "completedBrowsing": "Trening ukonczony — przegladanie historii",
+      "noExercises": "Brak cwiczen w tym treningu.",
+      "setsCount": "{logged}/{required} serii",
+      "backToWorkout": "Powrot do treningu",
+      "completedBanner": "Ten trening jest ukonczony — przegladanie historii",
+      "done": "Gotowe",
+      "exerciseVideo": "Film z cwiczeniem",
+      "linearProgression": "Progresja liniowa",
+      "doubleProgression": "Podwojna progresja",
+      "rpe": "RPE",
+      "rir": "RIR"
+    },
+    "finishWorkout": {
+      "button": "Zakoncz trening",
+      "redirecting": "Trening zakonczony — przekierowanie...",
+      "confirmHeading": "Zakonczyc ten trening?",
+      "setsLogged": "{logged} z {total} serii zalogowanych",
+      "notAllLogged": "Nie zalogowales wszystkich planowanych serii. Zakonczyc mimo to?",
+      "allSetsComplete": "Wszystkie serie ukonczone!",
+      "optionalNotes": "Opcjonalne notatki o sesji",
+      "trainingTime": "Czas treningu (min)",
+      "kcalBurned": "Spalone kalorie",
+      "difficulty": "Trudnosc (1-10)",
+      "finishing": "Konczenie...",
+      "confirmFinish": "Potwierdz i zakoncz",
+      "keepGoing": "Kontynuuj"
+    },
+    "setList": {
+      "colNumber": "#",
+      "colReps": "Powtorzenia",
+      "colWeight": "Ciezar (kg)",
+      "colFail": "Odmowa",
+      "colPrev": "Poprz.",
+      "addSet": "Dodaj serie"
+    },
+    "startWorkout": {
+      "starting": "Rozpoczynanie…",
+      "start": "Start"
+    },
+    "abandon": {
+      "abandoning": "Porzucanie…",
+      "abandon": "Porzuc"
+    },
+    "exerciseProgress": {
+      "backToPlan": "Powrot do planu",
+      "startLabel": "Poczatek",
+      "finishLabel": "Koniec",
+      "changeLabel": "Zmiana",
+      "weightOverSessions": "Ciezar na sesjach",
+      "repsOverSessions": "Powtorzenia na sesjach",
+      "noSets": "Brak zalogowanych serii dla tego cwiczenia."
+    },
+    "crossPlanChart": {
+      "personalRecord": "Rekord osobisty",
+      "topSetOverTime": "Ciezar najlepszej serii w czasie",
+      "noSets": "Brak zalogowanych serii dla tego cwiczenia.",
+      "noDataPeriod": "Brak danych dla tego okresu.",
+      "startLabel": "Poczatek",
+      "finishLabel": "Koniec",
+      "changeLabel": "Zmiana"
+    },
+    "bodyWeight": {
+      "approveAccess": "Zatwierdz dostep",
+      "declineRequest": "Odrzuc prosby",
+      "trainerRequestedAccess": "Twoj trener zazadal dostepu do danych o Twojej masie ciala.",
+      "showChart": "Pokaz wykres",
+      "hideChart": "Ukryj wykres",
+      "notEnoughData": "Za malo danych, aby pokazac wykres. Zaloguj co najmniej 2 wpisy, aby zobaczyc trend.",
+      "logWeightUpdate": "Zaktualizuj",
+      "logWeightButton": "Zaloguj mase",
+      "invalidWeight": "Wprowadz prawidlowa wage z zakresu 1-500 kg.",
+      "deleteEntry": "Usun wpis"
+    },
+    "profile": {
+      "tabProfile": "Profil",
+      "tabMyTrainer": "Moj trener",
+      "myTrainerHeading": "Moj trener",
+      "noTrainer": "Brak podlaczonego trenera.",
+      "nameLabelField": "Imie",
+      "goalsLabelField": "Cele",
+      "goalsPlaceholder": "np. schudnac 10 kg do lata, poprawic przysiad",
+      "heightLabel": "Wzrost (cm)",
+      "weightLabel": "Waga (kg)",
+      "dobLabel": "Data urodzenia",
+      "saving": "Zapisywanie...",
+      "saveChanges": "Zapisz zmiany",
+      "changesSaved": "Zmiany zapisane."
+    }
   }
 }

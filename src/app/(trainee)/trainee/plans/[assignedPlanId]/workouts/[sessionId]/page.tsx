@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { redirect, notFound } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { getTranslations } from 'next-intl/server';
 import FinishWorkoutButton from './_components/FinishWorkoutButton';
 
 interface SessionPageProps {
@@ -102,6 +103,8 @@ export default async function WorkoutSessionPage({ params }: SessionPageProps) {
   const totalPlanSets = exercises.reduce((sum, ex) => sum + ex.sets, 0);
   const loggedSetCount = loggedSets.length;
 
+  const t = await getTranslations('trainee');
+
   // Format session start date
   const sessionDate = session.started_at
     ? new Date(session.started_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
@@ -127,7 +130,7 @@ export default async function WorkoutSessionPage({ params }: SessionPageProps) {
         >
           <polyline points="15 18 9 12 15 6" />
         </svg>
-        Back to plan
+        {t('workout.backToPlan')}
       </Link>
 
       {/* Header */}
@@ -137,7 +140,7 @@ export default async function WorkoutSessionPage({ params }: SessionPageProps) {
           <p className="text-sm text-text-primary mt-0.5">{plan.name}</p>
         )}
         <p className="text-xs text-text-primary mt-1">
-          Workout {rawSchema.slot_index + 1}
+          {t('workout.workoutNumber', { n: rawSchema.slot_index + 1 })}
           {sessionDate && <> &middot; {sessionDate}</>}
         </p>
       </div>
@@ -145,14 +148,14 @@ export default async function WorkoutSessionPage({ params }: SessionPageProps) {
       {/* Completed banner */}
       {session.status === 'completed' && (
         <div className="bg-accent/10 border border-accent/30 rounded-sm px-4 py-3 text-sm text-accent font-medium">
-          Workout completed — browsing history
+          {t('workout.completedBrowsing')}
         </div>
       )}
 
       {/* Exercise list */}
       {exercises.length === 0 ? (
         <div className="bg-bg-surface border border-border rounded-sm p-8 text-center">
-          <p className="text-sm text-text-primary">No exercises in this workout.</p>
+          <p className="text-sm text-text-primary">{t('workout.noExercises')}</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -187,7 +190,7 @@ export default async function WorkoutSessionPage({ params }: SessionPageProps) {
                           : 'text-text-primary'
                     }`}
                   >
-                    {setsLogged}/{setsRequired} sets
+                    {t('workout.setsCount', { logged: setsLogged, required: setsRequired })}
                   </span>
 
                   {isComplete && (

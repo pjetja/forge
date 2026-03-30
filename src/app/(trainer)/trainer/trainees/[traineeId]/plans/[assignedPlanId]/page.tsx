@@ -1,31 +1,34 @@
 import Link from 'next/link';
-import { redirect, notFound } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { getTranslations } from 'next-intl/server';
-import StartWorkoutButton from './_components/StartWorkoutButton';
 import { CompletedPlanColumns } from '@/components/CompletedPlanColumns';
 
-interface ActivePlanPageProps {
-  params: Promise<{ assignedPlanId: string }>;
+interface TrainerPlanSummaryPageProps {
+  params: Promise<{ traineeId: string; assignedPlanId: string }>;
 }
 
-export default async function ActivePlanPage({ params }: ActivePlanPageProps) {
-  const { assignedPlanId } = await params;
+export default async function TrainerPlanSummaryPage({ params }: TrainerPlanSummaryPageProps) {
+  const { traineeId, assignedPlanId } = await params;
 
   const supabase = await createClient();
-  const claimsResult = await supabase.auth.getClaims();
-  const claims = claimsResult.data?.claims;
-  if (!claims) redirect('/login');
+  const t = await getTranslations('trainer');
 
   const { data: plan } = await supabase
     .from('assigned_plans')
-    .select('id, name, status, week_count, workouts_per_week, started_at')
+    .select('id, name, week_count, workouts_per_week, status')
     .eq('id', assignedPlanId)
-    .eq('trainee_auth_uid', claims.sub)
+    .eq('trainee_auth_uid', traineeId)
     .maybeSingle();
 
   if (!plan) notFound();
+
+  const { data: traineeProfile } = await supabase
+    .from('users')
+    .select('name')
+    .eq('auth_uid', traineeId)
+    .single();
 
   const { data: schemas } = await supabase
     .from('assigned_schemas')
@@ -37,51 +40,61 @@ export default async function ActivePlanPage({ params }: ActivePlanPageProps) {
   const schemaIds = schemaList.map((s) => s.id);
   const schemaById = Object.fromEntries(schemaList.map((s) => [s.id, s]));
 
-  // All completed sessions for this plan in chronological order
+  // All completed sessions in chronological order
   const { data: allCompletedRaw } =
     schemaIds.length > 0
       ? await supabase
           .from('workout_sessions')
           .select('id, assigned_schema_id, completed_at')
-          .eq('trainee_auth_uid', claims.sub)
+          .eq('trainee_auth_uid', traineeId)
           .eq('status', 'completed')
           .in('assigned_schema_id', schemaIds)
           .order('completed_at', { ascending: true })
       : { data: [] };
 
-  // In-progress session — scoped to this plan's schemas only
+  const allCompleted = allCompletedRaw ?? [];
+
+  // In-progress session (if any)
   const { data: inProgressSession } =
     schemaIds.length > 0
       ? await supabase
           .from('workout_sessions')
           .select('id, assigned_schema_id')
-          .eq('trainee_auth_uid', claims.sub)
+          .eq('trainee_auth_uid', traineeId)
           .eq('status', 'in_progress')
           .in('assigned_schema_id', schemaIds)
           .maybeSingle()
       : { data: null };
 
-  // ── Week grouping (meta concept — not calendar dates) ──────────────────────
-  // Each "week" = workouts_per_week sequential completed sessions.
-  // Last batch: if incomplete → current week. If complete → current week is fresh.
-
+  // Week grouping
   const N = plan.workouts_per_week;
   const totalRequired = plan.week_count * N;
-  // Cap so extra sessions don't create phantom weeks
-  const allCompleted = (allCompletedRaw ?? []).slice(0, totalRequired);
   const planComplete = allCompleted.length >= totalRequired;
 
-  const admin = createAdminClient();
-  const t = await getTranslations('trainee');
-
-  // Proactively mark complete if sessions say so but DB status hasn't caught up
-  if (planComplete && plan.status !== 'completed') {
-    await admin.from('assigned_plans').update({ status: 'completed' }).eq('id', assignedPlanId);
+  const batches: Array<typeof allCompleted> = [];
+  for (let i = 0; i < allCompleted.length; i += N) {
+    batches.push(allCompleted.slice(i, i + N));
   }
+  const lastBatch = batches[batches.length - 1];
+  const lastBatchComplete = lastBatch && lastBatch.length >= N;
 
-  // Fetch all assigned_schema_exercises grouped by schema (right column)
+  const currentBatch = !lastBatchComplete && lastBatch ? lastBatch : [];
+  const completedInCurrentWeek = new Set(currentBatch.map((s) => s.assigned_schema_id));
+  const completedSessionBySchema = new Map(currentBatch.map((s) => [s.assigned_schema_id, s]));
+
+  const pastBatches = lastBatchComplete ? batches : batches.slice(0, -1);
+  const pastWeeks = [...pastBatches]
+    .reverse()
+    .map((sessions, revIdx) => ({
+      weekNumber: pastBatches.length - revIdx,
+      sessions,
+    }));
+
+  // Fetch exercises
+  const admin = createAdminClient();
   type ExGroup = { schemaId: string; schemaName: string; exercises: { id: string; name: string; muscle_group: string }[] };
   let exercisesBySchema: ExGroup[] = [];
+
   if (schemaIds.length > 0) {
     const { data: aseRows } = await supabase
       .from('assigned_schema_exercises')
@@ -96,7 +109,9 @@ export default async function ActivePlanPage({ params }: ActivePlanPageProps) {
         .select('id, name, muscle_group')
         .in('id', exerciseIds);
 
-      const exerciseMap = new Map((exerciseRows ?? []).map((e: { id: string; name: string; muscle_group: string | null }) => [e.id, e]));
+      const exerciseMap = new Map(
+        (exerciseRows ?? []).map((e: { id: string; name: string; muscle_group: string | null }) => [e.id, e])
+      );
 
       for (const schema of schemaList) {
         const exs = aseRows
@@ -108,63 +123,46 @@ export default async function ActivePlanPage({ params }: ActivePlanPageProps) {
     }
   }
 
-  // Slice completed sessions into week batches
-  const batches: Array<typeof allCompleted> = [];
-  for (let i = 0; i < allCompleted.length; i += N) {
-    batches.push(allCompleted.slice(i, i + N));
-  }
-
-  const lastBatch = batches[batches.length - 1];
-  const lastBatchComplete = lastBatch && lastBatch.length >= N;
-
-  // Current batch: last incomplete batch, or empty if all complete (fresh week)
-  const currentBatch = !lastBatchComplete && lastBatch ? lastBatch : [];
-  const completedInCurrentWeek = new Set(currentBatch.map((s) => s.assigned_schema_id));
-  // Map schema_id → session for completed workouts this week (for linking)
-  const completedSessionBySchema = new Map(currentBatch.map((s) => [s.assigned_schema_id, s]));
-
-  // Past batches: all complete batches (oldest = week 1)
-  const pastBatches = lastBatchComplete ? batches : batches.slice(0, -1);
-  // Reverse so most recent week is first
-  const pastWeeks = [...pastBatches]
-    .reverse()
-    .map((sessions, revIdx) => ({
-      weekNumber: pastBatches.length - revIdx,
-      sessions,
-    }));
+  const traineeName = traineeProfile?.name ?? 'Trainee';
 
   return (
     <div className="space-y-6">
       {/* Back link */}
       <Link
-        href="/trainee"
+        href={`/trainer/trainees/${traineeId}`}
         className="inline-flex items-center gap-1 text-sm text-text-primary hover:text-accent transition-colors"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <polyline points="15 18 9 12 15 6" />
         </svg>
-        {t('plan.backToPlans')}
+        {t('traineeDetail.planView.backTo', { traineeName })}
       </Link>
 
       {/* Plan header */}
       <div>
         <h1 className="text-2xl font-bold text-text-primary">{plan.name}</h1>
         <p className="text-sm text-text-primary opacity-60 mt-1">
-          {t('home.workoutsPerWeek', { count: plan.workouts_per_week })} &middot; {t('home.weeks', { count: plan.week_count })}
+          {t('traineeDetail.planView.workoutsPerWeek', { count: plan.workouts_per_week })} &middot; {t('traineeDetail.planView.weeksCount', { count: plan.week_count })} &middot; {traineeName}
         </p>
       </div>
 
-      {/* Plan complete banner */}
-      {planComplete && (
+      {/* Status banner */}
+      {planComplete ? (
         <div className="bg-accent/10 border border-accent/30 rounded-sm px-4 py-4 text-center space-y-1">
-          <p className="font-semibold text-accent">{t('plan.planComplete')}</p>
-          <p className="text-sm text-text-primary">
-            {t('plan.planCompleteBody', { weeks: plan.week_count })}
-          </p>
+          <p className="font-semibold text-accent">{t('traineeDetail.planView.planComplete')}</p>
+          <p className="text-sm text-text-primary">{t('traineeDetail.planView.planCompleteDescription', { traineeName, weeks: plan.week_count })}</p>
+        </div>
+      ) : plan.status === 'pending' ? (
+        <div className="bg-border/40 border border-border rounded-sm px-4 py-3 text-sm text-text-primary opacity-70">
+          {t('traineeDetail.planView.planNotStarted')}
+        </div>
+      ) : (
+        <div className="bg-accent/10 border border-accent/30 rounded-sm px-4 py-3 text-sm text-accent font-medium">
+          {t('traineeDetail.planView.activeProgress', { done: allCompleted.length, total: totalRequired })}
         </div>
       )}
 
-      {/* Two-column layout — shared component when complete, inline for active plan */}
+      {/* Completed plan: use two-column summary component */}
       {planComplete ? (
         <CompletedPlanColumns
           pastWeeks={pastWeeks.map((w) => ({
@@ -175,77 +173,69 @@ export default async function ActivePlanPage({ params }: ActivePlanPageProps) {
             })),
           }))}
           exercisesBySchema={exercisesBySchema}
-          getWorkoutHref={(sessionId) => `/trainee/plans/${assignedPlanId}/workouts/${sessionId}`}
-          getExerciseHref={(exerciseId) => `/trainee/plans/${assignedPlanId}/exercises/${exerciseId}`}
+          getWorkoutHref={(sessionId) =>
+            `/trainer/trainees/${traineeId}/plans/${assignedPlanId}/workouts/${sessionId}`
+          }
+          getExerciseHref={(exerciseId) =>
+            `/trainer/trainees/${traineeId}/plans/${assignedPlanId}/exercises/${exerciseId}`
+          }
         />
       ) : (
+        /* Active / pending plan: two-column layout */
         <div className="lg:grid lg:grid-cols-2 lg:gap-8 space-y-6 lg:space-y-0">
-          {/* ── Left: Workouts (active plan) ──────────────────────────── */}
+          {/* ── Left: Workouts ── */}
           <div className="space-y-6">
-            <h2 className="text-lg font-semibold text-text-primary border-b border-border pb-2">
-              {t('plan.workoutsHeading')}
-            </h2>
+            <h2 className="text-lg font-semibold text-text-primary border-b border-border pb-2">{t('traineeDetail.planView.workoutsHeading')}</h2>
 
+            {/* Current week */}
             <section className="space-y-3">
               <div className="flex items-center justify-between">
-                <h3 className="text-sm font-medium text-text-primary opacity-60 uppercase tracking-wide">{t('plan.currentWeek')}</h3>
-                <span className="text-xs text-text-primary opacity-60">
-                  {t('plan.doneOfTotal', { done: completedInCurrentWeek.size, n: N })}
-                </span>
+                <h3 className="text-sm font-medium text-text-primary opacity-60 uppercase tracking-wide">{t('traineeDetail.planView.currentWeek')}</h3>
+                <span className="text-xs text-text-primary opacity-60">{t('traineeDetail.planView.doneOfTotal', { done: completedInCurrentWeek.size, n: N })}</span>
               </div>
 
               {schemaList.length === 0 ? (
                 <div className="bg-bg-surface border border-border rounded-sm p-8 text-center">
-                  <p className="text-sm text-text-primary">{t('plan.noWorkoutsInPlan')}</p>
+                  <p className="text-sm text-text-primary">{t('traineeDetail.planView.noWorkoutsInPlan')}</p>
                 </div>
               ) : (
                 <>
-                  {/* Pending workouts — can be started */}
+                  {/* Pending workouts */}
                   {schemaList.filter((s) => !completedInCurrentWeek.has(s.id)).length > 0 && (
                     <div className="space-y-2">
                       {schemaList
                         .filter((s) => !completedInCurrentWeek.has(s.id))
                         .map((schema) => {
                           const isInProgress = inProgressSession?.assigned_schema_id === schema.id;
-                          const otherSessionInProgress = inProgressSession != null && !isInProgress;
+                          const schemaHref = isInProgress && inProgressSession
+                            ? `/trainer/trainees/${traineeId}/plans/${assignedPlanId}/workouts/${inProgressSession.id}`
+                            : `/trainer/trainees/${traineeId}/plans/${assignedPlanId}/schemas/${schema.id}`;
                           return (
-                            <div
+                            <Link
                               key={schema.id}
-                              className="bg-bg-surface border border-border rounded-sm p-4 flex items-center justify-between gap-4"
+                              href={schemaHref}
+                              className="bg-bg-surface border border-border rounded-sm p-4 flex items-center justify-between gap-4 hover:border-accent/50 transition-colors"
                             >
                               <p className="font-medium text-text-primary">{schema.name}</p>
-                              <div className="flex items-center gap-2 flex-shrink-0">
-                                {isInProgress && inProgressSession ? (
-                                  <>
-                                    <span className="text-xs font-medium text-yellow-400 border border-yellow-400/40 bg-yellow-400/10 rounded-sm px-2 py-0.5">
-                                      {t('plan.inProgress')}
-                                    </span>
-                                    <Link
-                                      href={`/trainee/plans/${assignedPlanId}/workouts/${inProgressSession.id}`}
-                                      className="px-3 py-1.5 bg-accent text-white text-sm rounded-sm font-medium hover:bg-accent/90 transition-colors"
-                                    >
-                                      {t('plan.resume')}
-                                    </Link>
-                                  </>
-                                ) : (
-                                  <StartWorkoutButton
-                                    assignedSchemaId={schema.id}
-                                    assignedPlanId={assignedPlanId}
-                                    disabled={otherSessionInProgress}
-                                    disabledReason={otherSessionInProgress ? t('plan.finishCurrentFirst') : undefined}
-                                  />
-                                )}
-                              </div>
-                            </div>
+                              {isInProgress ? (
+                                <span className="text-xs font-medium text-yellow-400 border border-yellow-400/40 bg-yellow-400/10 rounded-sm px-2 py-0.5">
+                                  {t('traineeDetail.planView.inProgress')}
+                                </span>
+                              ) : (
+                                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-text-primary opacity-40 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                  <polyline points="9 18 15 12 9 6" />
+                                </svg>
+                              )}
+                            </Link>
                           );
                         })}
                     </div>
                   )}
 
-                  {/* Completed workouts this week — shown below, no start button */}
+                  {/* Completed this week */}
                   {completedInCurrentWeek.size > 0 && (
                     <div className="space-y-2 pt-2">
-                      <p className="text-xs font-medium text-text-primary opacity-50 uppercase tracking-wide">{t('plan.completedThisWeek')}</p>
+                      <p className="text-xs font-medium text-text-primary opacity-50 uppercase tracking-wide">{t('traineeDetail.planView.completedThisWeek')}</p>
                       {schemaList
                         .filter((s) => completedInCurrentWeek.has(s.id))
                         .map((schema) => {
@@ -253,7 +243,7 @@ export default async function ActivePlanPage({ params }: ActivePlanPageProps) {
                           return (
                             <Link
                               key={schema.id}
-                              href={session ? `/trainee/plans/${assignedPlanId}/workouts/${session.id}` : '#'}
+                              href={session ? `/trainer/trainees/${traineeId}/plans/${assignedPlanId}/workouts/${session.id}` : '#'}
                               className="bg-bg-surface border border-accent/30 rounded-sm px-4 py-3 flex items-center justify-between hover:border-accent/60 transition-colors opacity-80 hover:opacity-100"
                             >
                               <p className="text-sm font-medium text-text-primary">{schema.name}</p>
@@ -261,7 +251,7 @@ export default async function ActivePlanPage({ params }: ActivePlanPageProps) {
                                 <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                                   <polyline points="20 6 9 17 4 12" />
                                 </svg>
-                                {t('plan.done')}
+                                {t('traineeDetail.planView.done')}
                               </span>
                             </Link>
                           );
@@ -272,13 +262,14 @@ export default async function ActivePlanPage({ params }: ActivePlanPageProps) {
               )}
             </section>
 
+            {/* Past weeks */}
             {pastWeeks.length > 0 && (
               <section className="space-y-4">
-                <h3 className="text-sm font-medium text-text-primary opacity-60 uppercase tracking-wide">{t('plan.pastWeeks')}</h3>
+                <h3 className="text-sm font-medium text-text-primary opacity-60 uppercase tracking-wide">{t('traineeDetail.planView.pastWeeks')}</h3>
                 {pastWeeks.map((week) => (
                   <div key={week.weekNumber} className="space-y-1.5">
                     <p className="text-xs font-medium text-text-primary opacity-50 uppercase tracking-wide">
-                      {t('plan.weekLabel', { n: week.weekNumber })}
+                      {t('traineeDetail.planView.weekNumber', { number: week.weekNumber })}
                     </p>
                     <div className="space-y-1.5">
                       {week.sessions.map((s) => {
@@ -286,12 +277,10 @@ export default async function ActivePlanPage({ params }: ActivePlanPageProps) {
                         return (
                           <Link
                             key={s.id}
-                            href={`/trainee/plans/${assignedPlanId}/workouts/${s.id}`}
+                            href={`/trainer/trainees/${traineeId}/plans/${assignedPlanId}/workouts/${s.id}`}
                             className="bg-bg-surface border border-border rounded-sm px-4 py-3 flex items-center justify-between hover:border-accent/50 transition-colors opacity-70 hover:opacity-100"
                           >
-                            <p className="text-sm font-medium text-text-primary">
-                              {schema?.name ?? 'Workout'}
-                            </p>
+                            <p className="text-sm font-medium text-text-primary">{schema?.name ?? 'Workout'}</p>
                             <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-text-primary opacity-40 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                               <polyline points="9 18 15 12 9 6" />
                             </svg>
@@ -304,19 +293,17 @@ export default async function ActivePlanPage({ params }: ActivePlanPageProps) {
               </section>
             )}
 
-            {pastWeeks.length === 0 && schemaList.length > 0 && (
-              <p className="text-sm text-text-primary opacity-40">{t('plan.noCompletedWeeks')}</p>
+            {pastWeeks.length === 0 && schemaList.length > 0 && allCompleted.length === 0 && (
+              <p className="text-sm text-text-primary opacity-40">{t('traineeDetail.planView.noCompletedWorkouts')}</p>
             )}
           </div>
 
-          {/* ── Right: Exercises (active plan — links to progress charts) ── */}
+          {/* ── Right: Exercises ── */}
           <div className="space-y-5">
-            <h2 className="text-lg font-semibold text-text-primary border-b border-border pb-2">
-              {t('plan.exercisesHeading')}
-            </h2>
+            <h2 className="text-lg font-semibold text-text-primary border-b border-border pb-2">{t('traineeDetail.planView.exercisesHeading')}</h2>
             {exercisesBySchema.length === 0 ? (
               <div className="bg-bg-surface border border-border rounded-sm p-8 text-center">
-                <p className="text-sm text-text-primary opacity-50">{t('plan.noExercisesInPlan')}</p>
+                <p className="text-sm text-text-primary opacity-50">{t('traineeDetail.planView.noExercises')}</p>
               </div>
             ) : (
               <>
@@ -327,7 +314,7 @@ export default async function ActivePlanPage({ params }: ActivePlanPageProps) {
                       {group.exercises.map((ex) => (
                         <Link
                           key={ex.id}
-                          href={`/trainee/plans/${assignedPlanId}/exercises/${ex.id}`}
+                          href={`/trainer/trainees/${traineeId}/plans/${assignedPlanId}/exercises/${ex.id}`}
                           className="bg-bg-surface border border-border rounded-sm px-4 py-3 flex items-center justify-between hover:border-accent/50 transition-colors"
                         >
                           <div>
@@ -344,7 +331,7 @@ export default async function ActivePlanPage({ params }: ActivePlanPageProps) {
                     </div>
                   </div>
                 ))}
-                <p className="text-xs text-text-primary opacity-40">{t('plan.tapToViewChart')}</p>
+                <p className="text-xs text-text-primary opacity-40">{t('traineeDetail.planView.tapExercise')}</p>
               </>
             )}
           </div>

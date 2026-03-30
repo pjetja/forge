@@ -12,6 +12,7 @@ import { RequestBodyWeightAccessButton } from './_components/RequestBodyWeightAc
 import { BodyWeightTab } from './_components/BodyWeightTab';
 import { gravatarUrl } from '@/lib/gravatar';
 import { GravatarAvatar } from '@/components/GravatarAvatar';
+import { getTranslations } from 'next-intl/server';
 
 interface AssignedPlanRow {
   id: string;
@@ -37,6 +38,8 @@ export default async function TraineeDetailPage({
     ? (resolvedSearch!.tab as string)
     : 'plans';
   const supabase = await createClient();
+
+  const t = await getTranslations('trainer');
 
   // Fetch trainee profile
   const { data: traineeProfile } = await supabase
@@ -102,7 +105,7 @@ export default async function TraineeDetailPage({
     <div className="space-y-6">
       {/* Back link */}
       <Link href="/trainer" className="text-sm text-text-primary hover:text-accent transition-colors">
-        &larr; All trainees
+        &larr; {t('traineeDetail.backToAll')}
       </Link>
 
       <div className="pt-4" />
@@ -124,11 +127,11 @@ export default async function TraineeDetailPage({
       {/* Tab switcher */}
       <TabSwitcher
         tabs={[
-          { key: 'plans', label: 'Plans' },
-          { key: 'exercises', label: 'Exercises' },
-          { key: 'goals', label: 'Goals' },
-          { key: 'notes', label: 'Notes' },
-          ...(bodyWeightAccess === 'approved' ? [{ key: 'body-weight', label: 'Body Weight' }] : []),
+          { key: 'plans', label: t('traineeDetail.tabs.plans') },
+          { key: 'exercises', label: t('traineeDetail.tabs.exercises') },
+          { key: 'goals', label: t('traineeDetail.tabs.goals') },
+          { key: 'notes', label: t('traineeDetail.tabs.notes') },
+          ...(bodyWeightAccess === 'approved' ? [{ key: 'body-weight', label: t('traineeDetail.tabs.bodyWeight') }] : []),
         ]}
         activeTab={activeTab}
       />
@@ -139,18 +142,18 @@ export default async function TraineeDetailPage({
       {/* Current plan */}
       {(activePlan || pendingPlans.length === 0) && (
       <section>
-        <h2 className="text-lg font-semibold text-text-primary mb-3">Current Plan</h2>
+        <h2 className="text-lg font-semibold text-text-primary mb-3">{t('traineeDetail.plans.currentPlan')}</h2>
         {activePlan ? (
           <div className="bg-bg-surface border border-border rounded-sm p-4 space-y-3">
             <div className="flex items-start justify-between gap-3">
               <div>
                 <p className="font-medium text-text-primary">{activePlan.name}</p>
                 <p className="text-sm text-text-primary mt-1">
-                  {activePlan.week_count} weeks &middot; {activePlan.workouts_per_week} workouts/week
+                  {activePlan.week_count} {t('traineeDetail.plans.weeks', { count: activePlan.week_count })} &middot; {activePlan.workouts_per_week} {t('traineeDetail.plans.workoutsPerWeek', { count: activePlan.workouts_per_week })}
                 </p>
               </div>
               <span className="text-xs px-2 py-1 rounded-full font-medium bg-accent/20 text-accent flex-shrink-0">
-                Active
+                {t('traineeDetail.plans.active')}
               </span>
             </div>
             <div className="flex items-center gap-4">
@@ -158,24 +161,24 @@ export default async function TraineeDetailPage({
                 href={`/trainer/trainees/${traineeId}/plans/${activePlan.id}`}
                 className="inline-block text-sm text-accent hover:underline"
               >
-                View plan
+                {t('traineeDetail.plans.viewPlan')}
               </Link>
               <Link
                 href={`/trainer/trainees/${traineeId}/assigned-plans/${activePlan.id}/edit`}
                 className="inline-block text-sm text-text-primary opacity-60 hover:opacity-100 hover:underline"
               >
-                Edit exercises
+                {t('traineeDetail.plans.editExercises')}
               </Link>
             </div>
           </div>
         ) : pendingPlans.length === 0 ? (
           <div className="bg-bg-surface border border-border rounded-sm p-4 space-y-3">
-            <p className="text-sm text-text-primary opacity-60">No plan assigned yet. Pick a plan to assign:</p>
+            <p className="text-sm text-text-primary opacity-60">{t('traineeDetail.plans.noplan')}</p>
             {(planTemplates ?? []).length === 0 ? (
               <p className="text-sm text-text-primary">
-                No plans created yet.{' '}
+                {t('traineeDetail.plans.noPlansCreated')}{' '}
                 <Link href="/trainer/plans/new" className="text-accent hover:underline">
-                  Create a plan first
+                  {t('traineeDetail.plans.createFirst')}
                 </Link>
               </p>
             ) : (
@@ -199,7 +202,7 @@ export default async function TraineeDetailPage({
       {/* Past plans */}
       {pastPlans.length > 0 && (
         <section>
-          <h2 className="text-lg font-semibold text-text-primary mb-3">Past Plans</h2>
+          <h2 className="text-lg font-semibold text-text-primary mb-3">{t('traineeDetail.plans.pastPlans')}</h2>
           <div className="space-y-2">
             {pastPlans.map((plan) =>
               plan.status === 'completed' ? (
@@ -211,7 +214,7 @@ export default async function TraineeDetailPage({
                   <div>
                     <p className="font-medium text-text-primary">{plan.name}</p>
                     <p className="text-xs text-text-primary opacity-60 mt-1">
-                      {plan.week_count} weeks &middot; Completed
+                      {plan.week_count} {t('traineeDetail.plans.weeks', { count: plan.week_count })} &middot; {t('traineeDetail.plans.completed')}
                     </p>
                   </div>
                   <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-text-primary opacity-40 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -226,7 +229,7 @@ export default async function TraineeDetailPage({
                   <div>
                     <p className="font-medium text-text-primary">{plan.name}</p>
                     <p className="text-xs text-text-primary opacity-60 mt-1">
-                      {plan.week_count} weeks &middot; Terminated
+                      {plan.week_count} {t('traineeDetail.plans.weeks', { count: plan.week_count })} &middot; {t('traineeDetail.plans.terminated')}
                     </p>
                   </div>
                 </div>

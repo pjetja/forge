@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { getCurrentWeekBounds } from '@/lib/utils/week';
+import { getTranslations } from 'next-intl/server';
 import AbandonSessionButton from './_components/AbandonSessionButton';
 import { TabSwitcher } from '@/components/TabSwitcher';
 import { TraineeExercisesTab } from './_components/TraineeExercisesTab';
@@ -20,6 +21,8 @@ export default async function TraineeHomePage({
   const claimsResult = await supabase.auth.getClaims();
   const claims = claimsResult.data?.claims;
   if (!claims) redirect('/login');
+
+  const t = await getTranslations('trainee');
 
   const { weekStart, weekEnd } = getCurrentWeekBounds();
 
@@ -130,13 +133,13 @@ export default async function TraineeHomePage({
 
   return (
     <div className="space-y-8">
-      <h1 className="text-2xl font-bold text-text-primary">Your Training</h1>
+      <h1 className="text-2xl font-bold text-text-primary">{t('home.heading')}</h1>
 
       {/* In-progress session banner */}
       {activeSession && activeSchemaInfo && (
         <div className="bg-accent/10 border border-accent rounded-sm p-4 flex flex-col sm:flex-row sm:items-center gap-3">
           <div className="flex-1">
-            <p className="text-sm font-medium text-accent">Workout in progress</p>
+            <p className="text-sm font-medium text-accent">{t('home.inProgressLabel')}</p>
             <p className="text-text-primary font-bold">{activeSchemaInfo.name}</p>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
@@ -144,7 +147,7 @@ export default async function TraineeHomePage({
               href={`/trainee/plans/${activeSchemaInfo.assigned_plan_id}/workouts/${activeSession.id}`}
               className="px-3 py-1.5 bg-accent text-white text-sm rounded-sm font-medium hover:bg-accent/90 transition-colors"
             >
-              Resume
+              {t('home.resume')}
             </Link>
             <AbandonSessionButton sessionId={activeSession.id} />
           </div>
@@ -153,10 +156,10 @@ export default async function TraineeHomePage({
 
       <TabSwitcher
         tabs={[
-          { key: 'plans', label: 'Plans' },
-          { key: 'exercises', label: 'Exercises' },
-          { key: 'log', label: 'Log' },
-          { key: 'body-weight', label: 'Body Weight' },
+          { key: 'plans', label: t('home.tabPlans') },
+          { key: 'exercises', label: t('home.tabExercises') },
+          { key: 'log', label: t('home.tabLog') },
+          { key: 'body-weight', label: t('home.tabBodyWeight') },
         ]}
         activeTab={activeTab}
       />
@@ -167,10 +170,9 @@ export default async function TraineeHomePage({
           {!hasAnyPlans && (
             <div className="bg-bg-surface border border-border rounded-sm p-12 text-center space-y-3">
               <div className="text-4xl">🏋️</div>
-              <h2 className="font-bold text-text-primary">Waiting for your trainer</h2>
+              <h2 className="font-bold text-text-primary">{t('home.waitingHeading')}</h2>
               <p className="text-sm text-text-primary max-w-xs mx-auto">
-                Your trainer will assign a workout plan shortly. Once assigned, your schedule
-                will appear here.
+                {t('home.waitingBody')}
               </p>
             </div>
           )}
@@ -179,7 +181,7 @@ export default async function TraineeHomePage({
           {activePlans.length > 0 && (
             <section className="space-y-3">
               <h2 className="text-sm font-bold text-text-primary uppercase tracking-wide">
-                Current Plan
+                {t('home.currentPlan')}
               </h2>
               <div className="space-y-2">
                 {activePlans.map((plan) => {
@@ -195,11 +197,11 @@ export default async function TraineeHomePage({
                         <div>
                           <p className="font-bold text-text-primary">{plan.name}</p>
                           <p className="text-sm text-text-primary mt-0.5">
-                            {plan.workouts_per_week} workouts/week &middot; {plan.week_count} weeks
+                            {t('home.workoutsPerWeek', { count: plan.workouts_per_week })} &middot; {t('home.weeks', { count: plan.week_count })}
                           </p>
                         </div>
                         <span className="text-sm text-accent font-bold flex-shrink-0">
-                          {done} of {total} done this week
+                          {t('home.doneThisWeek', { done, total })}
                         </span>
                       </div>
                     </Link>
@@ -213,7 +215,7 @@ export default async function TraineeHomePage({
           {pendingPlans.length > 0 && (
             <section className="space-y-3">
               <h2 className="text-sm font-bold text-text-primary uppercase tracking-wide">
-                Upcoming Plans
+                {t('home.upcomingPlans')}
               </h2>
               <div className="space-y-2">
                 {pendingPlans.map((plan) => (
@@ -225,11 +227,11 @@ export default async function TraineeHomePage({
                       <div>
                         <p className="font-bold text-text-primary">{plan.name}</p>
                         <p className="text-sm text-text-primary mt-0.5">
-                          {plan.workouts_per_week} workouts/week &middot; {plan.week_count} weeks
+                          {t('home.workoutsPerWeek', { count: plan.workouts_per_week })} &middot; {t('home.weeks', { count: plan.week_count })}
                         </p>
                       </div>
                       <span className="text-xs text-text-primary border border-border rounded-sm px-2 py-0.5 flex-shrink-0">
-                        Not started yet
+                        {t('home.notStartedYet')}
                       </span>
                     </div>
                   </div>
@@ -242,7 +244,7 @@ export default async function TraineeHomePage({
           {pastPlans.length > 0 && (
             <section className="space-y-3">
               <h2 className="text-sm font-bold text-text-primary uppercase tracking-wide">
-                Past Plans
+                {t('home.pastPlans')}
               </h2>
               <div className="space-y-2">
                 {pastPlans.map((plan) => (
@@ -254,7 +256,7 @@ export default async function TraineeHomePage({
                     <div className="flex items-start justify-between gap-4">
                       <p className="font-bold text-text-primary">{plan.name}</p>
                       <span className="text-xs text-text-primary border border-border rounded-sm px-2 py-0.5 flex-shrink-0">
-                        {plan.status === 'completed' ? 'Completed' : 'Ended'}
+                        {plan.status === 'completed' ? t('home.completed') : t('home.ended')}
                       </span>
                     </div>
                   </Link>
@@ -279,9 +281,9 @@ export default async function TraineeHomePage({
         <div>
           {!logSessions || logSessions.length === 0 ? (
             <div className="bg-bg-surface border border-border rounded-sm p-12 text-center space-y-3">
-              <h2 className="font-bold text-text-primary">No sessions yet</h2>
+              <h2 className="font-bold text-text-primary">{t('home.noSessionsHeading')}</h2>
               <p className="text-sm text-text-primary opacity-60">
-                Complete your first workout to see your training history here.
+                {t('home.noSessionsBody')}
               </p>
             </div>
           ) : (
@@ -372,7 +374,8 @@ interface BodyWeightTabContentProps {
   }> | null;
 }
 
-function BodyWeightTabContent({ weightEntries, accessRequests }: BodyWeightTabContentProps) {
+async function BodyWeightTabContent({ weightEntries, accessRequests }: BodyWeightTabContentProps) {
+  const tb = await getTranslations('trainee');
   const todayStr = new Date().toLocaleDateString('en-CA'); // "2026-03-28"
   const todayEntry = weightEntries?.find((e) => e.logged_date === todayStr) ?? null;
 
@@ -384,9 +387,9 @@ function BodyWeightTabContent({ weightEntries, accessRequests }: BodyWeightTabCo
       <BodyWeightLogForm todayEntry={todayEntry} />
       {!weightEntries || weightEntries.length === 0 ? (
         <div className="bg-bg-surface border border-border rounded-sm p-12 text-center space-y-3">
-          <h2 className="font-bold text-text-primary">No weight entries yet</h2>
+          <h2 className="font-bold text-text-primary">{tb('home.noWeightHeading')}</h2>
           <p className="text-sm text-text-primary opacity-60">
-            Log your first body weight to start tracking your progress.
+            {tb('home.noWeightBody')}
           </p>
         </div>
       ) : (

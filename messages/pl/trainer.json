@@ -1,7 +1,7 @@
 {
   "trainer": {
     "trainees": {
-      "heading": "Twoi podopieczni",
+      "heading": "Podopieczni",
       "noTraineesYet": "Brak podopiecznych",
       "noTraineesBody": "Zaproś pierwszego klienta, aby zaczac. Otrzyma link do dolaczenia do Twojej listy.",
       "failedToLoad": "Nie udalo sie zaladowac podopiecznych. Odswiez strone.",
@@ -11,13 +11,20 @@
       "noPlanAssigned": "Brak przypisanego planu",
       "noSessionsYet": "Brak sesji",
       "lastWorkout": "Ostatni trening",
-      "thisWeek": "{count} w tym tygodniu"
+      "thisWeek": "{count} w tym tygodniu",
+      "inviteHeading": "Zapros podopiecznego",
+      "inviteDescription": "Udostepnij ten link swojemu podopiecznemu, aby polaczyc go z Twoja lista.",
+      "copyLink": "Kopiuj link zaproszenia",
+      "linkCopied": "Link skopiowany!",
+      "noTrainees": "Brak podopiecznych",
+      "noTraineesDescription": "Udostepnij link zaproszenia, aby dodac podopiecznych do swojej listy.",
+      "plansCount": "{count} plany"
     },
     "invite": {
       "heading": "Zaprос podopiecznego",
       "buttonLabel": "+ Zaprос podopiecznego",
       "description": "Udostepnij ten link swojemu podopiecznemu. Po rejestracji lub logowaniu zostanie polaczony z Twoja lista.",
-      "generatingLink": "Generowanie linku\u2026",
+      "generatingLink": "Generowanie linku…",
       "copyLink": "Kopiuj link",
       "copied": "Skopiowano!"
     },
@@ -30,7 +37,7 @@
       "muscleGroupLabel": "Grupa miesniowa",
       "muscleGroupPlaceholder": "Wybierz grupe miesniowa",
       "descriptionLabel": "Opis",
-      "descriptionPlaceholder": "Opcjonalnie: opisz technik\u0119 cwiczenia...",
+      "descriptionPlaceholder": "Opcjonalnie: opisz technikę cwiczenia...",
       "coachingNotesLabel": "Wskazowki trenera",
       "coachingNotesPlaceholder": "Opcjonalnie: wskazowki, czeste bledy...",
       "videoUrlLabel": "URL wideo (YouTube)",
@@ -80,13 +87,13 @@
       "noPlansYet": "Brak planow",
       "noPlansBody": "Utwórz swój pierwszy szablon planu treningowego. Po stworzeniu mozesz przypisac go do podopiecznych.",
       "createFirstPlan": "Utwórz plan",
-      "noPlansWithTag": "Brak planow z tagiem \u201e{tag}\u201d.",
+      "noPlansWithTag": "Brak planow z tagiem „{tag}”.",
       "duplicatePlan": "Duplikuj plan",
       "deletePlan": "Usun plan",
       "archivePlan": "Archiwizuj plan",
       "archive": "Archiwizuj",
       "allFilter": "Wszystkie",
-      "migrationNotice": "Zastosuj migracj\u0119 0004 w edytorze SQL Supabase, aby wlaczyc tagi, notatki i archiwizacj\u0119. Plany sa pokazane bez filtrowania do czasu jej zastosowania.",
+      "migrationNotice": "Zastosuj migrację 0004 w edytorze SQL Supabase, aby wlaczyc tagi, notatki i archiwizację. Plany sa pokazane bez filtrowania do czasu jej zastosowania.",
       "weekSingular": "tydzien",
       "weekPlural": "tygodnie",
       "workoutSingular": "trening",
@@ -104,12 +111,12 @@
       "duplicatePlanTitle": "Duplikuj plan",
       "archivePlanTitle": "Archiwizuj plan",
       "deletePlanTitle": "Usun plan",
-      "clickToRename": "Kliknij, aby zmienic nazw\u0119",
+      "clickToRename": "Kliknij, aby zmienic nazwę",
       "backToPlans": "Plany",
       "notes": "Notatki",
       "notesSaved": "Zapisano",
       "tags": "Tagi",
-      "tagsHint": "Enter lub przecinek, aby dodac \u00b7 Backspace, aby usunac ostatni",
+      "tagsHint": "Enter lub przecinek, aby dodac · Backspace, aby usunac ostatni",
       "removeTagAriaLabel": "Usun tag {tag}"
     },
     "schemas": {
@@ -142,12 +149,12 @@
       "hasActivePlan": "Ma aktywny plan",
       "reviewPlanFor": "Przejrzyj plan dla {name}",
       "adjustWeightsHint": "Dostosuj docelowe ciezary dla {name}. Wstepnie uzupelnione z ostatniego razu na tym planie (jesli dostepne), w przeciwnym razie z szablonu planu.",
-      "setsReps": "{sets} serii \u00d7 {reps} powtorzen",
+      "setsReps": "{sets} serii × {reps} powtorzen",
       "lastWeight": "Ostatnie: {weight} kg",
       "noPreviousData": "Brak poprzednich danych",
       "existingPlanWarning": "Ten podopieczny ma juz aktywny lub oczekujacy plan.",
       "existingPlanDetail": "Nowy plan zostanie dodany jako oczekujacy i rozpocznie sie po zakonczeniu obecnego planu.",
-      "confirmWarning": "Rozumiem \u2014 przypisz mimo to",
+      "confirmWarning": "Rozumiem — przypisz mimo to",
       "confirmWarningError": "Potwierdz powyzsze ostrzezenie, aby kontynuowac.",
       "assigning": "Przypisywanie...",
       "assignPlanTo": "Przypisz plan do {name}"
@@ -161,6 +168,153 @@
       "saveChanges": "Zapisz zmiany",
       "changesSaved": "Zmiany zapisane.",
       "failedToSave": "Nie udalo sie zapisac zmian."
+    },
+    "nav": {
+      "trainees": "Podopieczni",
+      "plans": "Plany",
+      "exerciseLibrary": "Biblioteka cwiczen"
+    },
+    "traineeDetail": {
+      "backToAll": "Wszyscy podopieczni",
+      "tabs": {
+        "plans": "Plany",
+        "exercises": "Cwiczenia",
+        "goals": "Cele",
+        "notes": "Notatki",
+        "bodyWeight": "Masa ciala"
+      },
+      "plans": {
+        "currentPlan": "Aktualny plan",
+        "pastPlans": "Poprzednie plany",
+        "noplan": "Brak przypisanego planu. Wybierz plan do przypisania:",
+        "noPlansCreated": "Brak utworzonych planow.",
+        "createFirst": "Najpierw utworz plan",
+        "active": "Aktywny",
+        "completed": "Ukonczone",
+        "terminated": "Zakonczony",
+        "weeks": "{count} tygodnie",
+        "workoutsPerWeek": "{count} treningi/tydzien",
+        "viewPlan": "Przejrzyj plan",
+        "editExercises": "Edytuj cwiczenia"
+      },
+      "nextPlan": {
+        "heading": "Nastepny plan",
+        "queuePlan": "+ Zakolejkuj plan",
+        "hidePicker": "Ukryj",
+        "assignWhileActive": "Przypisz plan do przygotowania, gdy aktualny plan trwa:",
+        "queueAnother": "Zakolejkuj kolejny plan:",
+        "noPlansCreated": "Brak utworzonych planow.",
+        "createFirst": "Najpierw utworz plan",
+        "dragReorder": "Przeciagnij, aby zmienic kolejnosc",
+        "viewPlan": "Przejrzyj plan",
+        "editExercises": "Edytuj cwiczenia"
+      },
+      "goals": {
+        "heading": "Cele",
+        "placeholder": "Dodaj cele dla podopiecznego...",
+        "save": "Zapisz cele",
+        "saving": "Zapisywanie..."
+      },
+      "notes": {
+        "heading": "Notatki prywatne",
+        "subtitle": "Widoczne tylko dla Ciebie",
+        "placeholder": "Dodaj prywatne notatki o podopiecznym...",
+        "save": "Zapisz notatki",
+        "saving": "Zapisywanie..."
+      },
+      "bodyWeight": {
+        "heading": "Masa ciala",
+        "requestAccess": "Popros o dostep do masy ciala",
+        "requesting": "Wysylanie prosby...",
+        "accessRequested": "Prosby o dostep do masy ciala wyslano",
+        "revokeRequest": "Cofnij prosbe",
+        "revokeAccess": "Cofnij dostep",
+        "revoking": "Cofanie...",
+        "noData": "Brak zapisanych wpisow masy ciala.",
+        "showChart": "Pokaz wykres",
+        "hideChart": "Ukryj wykres",
+        "notEnoughData": "Niewystarczajace dane do wyswietlenia wykresu. Wymagane sa co najmniej 2 wpisy."
+      },
+      "stats": {
+        "height": "Wzrost",
+        "weight": "Waga",
+        "age": "Wiek {age}"
+      },
+      "plan": {
+        "startPlan": "Rozpocznij plan",
+        "activating": "Aktywowanie...",
+        "deletePlanTitle": "Usun nadchodzacy plan",
+        "deletePlanConfirm": "Czy na pewno chcesz usunac {planName}? Tej operacji nie mozna cofnac.",
+        "deleteAriaLabel": "Usun plan"
+      },
+      "exercises": {
+        "emptyHeading": "Brak zalogowanych cwiczen",
+        "emptyBody": "Ukonczone treningi pojawia sie tutaj po zalogowaniu serii.",
+        "noMatch": "Brak cwiczen pasujacych do wyszukiwania.",
+        "noBest": "Brak rekordu",
+        "searchPlaceholder": "Szukaj cwiczen...",
+        "search": "Szukaj"
+      },
+      "editPlan": {
+        "heading": "Edycja przypisanego planu {traineeName}",
+        "status": "{status}",
+        "changesEffect": "Zmiany wchodza w zycie natychmiast. Podopieczny zobaczy powiadomienie \"Plan zaktualizowany\".",
+        "noExercises": "Brak cwiczen w tym planie.",
+        "sets": "Serie",
+        "reps": "Powtorzenia",
+        "changesSaved": "Zmiany zapisane"
+      },
+      "workout": {
+        "session": "Sesja",
+        "completed": "Trening ukonczony",
+        "inProgress": "Trening w trakcie",
+        "workoutNumber": "Trening {number}",
+        "noExercises": "Brak cwiczen w tym treningu.",
+        "setsCount": "{logged}/{required} serie",
+        "backToPlan": "Wróc do planu",
+        "backToWorkout": "Wróc do treningu",
+        "target": "Cel: {sets} serie × {reps} powtorzen",
+        "noSets": "Brak zalogowanych serii dla tego cwiczenia.",
+        "repsHeader": "Powtorzenia",
+        "weightHeader": "Ciezar (kg)",
+        "failHeader": "Nieudane",
+        "exerciseVideo": "Film cwiczenia",
+        "weightOverSessions": "Ciezar w kolejnych sesjach",
+        "repsOverSessions": "Powtorzenia w kolejnych sesjach",
+        "noSetHistory": "Brak zalogowanych serii dla tego cwiczenia.",
+        "startLabel": "Poczatek",
+        "finishLabel": "Koniec",
+        "changeLabel": "Zmiana",
+        "personalRecord": "Rekord osobisty",
+        "topSetOverTime": "Najlepsza seria w czasie",
+        "noLogged": "Brak zalogowanych serii dla tego cwiczenia.",
+        "noDataPeriod": "Brak danych dla tego okresu."
+      },
+      "planView": {
+        "backTo": "Wróc do {traineeName}",
+        "workoutsPerWeek": "{count} treningi/tydzien",
+        "weeksCount": "{count} tygodnie",
+        "planComplete": "Plan ukonczony",
+        "planCompleteDescription": "{traineeName} ukonczyl wszystkie {weeks} tygodnie.",
+        "planNotStarted": "Plan jeszcze nie rozpoczety",
+        "activeProgress": "Aktywny · {done} z {total} treningow wykonanych",
+        "workoutsHeading": "Treningi",
+        "exercisesHeading": "Cwiczenia",
+        "currentWeek": "Aktualny tydzien",
+        "doneOfTotal": "{done} z {n} wykonanych",
+        "inProgress": "W trakcie →",
+        "done": "Ukonczone",
+        "completedThisWeek": "Ukonczone w tym tygodniu",
+        "pastWeeks": "Poprzednie tygodnie",
+        "weekNumber": "Tydzien {number}",
+        "noCompletedWorkouts": "Brak ukonczonych treningow.",
+        "noExercises": "Brak cwiczen w tym planie.",
+        "tapExercise": "Stuknij cwiczenie, aby wyswietlic wykres postepu.",
+        "noWorkoutsInPlan": "Brak treningow w tym planie.",
+        "backToPlan": "Wróc do planu",
+        "planNotStartedReadOnly": "Plan nie rozpoczety — tylko do odczytu",
+        "noExercisesInWorkout": "Brak cwiczen w tym treningu."
+      }
     }
   }
 }

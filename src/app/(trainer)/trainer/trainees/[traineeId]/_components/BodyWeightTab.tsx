@@ -1,5 +1,6 @@
 'use client';
 import { useState, useTransition } from 'react';
+import { useTranslations } from 'next-intl';
 import { revokeBodyWeightRequest } from '@/app/(trainer)/trainer/trainees/actions';
 import { DateRangeToggle } from '@/components/DateRangeToggle';
 import {
@@ -23,6 +24,7 @@ export function BodyWeightTab({ entries, traineeId }: Props) {
   const [showChart, setShowChart] = useState(false);
   const [dateRange, setDateRange] = useState<DateRange>('all');
   const [isPending, startTransition] = useTransition();
+  const t = useTranslations('trainer');
 
   function getCutoffDate(range: DateRange): Date | null {
     if (range === 'all') return null;
@@ -66,7 +68,7 @@ export function BodyWeightTab({ entries, traineeId }: Props) {
           onClick={() => setShowChart((prev) => !prev)}
           className="text-sm text-accent font-bold hover:text-accent-hover transition-colors underline-offset-4 hover:underline cursor-pointer"
         >
-          {showChart ? 'Hide chart' : 'Show chart'}
+          {showChart ? t('traineeDetail.bodyWeight.hideChart') : t('traineeDetail.bodyWeight.showChart')}
         </button>
 
         {showChart && (
@@ -74,7 +76,7 @@ export function BodyWeightTab({ entries, traineeId }: Props) {
             <DateRangeToggle value={dateRange} onChange={setDateRange} />
             {chartData.length < 2 ? (
               <p className="text-sm text-text-primary opacity-60">
-                Not enough data to show a chart. At least 2 entries are needed.
+                {t('traineeDetail.bodyWeight.notEnoughData')}
               </p>
             ) : (
               <ResponsiveContainer width="100%" height={240}>
@@ -122,7 +124,7 @@ export function BodyWeightTab({ entries, traineeId }: Props) {
 
       {/* Weight entries list — read-only for trainer */}
       {entries.length === 0 ? (
-        <p className="text-sm text-text-primary opacity-60">No body weight entries recorded yet.</p>
+        <p className="text-sm text-text-primary opacity-60">{t('traineeDetail.bodyWeight.noData')}</p>
       ) : (
         <div className="space-y-2">
           {entries.map((entry) => (
@@ -153,7 +155,7 @@ export function BodyWeightTab({ entries, traineeId }: Props) {
           disabled={isPending}
           className="text-xs text-error hover:text-error-light cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isPending ? 'Revoking...' : 'Revoke access'}
+          {isPending ? t('traineeDetail.bodyWeight.revoking') : t('traineeDetail.bodyWeight.revokeAccess')}
         </button>
       </div>
     </div>

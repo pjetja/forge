@@ -1,5 +1,6 @@
 'use client';
 import { useTransition, useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import { updateTraineeProfile } from '../actions';
 
 export function TraineeProfileForm({
@@ -19,6 +20,7 @@ export function TraineeProfileForm({
   const [name, setName] = useState(initialName);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const t = useTranslations('trainee');
 
   useEffect(() => {
     if (!success) return;
@@ -45,7 +47,7 @@ export function TraineeProfileForm({
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <label htmlFor="profile-name" className="text-sm text-text-primary mb-1 block">
-          Name
+          {t('profile.nameLabelField')}
         </label>
         <input
           id="profile-name"
@@ -60,14 +62,14 @@ export function TraineeProfileForm({
 
       <div>
         <label htmlFor="profile-goals" className="text-sm text-text-primary mb-1 block">
-          Goals
+          {t('profile.goalsLabelField')}
         </label>
         <textarea
           id="profile-goals"
           name="goals"
           rows={4}
           defaultValue={initialGoals}
-          placeholder="e.g. lose 10kg by summer, improve squat"
+          placeholder={t('profile.goalsPlaceholder')}
           className="bg-bg-surface border border-border rounded-sm px-3 py-2 text-text-primary focus:border-accent focus:outline-none w-full"
         />
       </div>
@@ -75,7 +77,7 @@ export function TraineeProfileForm({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
           <label htmlFor="profile-height" className="text-sm text-text-primary mb-1 block">
-            Height (cm)
+            {t('profile.heightLabel')}
           </label>
           <input
             id="profile-height"
@@ -91,7 +93,7 @@ export function TraineeProfileForm({
 
         <div>
           <label htmlFor="profile-weight" className="text-sm text-text-primary mb-1 block">
-            Weight (kg)
+            {t('profile.weightLabel')}
           </label>
           <input
             id="profile-weight"
@@ -107,7 +109,7 @@ export function TraineeProfileForm({
 
         <div>
           <label htmlFor="profile-dob" className="text-sm text-text-primary mb-1 block">
-            Date of birth
+            {t('profile.dobLabel')}
           </label>
           <input
             id="profile-dob"
@@ -125,11 +127,11 @@ export function TraineeProfileForm({
           disabled={!name.trim() || isPending}
           className="bg-accent hover:bg-accent-hover text-white font-medium px-6 py-2 rounded-sm cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed w-full md:w-auto"
         >
-          {isPending ? 'Saving...' : 'Save changes'}
+          {isPending ? t('profile.saving') : t('profile.saveChanges')}
         </button>
 
         {success && (
-          <p className="text-accent text-sm mt-2">Changes saved.</p>
+          <p className="text-accent text-sm mt-2">{t('profile.changesSaved')}</p>
         )}
         {error && (
           <p className="text-error text-sm mt-2">{error}</p>

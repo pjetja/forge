@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { getTranslations } from 'next-intl/server';
 import { TraineeCrossPlanChart } from './_components/TraineeCrossPlanChart';
 
 interface TraineeCrossPlanExercisePageProps {
@@ -25,6 +26,8 @@ export default async function TraineeCrossPlanExercisePage({ params }: TraineeCr
     .single();
 
   if (!exerciseRow) notFound();
+
+  const t = await getTranslations('trainee');
 
   // Get all assigned_schema_exercise IDs for this base exercise_id (cross-plan)
   const { data: aseRows } = await supabase
@@ -103,7 +106,7 @@ export default async function TraineeCrossPlanExercisePage({ params }: TraineeCr
         >
           <polyline points="15 18 9 12 15 6" />
         </svg>
-        Back
+        {t('exercises.back')}
       </Link>
 
       {/* Header */}

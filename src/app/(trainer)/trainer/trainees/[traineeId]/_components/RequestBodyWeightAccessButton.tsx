@@ -1,5 +1,6 @@
 'use client';
 import { useTransition } from 'react';
+import { useTranslations } from 'next-intl';
 import {
   requestBodyWeightAccess,
   revokeBodyWeightRequest,
@@ -12,6 +13,7 @@ interface Props {
 
 export function RequestBodyWeightAccessButton({ traineeId, accessStatus }: Props) {
   const [isPending, startTransition] = useTransition();
+  const t = useTranslations('trainer');
 
   function handleRequest() {
     startTransition(async () => {
@@ -34,7 +36,7 @@ export function RequestBodyWeightAccessButton({ traineeId, accessStatus }: Props
         disabled={isPending}
         className="border border-border text-text-primary text-sm font-bold px-3 py-2 rounded-sm hover:border-accent/50 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {isPending ? 'Requesting...' : 'Request body weight access'}
+        {isPending ? t('traineeDetail.bodyWeight.requesting') : t('traineeDetail.bodyWeight.requestAccess')}
       </button>
     );
   }
@@ -43,14 +45,14 @@ export function RequestBodyWeightAccessButton({ traineeId, accessStatus }: Props
   if (accessStatus === 'pending') {
     return (
       <div className="flex items-center gap-3">
-        <span className="text-sm text-text-primary opacity-60">Body weight access requested</span>
+        <span className="text-sm text-text-primary opacity-60">{t('traineeDetail.bodyWeight.accessRequested')}</span>
         <button
           type="button"
           onClick={handleRevoke}
           disabled={isPending}
           className="text-xs text-error hover:text-error-light cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isPending ? 'Revoking...' : 'Revoke request'}
+          {isPending ? t('traineeDetail.bodyWeight.revoking') : t('traineeDetail.bodyWeight.revokeRequest')}
         </button>
       </div>
     );
@@ -65,7 +67,7 @@ export function RequestBodyWeightAccessButton({ traineeId, accessStatus }: Props
         disabled={isPending}
         className="text-xs text-error hover:text-error-light cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {isPending ? 'Revoking...' : 'Revoke access'}
+        {isPending ? t('traineeDetail.bodyWeight.revoking') : t('traineeDetail.bodyWeight.revokeAccess')}
       </button>
     );
   }
