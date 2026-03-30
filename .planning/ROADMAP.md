@@ -290,11 +290,12 @@ Plans:
 **Goal:** Push code to GitHub, deploy to Vercel, configure Supabase for production, add PWA manifest, run demo seed, and verify the live URL works end-to-end for public beta testing.
 **Requirements**: DEPLOY-ENV, DEPLOY-PWA, DEPLOY-GIT, DEPLOY-CI, DEPLOY-VERCEL, DEPLOY-SUPABASE, DEPLOY-SEED, DEPLOY-E2E
 **Depends on:** Phase 10
-**Plans:** 1/4 plans executed
+**Plans:** 4/4 plans executed
+**Live URL:** https://forge-three-tau.vercel.app
 
 Plans:
 
 - [x] 11-01-PLAN.md — Git cleanup, PWA manifest + icons, production env var docs, pnpm build verification
-- [ ] 11-02-PLAN.md — GitHub repo creation, push, and CI workflow
-- [ ] 11-03-PLAN.md — Vercel import, env var configuration, first deploy
-- [ ] 11-04-PLAN.md — Supabase production Auth config, demo seed, end-to-end verification
+- [x] 11-02-PLAN.md — GitHub repo creation, push, and CI workflow
+- [x] 11-03-PLAN.md — Vercel import, env var configuration, first deploy
+- [x] 11-04-PLAN.md — Supabase production Auth config, demo seed, end-to-end verification
