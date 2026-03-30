@@ -1,5 +1,6 @@
 'use client';
 import { useTransition } from 'react';
+import { useTranslations } from 'next-intl';
 import { deleteBodyWeight } from '@/app/(trainee)/trainee/actions';
 
 interface DeleteBodyWeightButtonProps {
@@ -8,6 +9,7 @@ interface DeleteBodyWeightButtonProps {
 
 export function DeleteBodyWeightButton({ entryId }: DeleteBodyWeightButtonProps) {
   const [isPending, startTransition] = useTransition();
+  const t = useTranslations('trainee');
 
   function handleClick() {
     startTransition(async () => {
@@ -20,7 +22,7 @@ export function DeleteBodyWeightButton({ entryId }: DeleteBodyWeightButtonProps)
       type="button"
       onClick={handleClick}
       disabled={isPending}
-      aria-label="Delete entry"
+      aria-label={t('bodyWeight.deleteEntry')}
       className="text-text-primary opacity-40 hover:opacity-100 hover:text-accent transition cursor-pointer disabled:opacity-20"
     >
       <svg

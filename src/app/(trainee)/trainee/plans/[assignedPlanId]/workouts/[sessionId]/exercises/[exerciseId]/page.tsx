@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { redirect, notFound } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { getTranslations } from 'next-intl/server';
 import SetList from './_components/SetList';
 
 interface ExerciseDetailPageProps {
@@ -68,6 +69,8 @@ export default async function ExerciseDetailPage({ params }: ExerciseDetailPageP
     .single();
 
   const exerciseInfo = exerciseRow ?? { name: 'Unknown', muscle_group: '', description: null, video_url: null };
+
+  const t = await getTranslations('trainee');
 
   // Fetch already-logged sets for this exercise in this session
   const { data: loggedSetsData } = await supabase
@@ -223,7 +226,7 @@ export default async function ExerciseDetailPage({ params }: ExerciseDetailPageP
         >
           <polyline points="15 18 9 12 15 6" />
         </svg>
-        Back to workout
+        {t('workout.backToWorkout')}
       </Link>
 
       {/* Header */}
@@ -242,10 +245,10 @@ export default async function ExerciseDetailPage({ params }: ExerciseDetailPageP
           )}
           {ex.progression_mode && ex.progression_mode !== 'none' && (
             <span className="text-xs text-accent border border-accent/30 rounded-sm px-1.5 py-0.5">
-              {ex.progression_mode === 'linear' && 'Linear progression'}
-              {ex.progression_mode === 'double_progression' && 'Double progression'}
-              {ex.progression_mode === 'rpe' && 'RPE'}
-              {ex.progression_mode === 'rir' && 'RIR'}
+              {ex.progression_mode === 'linear' && t('workout.linearProgression')}
+              {ex.progression_mode === 'double_progression' && t('workout.doubleProgression')}
+              {ex.progression_mode === 'rpe' && t('workout.rpe')}
+              {ex.progression_mode === 'rir' && t('workout.rir')}
             </span>
           )}
         </div>
@@ -257,7 +260,7 @@ export default async function ExerciseDetailPage({ params }: ExerciseDetailPageP
       {/* Completed banner */}
       {session.status === 'completed' && (
         <div className="bg-accent/10 border border-accent/30 rounded-sm px-4 py-3 text-sm text-accent font-medium">
-          This workout is completed — browsing history
+          {t('workout.completedBanner')}
         </div>
       )}
 
@@ -270,14 +273,14 @@ export default async function ExerciseDetailPage({ params }: ExerciseDetailPageP
           href={`/trainee/plans/${assignedPlanId}/workouts/${sessionId}`}
           className="block w-full text-center bg-accent hover:bg-accent-hover text-white rounded-sm py-2.5 text-sm font-semibold transition-colors"
         >
-          Done
+          {t('workout.done')}
         </Link>
       )}
 
       {/* Video */}
       {exerciseInfo.video_url && (
         <div className="space-y-2">
-          <p className="text-xs font-medium text-text-primary opacity-60 uppercase tracking-wide">Exercise video</p>
+          <p className="text-xs font-medium text-text-primary opacity-60 uppercase tracking-wide">{t('workout.exerciseVideo')}</p>
           <div className="aspect-video w-full rounded-sm overflow-hidden bg-black">
             {exerciseInfo.video_url.includes('youtube.com') || exerciseInfo.video_url.includes('youtu.be') ? (
               <iframe

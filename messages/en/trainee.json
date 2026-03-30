@@ -1,5 +1,149 @@
 {
   "trainee": {
-    "_placeholder": true
+    "home": {
+      "heading": "Your Training",
+      "inProgressLabel": "Workout in progress",
+      "resume": "Resume",
+      "tabPlans": "Plans",
+      "tabExercises": "Exercises",
+      "tabLog": "Log",
+      "tabBodyWeight": "Body Weight",
+      "waitingHeading": "Waiting for your trainer",
+      "waitingBody": "Your trainer will assign a workout plan shortly. Once assigned, your schedule will appear here.",
+      "currentPlan": "Current Plan",
+      "upcomingPlans": "Upcoming Plans",
+      "pastPlans": "Past Plans",
+      "notStartedYet": "Not started yet",
+      "completed": "Completed",
+      "ended": "Ended",
+      "doneThisWeek": "{done} of {total} done this week",
+      "workoutsPerWeek": "{count} workouts/week",
+      "weeks": "{count} weeks",
+      "noSessionsHeading": "No sessions yet",
+      "noSessionsBody": "Complete your first workout to see your training history here.",
+      "noWeightHeading": "No weight entries yet",
+      "noWeightBody": "Log your first body weight to start tracking your progress."
+    },
+    "exercises": {
+      "heading": "Exercises",
+      "back": "Back",
+      "searchPlaceholder": "Search exercises...",
+      "search": "Search",
+      "noExercisesHeading": "No exercises logged yet",
+      "noExercisesBody": "Completed workouts will appear here once sets are logged.",
+      "noMatch": "No exercises match your search.",
+      "noBest": "No best"
+    },
+    "plan": {
+      "backToPlans": "Back to plans",
+      "workoutsHeading": "Workouts",
+      "exercisesHeading": "Exercises",
+      "planComplete": "Plan complete!",
+      "planCompleteBody": "You finished all {weeks} weeks. Great work!",
+      "currentWeek": "Current week",
+      "doneOfTotal": "{done} of {n} done",
+      "inProgress": "In progress",
+      "resume": "Resume",
+      "completedThisWeek": "Completed this week",
+      "done": "Done",
+      "pastWeeks": "Past weeks",
+      "weekLabel": "Week {n}",
+      "noCompletedWeeks": "No completed weeks yet.",
+      "noExercisesInPlan": "No exercises in this plan.",
+      "tapToViewChart": "Tap an exercise to view progress chart.",
+      "noWorkoutsInPlan": "No workouts in this plan yet.",
+      "finishCurrentFirst": "Finish your current workout first"
+    },
+    "workout": {
+      "backToPlan": "Back to plan",
+      "workoutNumber": "Workout {n}",
+      "completedBrowsing": "Workout completed — browsing history",
+      "noExercises": "No exercises in this workout.",
+      "setsCount": "{logged}/{required} sets",
+      "backToWorkout": "Back to workout",
+      "completedBanner": "This workout is completed — browsing history",
+      "done": "Done",
+      "exerciseVideo": "Exercise video",
+      "linearProgression": "Linear progression",
+      "doubleProgression": "Double progression",
+      "rpe": "RPE",
+      "rir": "RIR"
+    },
+    "finishWorkout": {
+      "button": "Finish Workout",
+      "redirecting": "Workout finished — redirecting...",
+      "confirmHeading": "Finish this workout?",
+      "setsLogged": "{logged} of {total} sets logged",
+      "notAllLogged": "You haven't logged all planned sets. Finish anyway?",
+      "allSetsComplete": "All sets completed!",
+      "optionalNotes": "Optional session notes",
+      "trainingTime": "Training time (min)",
+      "kcalBurned": "Kcal burned",
+      "difficulty": "Difficulty (1–10)",
+      "finishing": "Finishing...",
+      "confirmFinish": "Confirm & Finish",
+      "keepGoing": "Keep going"
+    },
+    "setList": {
+      "colNumber": "#",
+      "colReps": "Reps",
+      "colWeight": "Weight (kg)",
+      "colFail": "Fail",
+      "colPrev": "Prev",
+      "addSet": "Add set"
+    },
+    "startWorkout": {
+      "starting": "Starting…",
+      "start": "Start"
+    },
+    "abandon": {
+      "abandoning": "Abandoning…",
+      "abandon": "Abandon"
+    },
+    "exerciseProgress": {
+      "backToPlan": "Back to plan",
+      "startLabel": "Start",
+      "finishLabel": "Finish",
+      "changeLabel": "Change",
+      "weightOverSessions": "Weight over sessions",
+      "repsOverSessions": "Reps over sessions",
+      "noSets": "No logged sets for this exercise yet."
+    },
+    "crossPlanChart": {
+      "personalRecord": "Personal Record",
+      "topSetOverTime": "Top-set weight over time",
+      "noSets": "No logged sets for this exercise yet.",
+      "noDataPeriod": "No data for this period.",
+      "startLabel": "Start",
+      "finishLabel": "Finish",
+      "changeLabel": "Change"
+    },
+    "bodyWeight": {
+      "approveAccess": "Approve access",
+      "declineRequest": "Decline request",
+      "trainerRequestedAccess": "Your trainer has requested access to your body weight data.",
+      "showChart": "Show chart",
+      "hideChart": "Hide chart",
+      "notEnoughData": "Not enough data to show a chart. Log at least 2 entries to see your trend.",
+      "logWeightUpdate": "Update",
+      "logWeightButton": "Log weight",
+      "invalidWeight": "Please enter a valid weight between 1 and 500 kg.",
+      "deleteEntry": "Delete entry"
+    },
+    "profile": {
+      "tabProfile": "Profile",
+      "tabMyTrainer": "My Trainer",
+      "myTrainerHeading": "My Trainer",
+      "noTrainer": "No trainer connected yet.",
+      "nameLabelField": "Name",
+      "goalsLabelField": "Goals",
+      "goalsPlaceholder": "e.g. lose 10kg by summer, improve squat",
+      "heightLabel": "Height (cm)",
+      "weightLabel": "Weight (kg)",
+      "dobLabel": "Date of birth",
+      "saving": "Saving...",
+      "saveChanges": "Save changes",
+      "changesSaved": "Changes saved."
+    }
   }
 }

@@ -1,3 +1,4 @@
+import { getTranslations } from 'next-intl/server';
 import { GravatarAvatar } from '@/components/GravatarAvatar';
 
 interface TrainerCardProps {
@@ -9,10 +10,11 @@ interface TrainerCardProps {
   };
 }
 
-export function TrainerCard({ trainer }: TrainerCardProps) {
+export async function TrainerCard({ trainer }: TrainerCardProps) {
+  const t = await getTranslations('trainee');
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-bold text-text-primary">My Trainer</h2>
+      <h2 className="text-xl font-bold text-text-primary">{t('profile.myTrainerHeading')}</h2>
       <div className="bg-bg-surface border border-border rounded-lg p-6">
         <div className="flex items-center gap-4">
           <GravatarAvatar url={trainer.avatarUrl} name={trainer.name} size={40} />

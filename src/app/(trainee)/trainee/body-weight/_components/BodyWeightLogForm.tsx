@@ -1,5 +1,6 @@
 'use client';
 import { useTransition, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { logBodyWeight } from '@/app/(trainee)/trainee/actions';
 
 interface BodyWeightLogFormProps {
@@ -10,12 +11,13 @@ export function BodyWeightLogForm({ todayEntry }: BodyWeightLogFormProps) {
   const [isPending, startTransition] = useTransition();
   const [value, setValue] = useState(todayEntry?.weight_kg ?? '');
   const [error, setError] = useState<string | null>(null);
+  const t = useTranslations('trainee');
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const parsed = parseFloat(value);
     if (isNaN(parsed) || parsed < 1 || parsed > 500) {
-      setError('Please enter a valid weight between 1 and 500 kg.');
+      setError(t('bodyWeight.invalidWeight'));
       return;
     }
     setError(null);
@@ -48,7 +50,7 @@ export function BodyWeightLogForm({ todayEntry }: BodyWeightLogFormProps) {
           disabled={isPending}
           className="bg-accent text-white text-sm font-bold px-4 py-2 rounded-sm hover:bg-accent/90 transition-colors cursor-pointer disabled:opacity-60 flex-shrink-0"
         >
-          {isPending ? '...' : todayEntry ? 'Update' : 'Log weight'}
+          {isPending ? '...' : todayEntry ? t('bodyWeight.logWeightUpdate') : t('bodyWeight.logWeightButton')}
         </button>
       </div>
       {error && (

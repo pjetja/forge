@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { DateRangeToggle } from '@/components/DateRangeToggle';
 import { ProgressChart } from '@/app/(trainee)/trainee/plans/[assignedPlanId]/exercises/[exerciseId]/_components/ProgressChart';
 
@@ -18,6 +19,7 @@ interface TraineeCrossPlanChartProps {
 
 export function TraineeCrossPlanChart({ allChartData }: TraineeCrossPlanChartProps) {
   const [dateRange, setDateRange] = useState<DateRange>('all');
+  const t = useTranslations('trainee');
 
   const now = new Date();
   const cutoff =
@@ -52,44 +54,44 @@ export function TraineeCrossPlanChart({ allChartData }: TraineeCrossPlanChartPro
     <div className="space-y-4">
       {personalRecord != null && (
         <div className="bg-bg-surface border border-accent rounded-sm px-4 py-3 flex items-center justify-between">
-          <p className="text-xs font-semibold text-text-primary uppercase tracking-wide opacity-60">Personal Record</p>
+          <p className="text-xs font-semibold text-text-primary uppercase tracking-wide opacity-60">{t('crossPlanChart.personalRecord')}</p>
           <p className="text-lg font-bold text-accent">{personalRecord} kg</p>
         </div>
       )}
 
       <div className="flex items-center justify-between flex-wrap gap-2">
         <h2 className="text-sm font-semibold text-text-primary opacity-60 uppercase tracking-wide">
-          Top-set weight over time
+          {t('crossPlanChart.topSetOverTime')}
         </h2>
         <DateRangeToggle value={dateRange} onChange={setDateRange} />
       </div>
 
       {!hasAnyData ? (
         <div className="bg-bg-surface border border-border rounded-sm p-8 text-center">
-          <p className="text-sm text-text-primary opacity-50">No logged sets for this exercise yet.</p>
+          <p className="text-sm text-text-primary opacity-50">{t('crossPlanChart.noSets')}</p>
         </div>
       ) : !hasFilteredData ? (
         <div className="bg-bg-surface border border-border rounded-sm p-8 text-center">
-          <p className="text-sm text-text-primary opacity-50">No data for this period.</p>
+          <p className="text-sm text-text-primary opacity-50">{t('crossPlanChart.noDataPeriod')}</p>
         </div>
       ) : (
         <>
           {changeDelta !== null && (
             <div className="grid grid-cols-3 gap-3">
               <div className="bg-bg-surface border border-border rounded-sm px-3 py-3 text-center">
-                <p className="text-xs text-text-primary opacity-50 mb-1">Start</p>
+                <p className="text-xs text-text-primary opacity-50 mb-1">{t('crossPlanChart.startLabel')}</p>
                 <p className="text-lg font-bold text-text-primary">
                   {firstVal != null ? `${firstVal} kg` : '—'}
                 </p>
               </div>
               <div className="bg-bg-surface border border-border rounded-sm px-3 py-3 text-center">
-                <p className="text-xs text-text-primary opacity-50 mb-1">Finish</p>
+                <p className="text-xs text-text-primary opacity-50 mb-1">{t('crossPlanChart.finishLabel')}</p>
                 <p className="text-lg font-bold text-text-primary">
                   {lastVal != null ? `${lastVal} kg` : '—'}
                 </p>
               </div>
               <div className="bg-bg-surface border border-border rounded-sm px-3 py-3 text-center">
-                <p className="text-xs text-text-primary opacity-50 mb-1">Change</p>
+                <p className="text-xs text-text-primary opacity-50 mb-1">{t('crossPlanChart.changeLabel')}</p>
                 <p
                   className={`text-lg font-bold ${
                     changeDelta > 0

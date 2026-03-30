@@ -1,6 +1,7 @@
 'use client';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { MUSCLE_GROUPS } from '@/lib/db/schema';
 import { MultiFilterDropdown } from '@/components/MultiFilterDropdown';
 
@@ -13,6 +14,7 @@ export function TraineeExerciseFilterBar({ initialQuery, initialMuscles }: Train
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
+  const t = useTranslations('trainee');
 
   const [inputValue, setInputValue] = useState(initialQuery);
 
@@ -84,14 +86,14 @@ export function TraineeExerciseFilterBar({ initialQuery, initialMuscles }: Train
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           autoComplete="off"
-          placeholder="Search exercises..."
+          placeholder={t('exercises.searchPlaceholder')}
           className="flex-1 bg-bg-page border border-border rounded-sm px-3 py-2 text-sm text-text-primary focus:border-accent focus:outline-none"
         />
         <button
           type="submit"
           className="bg-accent hover:bg-accent-hover text-white rounded-sm px-4 py-2 text-sm font-medium transition-colors cursor-pointer"
         >
-          Search
+          {t('exercises.search')}
         </button>
         <button
           type="button"
