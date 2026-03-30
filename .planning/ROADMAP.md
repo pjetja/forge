@@ -299,3 +299,10 @@ Plans:
 - [x] 11-02-PLAN.md — GitHub repo creation, push, and CI workflow
 - [x] 11-03-PLAN.md — Vercel import, env var configuration, first deploy
 - [x] 11-04-PLAN.md — Supabase production Auth config, demo seed, end-to-end verification
+
+### Phase 12: After Release Fixes — post-release bugfixing based on beta feedback
+
+**Goal:** Investigate and fix bugs discovered after the public beta release. No new features — stability and correctness only.
+**Requirements**: TBD (driven by bug reports)
+**Depends on:** Phase 11
+**Plans:** TBD (run /gsd:plan-phase 12 to break down)
