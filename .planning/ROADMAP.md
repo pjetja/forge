@@ -181,8 +181,8 @@ Plans:
 
 Plans:
 
-- [ ] 05-01-PLAN.md — Shared TabSwitcher + DateRangeToggle components + Trainer-side Exercise tab on trainee profile + cross-plan exercise progress page
-- [ ] 05-02-PLAN.md — Trainee-side Exercise tab on home page + cross-plan exercise progress page at /trainee/exercises/[exerciseId]
+- [x] 05-01-PLAN.md — Shared TabSwitcher + DateRangeToggle components + Trainer-side Exercise tab on trainee profile + cross-plan exercise progress page
+- [x] 05-02-PLAN.md — Trainee-side Exercise tab on home page + cross-plan exercise progress page at /trainee/exercises/[exerciseId]
 
 ## Progress
 
@@ -201,7 +201,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 03.1. UI Polish                | Complete       | Complete    | 2026-03-13 |
 | 4. Trainee Workout Logging     | 5/5            | Complete    | 2026-03-13 |
 | 04.1. UI Polish                | Complete       | Complete    | 2026-03-14 |
-| 5. Trainer Progress Visibility | 1/2            | In Progress |            |
+| 5. Trainer Progress Visibility | 2/2            | Complete    | 2026-03-30 |
 
 ### Phase 05.1: UI Polish (INSERTED)
 
