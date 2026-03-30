@@ -59,7 +59,15 @@
       "feature3Title": "Śledź postępy w czasie",
       "feature3Description": "Trenerzy monitorują każdą sesję. Podopieczni obserwują jak rosną ich ciężary.",
       "footerLogin": "Masz już konto? Zaloguj się",
-      "footerHelp": "Pomoc / FAQ"
+      "footerHelp": "Pomoc / FAQ",
+      "demoTitle": "Wypróbuj aplikację",
+      "demoSubtitle": "Przeglądaj Forge bez rejestracji — zaloguj się jako konto demo",
+      "testAsTrainer": "Zaloguj się jako Trener",
+      "testAsTrainee": "Zaloguj się jako Podopieczny",
+      "demoTrainerLabel": "Demo Trener",
+      "demoTraineeLabel": "Demo Podopieczny",
+      "demoEmailLabel": "Email",
+      "demoPasswordLabel": "Hasło"
     },
     "help": {
       "heading": "Pomoc i FAQ",

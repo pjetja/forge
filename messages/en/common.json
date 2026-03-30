@@ -59,7 +59,15 @@
       "feature3Title": "Track progress over time",
       "feature3Description": "Trainers monitor every session. Trainees watch their lifts grow.",
       "footerLogin": "Already have an account? Log in",
-      "footerHelp": "Help / FAQ"
+      "footerHelp": "Help / FAQ",
+      "demoTitle": "Try the app",
+      "demoSubtitle": "Explore Forge without signing up — log in as a demo account",
+      "testAsTrainer": "Log in as Trainer",
+      "testAsTrainee": "Log in as Trainee",
+      "demoTrainerLabel": "Demo Trainer",
+      "demoTraineeLabel": "Demo Trainee",
+      "demoEmailLabel": "Email",
+      "demoPasswordLabel": "Password"
     },
     "help": {
       "heading": "Help & FAQ",

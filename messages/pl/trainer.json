@@ -167,7 +167,12 @@
       "saving": "Zapisywanie...",
       "saveChanges": "Zapisz zmiany",
       "changesSaved": "Zmiany zapisane.",
-      "failedToSave": "Nie udało się zapisać zmian."
+      "failedToSave": "Nie udało się zapisać zmian.",
+      "changePasswordHeading": "Zmień hasło",
+      "changePasswordNewLabel": "Nowe hasło",
+      "changePasswordConfirmLabel": "Potwierdź nowe hasło",
+      "changePasswordSubmit": "Zmień hasło",
+      "changePasswordSaving": "Zapisywanie..."
     },
     "nav": {
       "trainees": "Podopieczni",

@@ -143,7 +143,12 @@
       "dobLabel": "Data urodzenia",
       "saving": "Zapisywanie...",
       "saveChanges": "Zapisz zmiany",
-      "changesSaved": "Zmiany zapisane."
+      "changesSaved": "Zmiany zapisane.",
+      "changePasswordHeading": "Zmień hasło",
+      "changePasswordNewLabel": "Nowe hasło",
+      "changePasswordConfirmLabel": "Potwierdź nowe hasło",
+      "changePasswordSubmit": "Zmień hasło",
+      "changePasswordSaving": "Zapisywanie..."
     }
   }
 }

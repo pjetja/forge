@@ -167,7 +167,12 @@
       "saving": "Saving...",
       "saveChanges": "Save changes",
       "changesSaved": "Changes saved.",
-      "failedToSave": "Failed to save changes."
+      "failedToSave": "Failed to save changes.",
+      "changePasswordHeading": "Change Password",
+      "changePasswordNewLabel": "New password",
+      "changePasswordConfirmLabel": "Confirm new password",
+      "changePasswordSubmit": "Change password",
+      "changePasswordSaving": "Saving..."
     },
     "nav": {
       "trainees": "Trainees",

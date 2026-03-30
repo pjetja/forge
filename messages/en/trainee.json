@@ -143,7 +143,12 @@
       "dobLabel": "Date of birth",
       "saving": "Saving...",
       "saveChanges": "Save changes",
-      "changesSaved": "Changes saved."
+      "changesSaved": "Changes saved.",
+      "changePasswordHeading": "Change Password",
+      "changePasswordNewLabel": "New password",
+      "changePasswordConfirmLabel": "Confirm new password",
+      "changePasswordSubmit": "Change password",
+      "changePasswordSaving": "Saving..."
     }
   }
 }
