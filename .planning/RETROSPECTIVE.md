@@ -1,6 +1,6 @@
 # Project Retrospective
 
-*A living document updated after each milestone. Lessons feed forward into future planning.*
+_A living document updated after each milestone. Lessons feed forward into future planning._
 
 ## Milestone: v1.0 — Forge MVP
 
@@ -68,10 +68,10 @@
 
 ### Process Evolution
 
-| Milestone | Phases | Plans | Key Change |
-|-----------|--------|-------|------------|
-| v1.0 | 19 | 59 | Initial full-stack MVP build with GSD workflow |
+| Milestone | Phases | Plans | Key Change                                     |
+| --------- | ------ | ----- | ---------------------------------------------- |
+| v1.0      | 19     | 59    | Initial full-stack MVP build with GSD workflow |
 
 ### Top Lessons (Verified Across Milestones)
 
-1. *Populate after v1.1*
+1. _Populate after v1.1_

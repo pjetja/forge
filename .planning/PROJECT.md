@@ -5,6 +5,7 @@
 **Goal:** Extend Forge beyond the trainer↔trainee model with three new user flows — trainers managing athletes without accounts, a global exercise library curated by an admin, and self-managing advanced trainees.
 
 **Target features:**
+
 - Phase 13: Proxy Trainee — Trainer-managed athletes without accounts; log workouts + body weight on their behalf; activation invite migrates to full account
 - Phase 14: Admin & Global Exercise Library — Admin role curates shared exercise library; trainers fork on edit (copy-on-write)
 - Phase 15: Super Trainee — Self-managing advanced users with plan-builder access, global library, no trainer required
