@@ -107,7 +107,11 @@
       "changeLabel": "Change",
       "weightOverSessions": "Weight over sessions",
       "repsOverSessions": "Reps over sessions",
-      "noSets": "No logged sets for this exercise yet."
+      "noSets": "No logged sets for this exercise yet.",
+      "progressionLinear": "Progression: +{n} kg/week",
+      "progressionDouble": "Progression: Double progression",
+      "progressionRpe": "Target RPE: {n}",
+      "progressionRir": "Target RIR: {n}"
     },
     "crossPlanChart": {
       "personalRecord": "Personal Record",

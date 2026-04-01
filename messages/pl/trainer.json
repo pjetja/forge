@@ -140,7 +140,10 @@
       "reps": "Powtórzenia",
       "weightKg": "Ciężar (kg)",
       "tempo": "Tempo",
-      "setLabel": "S{number} (kg)"
+      "setLabel": "S{number} (kg)",
+      "targetRpe": "Cel RPE",
+      "targetRir": "Cel RIR",
+      "kgPerWeek": "+kg / tydzień"
     },
     "assign": {
       "heading": "Przypisz plan",

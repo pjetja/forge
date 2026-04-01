@@ -33,7 +33,9 @@ export default async function ExerciseProgressPage({
   // Fetch assigned_schema_exercise
   const { data: ase } = await supabase
     .from("assigned_schema_exercises")
-    .select("id, exercise_id, sets, reps, target_weight_kg")
+    .select(
+      "id, exercise_id, sets, reps, target_weight_kg, progression_mode, rpe_target, rir_target, weight_increment_per_week",
+    )
     .eq("id", exerciseId)
     .single();
 
@@ -196,21 +198,46 @@ export default async function ExerciseProgressPage({
             <> &middot; {parseFloat(String(ase.target_weight_kg))} kg target</>
           )}
         </p>
+        {/* Progression mode info line */}
+        {ase.progression_mode && ase.progression_mode !== "none" && (
+          <p className="mt-1 text-xs text-accent">
+            {ase.progression_mode === "linear" &&
+            ase.weight_increment_per_week != null
+              ? t("exerciseProgress.progressionLinear", {
+                  n: parseFloat(String(ase.weight_increment_per_week)),
+                })
+              : ase.progression_mode === "double_progression"
+                ? t("exerciseProgress.progressionDouble")
+                : ase.progression_mode === "rpe" && ase.rpe_target != null
+                  ? t("exerciseProgress.progressionRpe", { n: ase.rpe_target })
+                  : ase.progression_mode === "rir" && ase.rir_target != null
+                    ? t("exerciseProgress.progressionRir", {
+                        n: ase.rir_target,
+                      })
+                    : null}
+          </p>
+        )}
       </div>
 
       {/* Start vs finish summary */}
       {chartData.length > 1 && weightDelta !== null && (
         <div className="grid grid-cols-3 gap-3">
           <div className="bg-bg-surface border border-border rounded-sm px-3 py-3 text-center">
-            <p className="text-xs text-text-primary opacity-50 mb-1">{t("exerciseProgress.startLabel")}</p>
+            <p className="text-xs text-text-primary opacity-50 mb-1">
+              {t("exerciseProgress.startLabel")}
+            </p>
             <p className="text-lg font-bold text-text-primary">{firstAvg} kg</p>
           </div>
           <div className="bg-bg-surface border border-border rounded-sm px-3 py-3 text-center">
-            <p className="text-xs text-text-primary opacity-50 mb-1">{t("exerciseProgress.finishLabel")}</p>
+            <p className="text-xs text-text-primary opacity-50 mb-1">
+              {t("exerciseProgress.finishLabel")}
+            </p>
             <p className="text-lg font-bold text-text-primary">{lastAvg} kg</p>
           </div>
           <div className="bg-bg-surface border border-border rounded-sm px-3 py-3 text-center">
-            <p className="text-xs text-text-primary opacity-50 mb-1">{t("exerciseProgress.changeLabel")}</p>
+            <p className="text-xs text-text-primary opacity-50 mb-1">
+              {t("exerciseProgress.changeLabel")}
+            </p>
             <p
               className={`text-lg font-bold ${weightDelta > 0 ? "text-accent" : weightDelta < 0 ? "text-red-400" : "text-text-primary"}`}
             >

@@ -107,7 +107,11 @@
       "changeLabel": "Zmiana",
       "weightOverSessions": "Ciężar na sesjach",
       "repsOverSessions": "Powtórzenia na sesjach",
-      "noSets": "Brak zalogowanych serii dla tego ćwiczenia."
+      "noSets": "Brak zalogowanych serii dla tego ćwiczenia.",
+      "progressionLinear": "Progresja: +{n} kg/tydzień",
+      "progressionDouble": "Progresja: Podwójna progresja",
+      "progressionRpe": "Cel RPE: {n}",
+      "progressionRir": "Cel RIR: {n}"
     },
     "crossPlanChart": {
       "personalRecord": "Rekord osobisty",

@@ -1,11 +1,14 @@
-'use client';
-import { useState, useTransition } from 'react';
-import { CSS } from '@dnd-kit/utilities';
-import { useSortable } from '@dnd-kit/sortable';
-import { useTranslations } from 'next-intl';
-import { updateSchemaExercise, removeExerciseFromSchema } from '../plans/actions';
-import { ProgressionDropdown } from '@/components/ProgressionDropdown';
-import { FilterDropdown } from '@/components/FilterDropdown';
+"use client";
+import { useState, useTransition } from "react";
+import { CSS } from "@dnd-kit/utilities";
+import { useSortable } from "@dnd-kit/sortable";
+import { useTranslations } from "next-intl";
+import {
+  updateSchemaExercise,
+  removeExerciseFromSchema,
+} from "../plans/actions";
+import { ProgressionDropdown } from "@/components/ProgressionDropdown";
+import { FilterDropdown } from "@/components/FilterDropdown";
 
 export interface SchemaExerciseItem {
   id: string;
@@ -18,8 +21,10 @@ export interface SchemaExerciseItem {
   perSetWeights: number[] | null;
   tempo: string | null;
   progressionMode: string;
+  rpeTarget: number | null;
+  rirTarget: number | null;
+  weightIncrementPerWeek: number | null;
 }
-
 
 interface SchemaExerciseRowProps {
   item: SchemaExerciseItem;
@@ -29,14 +34,26 @@ interface SchemaExerciseRowProps {
 }
 
 function numStr(n: number | null | undefined): string {
-  if (n == null || n === 0) return '';
+  if (n == null || n === 0) return "";
   return String(n);
 }
 
-export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaExerciseRowProps) {
-  const t = useTranslations('trainer');
-  const tc = useTranslations('common');
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+export function SchemaExerciseRow({
+  item,
+  schemaId,
+  planId,
+  onRemoved,
+}: SchemaExerciseRowProps) {
+  const t = useTranslations("trainer");
+  const tc = useTranslations("common");
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
     id: item.id,
   });
 
@@ -48,15 +65,28 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
 
   const [sets, setSets] = useState(item.sets);
   const [reps, setReps] = useState(item.reps);
-  const [targetWeight, setTargetWeight] = useState<string>(numStr(item.targetWeightKg));
+  const [targetWeight, setTargetWeight] = useState<string>(
+    numStr(item.targetWeightKg),
+  );
   const [perSetMode, setPerSetMode] = useState(item.perSetWeights !== null);
   const [perSetWeights, setPerSetWeights] = useState<string[]>(
     item.perSetWeights
       ? item.perSetWeights.map(numStr)
-      : Array(item.sets).fill(numStr(item.targetWeightKg))
+      : Array(item.sets).fill(numStr(item.targetWeightKg)),
   );
-  const [tempo, setTempo] = useState(item.tempo ?? '');
+  const [tempo, setTempo] = useState(item.tempo ?? "");
   const [progressionMode, setProgressionMode] = useState(item.progressionMode);
+  const [rpeTarget, setRpeTarget] = useState<string>(
+    item.rpeTarget != null ? String(item.rpeTarget) : "",
+  );
+  const [rirTarget, setRirTarget] = useState<string>(
+    item.rirTarget != null ? String(item.rirTarget) : "",
+  );
+  const [weightIncrement, setWeightIncrement] = useState<string>(
+    item.weightIncrementPerWeek != null
+      ? String(item.weightIncrementPerWeek)
+      : "",
+  );
   const [confirmRemove, setConfirmRemove] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -72,7 +102,7 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
     if (perSetMode) {
       setPerSetWeights((prev) => {
         const copy = [...prev];
-        while (copy.length < validated) copy.push(copy[copy.length - 1] ?? '');
+        while (copy.length < validated) copy.push(copy[copy.length - 1] ?? "");
         return copy.slice(0, validated);
       });
     }
@@ -116,15 +146,19 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
     setConfirmRemove(false);
     startTransition(async () => {
       const result = await removeExerciseFromSchema(item.id, schemaId, planId);
-      if (!('error' in result)) onRemoved(item.id);
+      if (!("error" in result)) onRemoved(item.id);
     });
   }
 
   const inputClass =
-    'w-16 bg-bg-page border border-border rounded-sm px-2 py-1 text-sm text-text-primary text-center focus:border-accent focus:outline-none';
+    "w-16 bg-bg-page border border-border rounded-sm px-2 py-1 text-sm text-text-primary text-center focus:border-accent focus:outline-none";
 
   return (
-    <div ref={setNodeRef} style={style} className="bg-bg-surface border border-border rounded-sm p-3 space-y-2">
+    <div
+      ref={setNodeRef}
+      style={style}
+      className="bg-bg-surface border border-border rounded-sm p-3 space-y-2"
+    >
       {/* Row header: drag handle + exercise name + remove */}
       <div className="flex items-center gap-2">
         {/* Drag handle — listeners ONLY here, not on the row div */}
@@ -132,16 +166,20 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
           type="button"
           {...attributes}
           {...listeners}
-          style={{ touchAction: 'none' }}
+          style={{ touchAction: "none" }}
           className="cursor-grab active:cursor-grabbing text-text-primary opacity-40 hover:opacity-100 transition-opacity flex-shrink-0 p-1"
-          aria-label={t('schemas.dragToReorder')}
+          aria-label={t("schemas.dragToReorder")}
         >
           ⠿
         </button>
 
         <div className="flex-1 min-w-0">
-          <p className="font-medium text-text-primary text-sm truncate">{item.exerciseName}</p>
-          <p className="text-xs text-text-primary opacity-60">{item.muscleGroup}</p>
+          <p className="font-medium text-text-primary text-sm truncate">
+            {item.exerciseName}
+          </p>
+          <p className="text-xs text-text-primary opacity-60">
+            {item.muscleGroup}
+          </p>
         </div>
 
         {confirmRemove ? (
@@ -152,14 +190,14 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
               disabled={isPending}
               className="text-xs text-red-400 hover:text-red-300 px-2 py-1 cursor-pointer disabled:opacity-30"
             >
-              {t('schemas.removeConfirm')}
+              {t("schemas.removeConfirm")}
             </button>
             <button
               type="button"
               onClick={() => setConfirmRemove(false)}
               className="text-xs text-text-primary opacity-50 hover:opacity-100 px-2 py-1 cursor-pointer"
             >
-              {tc('button.cancel')}
+              {tc("button.cancel")}
             </button>
           </div>
         ) : (
@@ -167,9 +205,9 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
             type="button"
             onClick={() => setConfirmRemove(true)}
             disabled={isPending}
-            title={t('schemas.removeExercise')}
+            title={t("schemas.removeExercise")}
             className="text-text-primary opacity-40 hover:opacity-100 hover:text-red-400 transition-opacity flex-shrink-0 text-lg leading-none cursor-pointer p-1"
-            aria-label={t('schemas.removeExercise')}
+            aria-label={t("schemas.removeExercise")}
           >
             &times;
           </button>
@@ -179,21 +217,27 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
       {/* Inputs: sets | reps | weight | tempo | progression */}
       <div className="flex items-end gap-3 pl-7 flex-wrap">
         <div className="flex flex-col gap-1">
-          <label className="text-xs text-text-primary opacity-60">{t('schemas.weightMode')}</label>
+          <label className="text-xs text-text-primary opacity-60">
+            {t("schemas.weightMode")}
+          </label>
           <FilterDropdown
             label=""
             options={[
-              { value: 'single', label: t('schemas.singleWeight') },
-              { value: 'per-set', label: t('schemas.perSetWeights') },
+              { value: "single", label: t("schemas.singleWeight") },
+              { value: "per-set", label: t("schemas.perSetWeights") },
             ]}
-            value={perSetMode ? 'per-set' : 'single'}
-            onChange={(val) => { if ((val === 'per-set') !== perSetMode) togglePerSetMode(); }}
+            value={perSetMode ? "per-set" : "single"}
+            onChange={(val) => {
+              if ((val === "per-set") !== perSetMode) togglePerSetMode();
+            }}
             buttonClassName="h-7 py-0 text-xs min-w-[126px]"
           />
         </div>
 
         <div className="flex flex-col gap-1">
-          <label className="text-xs text-text-primary opacity-60">{t('schemas.sets')}</label>
+          <label className="text-xs text-text-primary opacity-60">
+            {t("schemas.sets")}
+          </label>
           <input
             type="number"
             className={inputClass}
@@ -206,7 +250,9 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs text-text-primary opacity-60">{t('schemas.reps')}</label>
+          <label className="text-xs text-text-primary opacity-60">
+            {t("schemas.reps")}
+          </label>
           <input
             type="number"
             className={inputClass}
@@ -219,8 +265,10 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
           />
         </div>
 
-        <div className={`flex flex-col gap-1 ${perSetMode ? 'invisible' : ''}`}>
-          <label className="text-xs text-text-primary opacity-60">{t('schemas.weightKg')}</label>
+        <div className={`flex flex-col gap-1 ${perSetMode ? "invisible" : ""}`}>
+          <label className="text-xs text-text-primary opacity-60">
+            {t("schemas.weightKg")}
+          </label>
           <input
             type="text"
             inputMode="decimal"
@@ -235,7 +283,9 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
         </div>
 
         <div className="flex flex-col gap-1">
-          <label className="text-xs text-text-primary opacity-60">{t('schemas.tempo')}</label>
+          <label className="text-xs text-text-primary opacity-60">
+            {t("schemas.tempo")}
+          </label>
           <input
             type="text"
             className={inputClass}
@@ -255,6 +305,74 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
           }}
           buttonClassName="h-7 py-0 text-xs"
         />
+
+        {/* Progression parameter input — shown only when the selected mode needs a number */}
+        {progressionMode === "rpe" && (
+          <div className="flex flex-col gap-1">
+            <label className="text-xs text-text-primary opacity-60">
+              {t("schemas.targetRpe")}
+            </label>
+            <input
+              type="number"
+              className={inputClass}
+              value={rpeTarget}
+              min={1}
+              max={10}
+              placeholder="8"
+              onFocus={(e) => e.target.select()}
+              onChange={(e) => setRpeTarget(e.target.value)}
+              onBlur={() =>
+                saveField({ rpeTarget: parseInt(rpeTarget, 10) || null })
+              }
+            />
+          </div>
+        )}
+        {progressionMode === "rir" && (
+          <div className="flex flex-col gap-1">
+            <label className="text-xs text-text-primary opacity-60">
+              {t("schemas.targetRir")}
+            </label>
+            <input
+              type="number"
+              className={inputClass}
+              value={rirTarget}
+              min={0}
+              max={5}
+              placeholder="2"
+              onFocus={(e) => e.target.select()}
+              onChange={(e) => setRirTarget(e.target.value)}
+              onBlur={() =>
+                saveField({
+                  rirTarget:
+                    parseInt(rirTarget, 10) >= 0
+                      ? parseInt(rirTarget, 10)
+                      : null,
+                })
+              }
+            />
+          </div>
+        )}
+        {progressionMode === "linear" && (
+          <div className="flex flex-col gap-1">
+            <label className="text-xs text-text-primary opacity-60">
+              {t("schemas.kgPerWeek")}
+            </label>
+            <input
+              type="text"
+              inputMode="decimal"
+              className={inputClass}
+              value={weightIncrement}
+              placeholder="2.5"
+              onFocus={(e) => e.target.select()}
+              onChange={(e) => setWeightIncrement(e.target.value)}
+              onBlur={() =>
+                saveField({
+                  weightIncrementPerWeek: parseFloat(weightIncrement) || null,
+                })
+              }
+            />
+          </div>
+        )}
       </div>
 
       {/* Per-set weight inputs */}
@@ -262,7 +380,9 @@ export function SchemaExerciseRow({ item, schemaId, planId, onRemoved }: SchemaE
         <div className="pl-7 flex flex-wrap gap-2">
           {perSetWeights.map((w, i) => (
             <div key={i} className="flex flex-col gap-1">
-              <label className="text-xs text-text-primary opacity-60">{t('schemas.setLabel', { number: i + 1 })}</label>
+              <label className="text-xs text-text-primary opacity-60">
+                {t("schemas.setLabel", { number: i + 1 })}
+              </label>
               <input
                 type="text"
                 inputMode="decimal"

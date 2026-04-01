@@ -1,6 +1,6 @@
-'use server';
-import { createClient } from '@/lib/supabase/server';
-import { revalidatePath } from 'next/cache';
+"use server";
+import { createClient } from "@/lib/supabase/server";
+import { revalidatePath } from "next/cache";
 
 // ── Plan CRUD ─────────────────────────────────────────────────────────────────
 
@@ -13,12 +13,12 @@ export type PlanFormData = {
 };
 
 export async function createPlan(
-  data: PlanFormData
+  data: PlanFormData,
 ): Promise<{ planId: string } | { error: string }> {
   const supabase = await createClient();
   const claimsResult = await supabase.auth.getClaims();
   const claims = claimsResult.data?.claims;
-  if (!claims) return { error: 'Not authenticated' };
+  if (!claims) return { error: "Not authenticated" };
 
   // Try with metadata columns (migration 0004). Fall back to base columns if not applied.
   let plan: { id: string } | null = null;
@@ -30,61 +30,74 @@ export async function createPlan(
   };
 
   const { data: fullPlan, error: fullError } = await supabase
-    .from('plans')
+    .from("plans")
     .insert({ ...baseInsert, tags: data.tags ?? [], notes: data.notes ?? null })
-    .select('id')
+    .select("id")
     .single();
 
   if (!fullError) {
     plan = fullPlan;
   } else {
     const { data: basePlan, error: baseError } = await supabase
-      .from('plans')
+      .from("plans")
       .insert(baseInsert)
-      .select('id')
+      .select("id")
       .single();
-    if (baseError || !basePlan) return { error: 'Failed to create plan. Please try again.' };
+    if (baseError || !basePlan)
+      return { error: "Failed to create plan. Please try again." };
     plan = basePlan;
   }
 
-  if (!plan) return { error: 'Failed to create plan. Please try again.' };
+  if (!plan) return { error: "Failed to create plan. Please try again." };
 
-  revalidatePath('/trainer/plans');
+  revalidatePath("/trainer/plans");
   return { planId: plan.id };
 }
 
 export async function updatePlan(
   planId: string,
-  data: Partial<PlanFormData & { notes: string | null }>
+  data: Partial<PlanFormData & { notes: string | null }>,
 ): Promise<{ success: true } | { error: string }> {
   const supabase = await createClient();
   const claimsResult = await supabase.auth.getClaims();
   const claims = claimsResult.data?.claims;
-  if (!claims) return { error: 'Not authenticated' };
+  if (!claims) return { error: "Not authenticated" };
 
-  const baseUpdates: Record<string, unknown> = { updated_at: new Date().toISOString() };
+  const baseUpdates: Record<string, unknown> = {
+    updated_at: new Date().toISOString(),
+  };
   if (data.name !== undefined) baseUpdates.name = data.name;
   if (data.weekCount !== undefined) baseUpdates.week_count = data.weekCount;
-  if (data.workoutsPerWeek !== undefined) baseUpdates.workouts_per_week = data.workoutsPerWeek;
+  if (data.workoutsPerWeek !== undefined)
+    baseUpdates.workouts_per_week = data.workoutsPerWeek;
 
   const metaUpdates: Record<string, unknown> = {};
   if (data.tags !== undefined) metaUpdates.tags = data.tags;
-  if ('notes' in data) metaUpdates.notes = data.notes ?? null;
+  if ("notes" in data) metaUpdates.notes = data.notes ?? null;
 
   const updates = { ...baseUpdates, ...metaUpdates };
 
-  const { error } = await supabase.from('plans').update(updates).eq('id', planId);
+  const { error } = await supabase
+    .from("plans")
+    .update(updates)
+    .eq("id", planId);
   if (error) {
     // Fall back without metadata columns if migration 0004 not applied
-    if (Object.keys(metaUpdates).length > 0 && Object.keys(baseUpdates).length > 1) {
-      const { error: baseError } = await supabase.from('plans').update(baseUpdates).eq('id', planId);
-      if (baseError) return { error: 'Failed to update plan.' };
+    if (
+      Object.keys(metaUpdates).length > 0 &&
+      Object.keys(baseUpdates).length > 1
+    ) {
+      const { error: baseError } = await supabase
+        .from("plans")
+        .update(baseUpdates)
+        .eq("id", planId);
+      if (baseError) return { error: "Failed to update plan." };
     } else {
-      return { error: 'Failed to update plan.' };
+      return { error: "Failed to update plan." };
     }
   }
 
-  revalidatePath('/trainer/plans');
+  revalidatePath("/trainer/plans");
   revalidatePath(`/trainer/plans/${planId}`);
   return { success: true };
 }
@@ -95,50 +108,53 @@ export async function updatePlan(
  * - No active trainees → hard delete
  */
 export async function deletePlan(
-  planId: string
+  planId: string,
 ): Promise<{ success: true; archived: boolean } | { error: string }> {
   const supabase = await createClient();
   const claimsResult = await supabase.auth.getClaims();
   const claims = claimsResult.data?.claims;
-  if (!claims) return { error: 'Not authenticated' };
+  if (!claims) return { error: "Not authenticated" };
 
   const { count } = await supabase
-    .from('assigned_plans')
-    .select('id', { count: 'exact', head: true })
-    .eq('source_plan_id', planId)
-    .in('status', ['pending', 'active']);
+    .from("assigned_plans")
+    .select("id", { count: "exact", head: true })
+    .eq("source_plan_id", planId)
+    .in("status", ["pending", "active"]);
 
   if (count && count > 0) {
-    const { error } = await supabase.from('plans').update({ status: 'archived' }).eq('id', planId);
-    if (error) return { error: 'Failed to archive plan.' };
-    revalidatePath('/trainer/plans');
+    const { error } = await supabase
+      .from("plans")
+      .update({ status: "archived" })
+      .eq("id", planId);
+    if (error) return { error: "Failed to archive plan." };
+    revalidatePath("/trainer/plans");
     return { success: true, archived: true };
   }
 
-  const { error } = await supabase.from('plans').delete().eq('id', planId);
-  if (error) return { error: 'Failed to delete plan.' };
+  const { error } = await supabase.from("plans").delete().eq("id", planId);
+  if (error) return { error: "Failed to delete plan." };
 
-  revalidatePath('/trainer/plans');
+  revalidatePath("/trainer/plans");
   return { success: true, archived: false };
 }
 
 export async function duplicatePlan(
   sourcePlanId: string,
-  newName: string
+  newName: string,
 ): Promise<{ planId: string } | { error: string }> {
   const supabase = await createClient();
   const claimsResult = await supabase.auth.getClaims();
   const claims = claimsResult.data?.claims;
-  if (!claims) return { error: 'Not authenticated' };
+  if (!claims) return { error: "Not authenticated" };
 
-  const { data, error } = await supabase.rpc('duplicate_plan', {
+  const { data, error } = await supabase.rpc("duplicate_plan", {
     source_plan_id: sourcePlanId,
     new_trainer_auth_uid: claims.sub,
     new_name: newName,
   });
 
-  if (error || !data) return { error: 'Failed to duplicate plan.' };
-  revalidatePath('/trainer/plans');
+  if (error || !data) return { error: "Failed to duplicate plan." };
+  revalidatePath("/trainer/plans");
   return { planId: data as string };
 }
 
@@ -146,26 +162,26 @@ export async function duplicatePlan(
 
 export async function createSchema(
   planId: string,
-  data: { name: string; slotIndex: number; sortOrder: number }
+  data: { name: string; slotIndex: number; sortOrder: number },
 ): Promise<{ schemaId: string } | { error: string }> {
   const supabase = await createClient();
   const claimsResult = await supabase.auth.getClaims();
   const claims = claimsResult.data?.claims;
-  if (!claims) return { error: 'Not authenticated' };
+  if (!claims) return { error: "Not authenticated" };
 
   // Verify plan ownership via RLS
   const { data: schema, error } = await supabase
-    .from('workout_schemas')
+    .from("workout_schemas")
     .insert({
       plan_id: planId,
       name: data.name,
       slot_index: data.slotIndex,
       sort_order: data.sortOrder,
     })
-    .select('id')
+    .select("id")
     .single();
 
-  if (error || !schema) return { error: 'Failed to create schema.' };
+  if (error || !schema) return { error: "Failed to create schema." };
   revalidatePath(`/trainer/plans/${planId}`);
   return { schemaId: schema.id };
 }
@@ -173,19 +189,22 @@ export async function createSchema(
 export async function updateSchema(
   schemaId: string,
   planId: string,
-  data: { name?: string; slotIndex?: number }
+  data: { name?: string; slotIndex?: number },
 ): Promise<{ success: true } | { error: string }> {
   const supabase = await createClient();
   const claimsResult = await supabase.auth.getClaims();
   const claims = claimsResult.data?.claims;
-  if (!claims) return { error: 'Not authenticated' };
+  if (!claims) return { error: "Not authenticated" };
 
   const updates: Record<string, unknown> = {};
   if (data.name !== undefined) updates.name = data.name;
   if (data.slotIndex !== undefined) updates.slot_index = data.slotIndex;
 
-  const { error } = await supabase.from('workout_schemas').update(updates).eq('id', schemaId);
-  if (error) return { error: 'Failed to update schema.' };
+  const { error } = await supabase
+    .from("workout_schemas")
+    .update(updates)
+    .eq("id", schemaId);
+  if (error) return { error: "Failed to update schema." };
 
   revalidatePath(`/trainer/plans/${planId}`);
   return { success: true };
@@ -193,15 +212,18 @@ export async function updateSchema(
 
 export async function deleteSchema(
   schemaId: string,
-  planId: string
+  planId: string,
 ): Promise<{ success: true } | { error: string }> {
   const supabase = await createClient();
   const claimsResult = await supabase.auth.getClaims();
   const claims = claimsResult.data?.claims;
-  if (!claims) return { error: 'Not authenticated' };
+  if (!claims) return { error: "Not authenticated" };
 
-  const { error } = await supabase.from('workout_schemas').delete().eq('id', schemaId);
-  if (error) return { error: 'Failed to delete schema.' };
+  const { error } = await supabase
+    .from("workout_schemas")
+    .delete()
+    .eq("id", schemaId);
+  if (error) return { error: "Failed to delete schema." };
 
   revalidatePath(`/trainer/plans/${planId}`);
   return { success: true };
@@ -217,21 +239,24 @@ export type SchemaExerciseData = {
   perSetWeights?: number[] | null;
   tempo?: string | null;
   progressionMode?: string;
+  rpeTarget?: number | null;
+  rirTarget?: number | null;
+  weightIncrementPerWeek?: number | null;
   sortOrder: number;
 };
 
 export async function addExerciseToSchema(
   schemaId: string,
   planId: string,
-  data: SchemaExerciseData
+  data: SchemaExerciseData,
 ): Promise<{ exerciseRowId: string } | { error: string }> {
   const supabase = await createClient();
   const claimsResult = await supabase.auth.getClaims();
   const claims = claimsResult.data?.claims;
-  if (!claims) return { error: 'Not authenticated' };
+  if (!claims) return { error: "Not authenticated" };
 
   const { data: row, error } = await supabase
-    .from('schema_exercises')
+    .from("schema_exercises")
     .insert({
       schema_id: schemaId,
       exercise_id: data.exerciseId,
@@ -241,10 +266,10 @@ export async function addExerciseToSchema(
       per_set_weights: data.perSetWeights ?? null,
       sort_order: data.sortOrder,
     })
-    .select('id')
+    .select("id")
     .single();
 
-  if (error || !row) return { error: 'Failed to add exercise.' };
+  if (error || !row) return { error: "Failed to add exercise." };
   revalidatePath(`/trainer/plans/${planId}/schemas/${schemaId}`);
   return { exerciseRowId: row.id };
 }
@@ -253,25 +278,36 @@ export async function updateSchemaExercise(
   exerciseRowId: string,
   schemaId: string,
   planId: string,
-  data: Partial<Omit<SchemaExerciseData, 'exerciseId' | 'sortOrder'>>
+  data: Partial<Omit<SchemaExerciseData, "exerciseId" | "sortOrder">>,
 ): Promise<{ success: true } | { error: string }> {
   const supabase = await createClient();
   const claimsResult = await supabase.auth.getClaims();
   const claims = claimsResult.data?.claims;
-  if (!claims) return { error: 'Not authenticated' };
+  if (!claims) return { error: "Not authenticated" };
 
-  const updates: Record<string, unknown> = { updated_at: new Date().toISOString() };
+  const updates: Record<string, unknown> = {
+    updated_at: new Date().toISOString(),
+  };
   if (data.sets !== undefined) updates.sets = data.sets;
   if (data.reps !== undefined) updates.reps = data.reps;
-  if ('targetWeightKg' in data) updates.target_weight_kg = data.targetWeightKg ?? null;
-  if ('perSetWeights' in data) {
+  if ("targetWeightKg" in data)
+    updates.target_weight_kg = data.targetWeightKg ?? null;
+  if ("perSetWeights" in data) {
     updates.per_set_weights = data.perSetWeights ?? null;
   }
-  if ('tempo' in data) updates.tempo = data.tempo?.trim() || null;
-  if (data.progressionMode !== undefined) updates.progression_mode = data.progressionMode;
+  if ("tempo" in data) updates.tempo = data.tempo?.trim() || null;
+  if (data.progressionMode !== undefined)
+    updates.progression_mode = data.progressionMode;
+  if ("rpeTarget" in data) updates.rpe_target = data.rpeTarget ?? null;
+  if ("rirTarget" in data) updates.rir_target = data.rirTarget ?? null;
+  if ("weightIncrementPerWeek" in data)
+    updates.weight_increment_per_week = data.weightIncrementPerWeek ?? null;
 
-  const { error } = await supabase.from('schema_exercises').update(updates).eq('id', exerciseRowId);
-  if (error) return { error: 'Failed to update exercise.' };
+  const { error } = await supabase
+    .from("schema_exercises")
+    .update(updates)
+    .eq("id", exerciseRowId);
+  if (error) return { error: "Failed to update exercise." };
 
   revalidatePath(`/trainer/plans/${planId}/schemas/${schemaId}`);
   return { success: true };
@@ -280,15 +316,18 @@ export async function updateSchemaExercise(
 export async function removeExerciseFromSchema(
   exerciseRowId: string,
   schemaId: string,
-  planId: string
+  planId: string,
 ): Promise<{ success: true } | { error: string }> {
   const supabase = await createClient();
   const claimsResult = await supabase.auth.getClaims();
   const claims = claimsResult.data?.claims;
-  if (!claims) return { error: 'Not authenticated' };
+  if (!claims) return { error: "Not authenticated" };
 
-  const { error } = await supabase.from('schema_exercises').delete().eq('id', exerciseRowId);
-  if (error) return { error: 'Failed to remove exercise.' };
+  const { error } = await supabase
+    .from("schema_exercises")
+    .delete()
+    .eq("id", exerciseRowId);
+  if (error) return { error: "Failed to remove exercise." };
 
   revalidatePath(`/trainer/plans/${planId}/schemas/${schemaId}`);
   return { success: true };
@@ -297,21 +336,24 @@ export async function removeExerciseFromSchema(
 export async function reorderSchemaExercises(
   schemaId: string,
   planId: string,
-  orderedIds: string[] // exercise row IDs in new order
+  orderedIds: string[], // exercise row IDs in new order
 ): Promise<{ success: true } | { error: string }> {
   const supabase = await createClient();
   const claimsResult = await supabase.auth.getClaims();
   const claims = claimsResult.data?.claims;
-  if (!claims) return { error: 'Not authenticated' };
+  if (!claims) return { error: "Not authenticated" };
 
   // Bulk update sort_order for each exercise row
   const updates = orderedIds.map((id, index) =>
-    supabase.from('schema_exercises').update({ sort_order: index }).eq('id', id)
+    supabase
+      .from("schema_exercises")
+      .update({ sort_order: index })
+      .eq("id", id),
   );
 
   const results = await Promise.all(updates);
   const failed = results.find((r) => r.error);
-  if (failed) return { error: 'Failed to reorder exercises.' };
+  if (failed) return { error: "Failed to reorder exercises." };
 
   // No revalidatePath — this is called optimistically from the client, no server re-render needed
   return { success: true };

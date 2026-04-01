@@ -9,13 +9,13 @@
 
 Phase 12 addresses beta feedback with no scope creep into new features. All work subdivides into six sequential plans:
 
-| Plan  | Title                                                               | Priority   |
-| ----- | ------------------------------------------------------------------- | ---------- |
-| 12-01 | Progression mode parameters (RPE/RIR values + linear increment)     | MUST HAVE  |
-| 12-02 | Nav + UX fixes (log in nav, nav width, assign-plan discoverability) | MUST HAVE  |
-| 12-03 | Trainer view: body weight tab + i18n audit                          | WOULD HAVE |
-| 12-04 | FAQ usage flows for trainer and trainee                             | MUST HAVE  |
-| 12-05 | Loading states + Gravatar docs                                      | WOULD HAVE |
+| Plan  | Title                                                               | Priority     |
+| ----- | ------------------------------------------------------------------- | ------------ |
+| 12-01 | Progression mode parameters (RPE/RIR values + linear increment)     | MUST HAVE    |
+| 12-02 | Nav + UX fixes (log in nav, nav width, assign-plan discoverability) | MUST HAVE    |
+| 12-03 | Trainer view: body weight tab + i18n audit                          | WOULD HAVE   |
+| 12-04 | FAQ usage flows for trainer and trainee                             | MUST HAVE    |
+| 12-05 | Loading states + Gravatar docs                                      | WOULD HAVE   |
 | 12-06 | Drag & drop on assigned schema editor                               | NICE TO HAVE |
 
 </domain>

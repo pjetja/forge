@@ -140,7 +140,10 @@
       "reps": "Reps",
       "weightKg": "Weight (kg)",
       "tempo": "Tempo",
-      "setLabel": "S{number} (kg)"
+      "setLabel": "S{number} (kg)",
+      "targetRpe": "Target RPE",
+      "targetRir": "Target RIR",
+      "kgPerWeek": "+kg / week"
     },
     "assign": {
       "heading": "Assign plan",

@@ -29,10 +29,10 @@ Created private GitHub repository at `github.com/pjetja/forge`, pushed full loca
 
 ## Tasks Completed
 
-| #   | Task                                       | Commit    | Files                       |
-| --- | ------------------------------------------ | --------- | --------------------------- |
-| 1   | Create GitHub repo + push history          | —         | Remote: git@github.com:pjetja/forge.git |
-| 2   | Create `.github/workflows/ci.yml`          | `1ce75dd` | .github/workflows/ci.yml   |
+| #   | Task                              | Commit    | Files                                   |
+| --- | --------------------------------- | --------- | --------------------------------------- |
+| 1   | Create GitHub repo + push history | —         | Remote: git@github.com:pjetja/forge.git |
+| 2   | Create `.github/workflows/ci.yml` | `1ce75dd` | .github/workflows/ci.yml                |
 
 ## Self-Check: PASSED
 

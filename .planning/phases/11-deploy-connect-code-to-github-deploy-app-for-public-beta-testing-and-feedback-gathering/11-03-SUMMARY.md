@@ -29,12 +29,12 @@ Imported the `forge` GitHub repository into Vercel, configured all 4 required en
 
 ## Tasks Completed
 
-| #   | Task                                           | Result                                      |
-| --- | ---------------------------------------------- | ------------------------------------------- |
-| 1   | Import GitHub repo into Vercel                 | Project created — `forge-three-tau.vercel.app` |
-| 2   | Add env vars in Vercel dashboard               | 4 vars set (SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, SERVICE_ROLE_KEY, SITE_URL) |
-| 3   | First deployment completed                     | Build passed — `pnpm build` exit 0          |
-| 4   | Update `.env.local.example` with Vercel note   | Comment clarified for NEXT_PUBLIC_SITE_URL  |
+| #   | Task                                         | Result                                                                          |
+| --- | -------------------------------------------- | ------------------------------------------------------------------------------- |
+| 1   | Import GitHub repo into Vercel               | Project created — `forge-three-tau.vercel.app`                                  |
+| 2   | Add env vars in Vercel dashboard             | 4 vars set (SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, SERVICE_ROLE_KEY, SITE_URL) |
+| 3   | First deployment completed                   | Build passed — `pnpm build` exit 0                                              |
+| 4   | Update `.env.local.example` with Vercel note | Comment clarified for NEXT_PUBLIC_SITE_URL                                      |
 
 ## Live URL
 
