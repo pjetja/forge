@@ -47,7 +47,8 @@ export function NavHeader({ avatarUrl, userName, locale }: { avatarUrl: string; 
     <>
       <header className="bg-bg-page border-b border-border">
         {/* Row 1: Logo | Avatar (desktop) / Hamburger (mobile) */}
-        <div className="h-14 px-4 flex items-center justify-between">
+        <div className="h-14">
+          <div className="max-w-[1280px] mx-auto px-4 h-full flex items-center justify-between">
           <Link href="/trainer" aria-label={t('aria.forgeHome')} className="flex items-center">
             <ForgeLogo variant="horizontal" className="h-7" />
           </Link>
@@ -99,10 +100,12 @@ export function NavHeader({ avatarUrl, userName, locale }: { avatarUrl: string; 
               </svg>
             </button>
           </div>
+          </div>
         </div>
 
         {/* Row 2: Nav links — desktop only */}
-        <nav className="hidden md:flex border-t border-border px-4 py-2 gap-6">
+        <nav className="hidden md:flex border-t border-border">
+          <div className="max-w-[1280px] mx-auto px-4 w-full flex items-center py-2 gap-6">
           {navLinks.map(({ href, labelKey, isActive }) => (
             <Link
               key={href}
@@ -116,6 +119,7 @@ export function NavHeader({ avatarUrl, userName, locale }: { avatarUrl: string; 
               {t(labelKey)}
             </Link>
           ))}
+          </div>
         </nav>
       </header>
 

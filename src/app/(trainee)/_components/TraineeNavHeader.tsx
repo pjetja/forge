@@ -1,36 +1,50 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { ForgeLogo } from '@/components/ForgeLogo';
 import { GravatarAvatar } from '@/components/GravatarAvatar';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { signOut } from '@/app/(auth)/login/actions';
 import type { Locale } from '@/i18n/constants';
+import type { ReadonlyURLSearchParams } from 'next/navigation';
 
-const navLinks = [
+const navLinks: {
+  href: string;
+  labelKey: string;
+  isActive: (pathname: string, searchParams: ReadonlyURLSearchParams) => boolean;
+}[] = [
   {
     href: '/trainee',
     labelKey: 'nav.plans',
-    isActive: (pathname: string) =>
-      pathname === '/trainee' || pathname.startsWith('/trainee/plans'),
+    isActive: (pathname, searchParams) =>
+      (pathname === '/trainee' && !searchParams.get('tab')) ||
+      (pathname === '/trainee' && searchParams.get('tab') === 'plans') ||
+      pathname.startsWith('/trainee/plans'),
+  },
+  {
+    href: '/trainee?tab=log',
+    labelKey: 'nav.log',
+    isActive: (pathname, searchParams) =>
+      pathname === '/trainee' && searchParams.get('tab') === 'log',
   },
   {
     href: '/trainee/exercises',
     labelKey: 'nav.exercises',
-    isActive: (pathname: string) => pathname.startsWith('/trainee/exercises'),
+    isActive: (pathname, _sp) => pathname.startsWith('/trainee/exercises'),
   },
   {
     href: '/help',
     labelKey: 'nav.help',
-    isActive: (_pathname: string) => false,
+    isActive: (_pathname, _sp) => false,
   },
 ];
 
 export function TraineeNavHeader({ avatarUrl, userName, locale }: { avatarUrl: string; userName: string; locale: Locale }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const t = useTranslations('common');
 
   useEffect(() => {
@@ -42,7 +56,8 @@ export function TraineeNavHeader({ avatarUrl, userName, locale }: { avatarUrl: s
     <>
       <header className="bg-bg-page border-b border-border">
         {/* Row 1: Logo | Avatar (desktop) / Hamburger (mobile) */}
-        <div className="h-14 px-4 flex items-center justify-between">
+        <div className="h-14">
+          <div className="max-w-[1280px] mx-auto px-4 h-full flex items-center justify-between">
           <Link href="/trainee" aria-label={t('aria.forgeHome')} className="flex items-center">
             <ForgeLogo variant="horizontal" className="h-7" />
           </Link>
@@ -94,16 +109,18 @@ export function TraineeNavHeader({ avatarUrl, userName, locale }: { avatarUrl: s
               </svg>
             </button>
           </div>
+          </div>
         </div>
 
         {/* Row 2: Nav links — desktop only */}
-        <nav className="hidden md:flex border-t border-border px-4 py-2 gap-6">
+        <nav className="hidden md:flex border-t border-border">
+          <div className="max-w-[1280px] mx-auto px-4 w-full flex items-center py-2 gap-6">
           {navLinks.map(({ href, labelKey, isActive }) => (
             <Link
               key={href}
               href={href}
               className={`text-sm transition-colors ${
-                isActive(pathname)
+                isActive(pathname, searchParams)
                   ? 'text-accent font-medium'
                   : 'text-text-primary hover:text-accent'
               }`}
@@ -111,6 +128,7 @@ export function TraineeNavHeader({ avatarUrl, userName, locale }: { avatarUrl: s
               {t(labelKey)}
             </Link>
           ))}
+          </div>
         </nav>
       </header>
 
@@ -147,7 +165,7 @@ export function TraineeNavHeader({ avatarUrl, userName, locale }: { avatarUrl: s
                   href={href}
                   onClick={() => setSidebarOpen(false)}
                   className={`text-sm transition-colors ${
-                    isActive(pathname)
+                    isActive(pathname, searchParams)
                       ? 'text-accent font-medium'
                       : 'text-text-primary hover:text-accent'
                   }`}

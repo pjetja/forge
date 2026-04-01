@@ -205,7 +205,8 @@
         "weeks": "{count} tygodnie",
         "workoutsPerWeek": "{count} treningi/tydzień",
         "viewPlan": "Przejrzyj plan",
-        "editExercises": "Edytuj ćwiczenia"
+        "editExercises": "Edytuj ćwiczenia",
+        "assignPlan": "Przypisz plan"
       },
       "nextPlan": {
         "heading": "Następny plan",

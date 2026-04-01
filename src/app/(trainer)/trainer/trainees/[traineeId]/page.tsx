@@ -139,6 +139,18 @@ export default async function TraineeDetailPage({
       {/* Plans tab content */}
       {activeTab === 'plans' && (
       <>
+      {/* Persistent assign plan CTA — always visible when templates exist */}
+      {(planTemplates ?? []).length > 0 && (
+        <div className="flex justify-end">
+          <Link
+            href="/trainer/plans"
+            className="inline-flex items-center gap-1.5 text-sm border border-border rounded-sm px-3 py-1.5 text-text-primary hover:border-accent hover:text-accent transition-colors"
+          >
+            + {t('traineeDetail.plans.assignPlan')}
+          </Link>
+        </div>
+      )}
+
       {/* Current plan */}
       {(activePlan || pendingPlans.length === 0) && (
       <section>
