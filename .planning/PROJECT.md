@@ -35,7 +35,13 @@ A trainee can open the app mid-workout, see exactly what they did last week on e
 - ✓ Public landing page drives trainer and trainee signups — v1.0
 - ✓ In-app FAQ/Help page and /guide usage-flow walkthrough accessible to all users — v1.0
 
-### Active (v1.1 candidates)
+### Active (v1.1 — defined)
+
+- [ ] **Phase 13: Proxy Trainee** — Trainer creates proxy trainees (no app account), logs workouts + body weight on their behalf, can activate to full account via invite link; includes assign-plan flow simplification and shared-component architecture refactor
+- [ ] **Phase 14: Admin & Global Exercise Library** — Admin role + global exercise library; trainers see and use global exercises, fork on edit (copy-on-write); shared exercise CRUD component
+- [ ] **Phase 15: Super Trainee User Type** — New role for advanced self-managing users; access to global exercise library, full plan-builder parity, self-assigned plans, no trainer required; dummy seed account for testing
+
+### Backlog (post v1.1)
 
 - [ ] Trainee browse full workout history (all past sessions, pagination)
 - [ ] Rest timer between sets (countdown after logging a set)
@@ -70,17 +76,18 @@ A trainee can open the app mid-workout, see exactly what they did last week on e
 
 ## Key Decisions
 
-| Decision | Rationale | Outcome |
-|----------|-----------|---------|
-| PWA over native apps | No app store friction, works on all devices, covers gym use case | ✓ Good — works well in mobile browser, home-screen install works |
-| Supabase + RLS for multi-tenancy | Server-enforced isolation without application-layer complexity | ✓ Good — zero cross-tenant data leaks in testing |
-| Invite-link connection (not direct email) | Simpler UX, no email lookup privacy issues | ✓ Good — trainers prefer sharing a link over knowing trainee emails |
-| next-intl 4.x with cookie-based locale | Polish-first market, simple switcher | ✓ Good — no URL prefix needed, works with App Router middleware |
-| Server Actions for mutations | Avoids API route boilerplate, type-safe end-to-end | ✓ Good — consistent pattern across all 50+ mutations |
-| Recharts for progress charts | Lightweight, good React integration, no license cost | ✓ Good — renders well on mobile |
-| @dnd-kit for exercise reordering | Accessible, works in Next.js App Router without issues | ✓ Good — used on both plan template and assigned schema editors |
-| Smartwatch integration deferred | Too complex for MVP scope, HealthKit needs native bridge | — Deferred to v2+ |
-| Progression modes (linear/RPE/RIR/double) on schema exercises | Beta feedback: trainers need to specify target values, not just mode | ✓ Built in Phase 12 |
+| Decision                                                      | Rationale                                                            | Outcome                                                             |
+| ------------------------------------------------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| PWA over native apps                                          | No app store friction, works on all devices, covers gym use case     | ✓ Good — works well in mobile browser, home-screen install works    |
+| Supabase + RLS for multi-tenancy                              | Server-enforced isolation without application-layer complexity       | ✓ Good — zero cross-tenant data leaks in testing                    |
+| Invite-link connection (not direct email)                     | Simpler UX, no email lookup privacy issues                           | ✓ Good — trainers prefer sharing a link over knowing trainee emails |
+| next-intl 4.x with cookie-based locale                        | Polish-first market, simple switcher                                 | ✓ Good — no URL prefix needed, works with App Router middleware     |
+| Server Actions for mutations                                  | Avoids API route boilerplate, type-safe end-to-end                   | ✓ Good — consistent pattern across all 50+ mutations                |
+| Recharts for progress charts                                  | Lightweight, good React integration, no license cost                 | ✓ Good — renders well on mobile                                     |
+| @dnd-kit for exercise reordering                              | Accessible, works in Next.js App Router without issues               | ✓ Good — used on both plan template and assigned schema editors     |
+| Smartwatch integration deferred                               | Too complex for MVP scope, HealthKit needs native bridge             | — Deferred to v2+                                                   |
+| Progression modes (linear/RPE/RIR/double) on schema exercises | Beta feedback: trainers need to specify target values, not just mode | ✓ Built in Phase 12                                                 |
 
 ---
-*Last updated: 2026-04-01 after v1.0 milestone shipped*
+
+_Last updated: 2026-04-01 after v1.0 milestone shipped_

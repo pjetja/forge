@@ -24,7 +24,18 @@
 - Post-release fixes: RPE/RIR/linear progression parameters on assign-review and exercise-detail pages, DnD on assigned schema editor, body-weight tab always visible, loading skeletons, i18n audit, Gravatar docs, /guide page
 
 **Stats:**
+
 - v1 requirements: 25/25 complete
 - Phases: 1 → 12 (including 7 inserted sub-phases)
 
 ---
+
+## v1.1 (In Progress)
+
+**Phases planned:** 3 | **Status:** Planning
+
+**Phases:**
+
+- Phase 13: Proxy Trainee — Trainer-managed athletes without app accounts; trainer logs workouts + body weight on their behalf; activation link migrates proxy to full account
+- Phase 14: Admin & Global Exercise Library — Admin role curates a global exercise library; trainers read global exercises and fork on edit (copy-on-write)
+- Phase 15: Super Trainee User Type — Advanced self-managing gym-goers with plan-builder access, global exercise library, and no trainer dependency
