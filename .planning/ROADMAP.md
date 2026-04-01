@@ -3,7 +3,7 @@
 ## Milestones
 
 - ✅ **v1.0 Forge MVP** — Phases 1–12 (shipped 2026-04-01) — https://forge-three-tau.vercel.app
-- 🚧 **v1.1** — In progress — Phases 13–14
+- 🚧 **v1.1** — In progress — Phases 13–15
 
 ## Phases
 
@@ -39,10 +39,11 @@ Full phase details: `.planning/milestones/v1.0-ROADMAP.md`
 <details open>
 <summary>🚧 v1.1 — In Progress</summary>
 
-| Phase | Name                              | Plans | Status     |
-| ----- | --------------------------------- | ----- | ---------- |
-| 13    | Proxy Trainee                     | TBD   | 📋 Planned |
-| 14    | Admin & Global Exercise Library   | TBD   | 📋 Planned |
+| Phase | Name                            | Plans | Status     |
+| ----- | ------------------------------- | ----- | ---------- |
+| 13    | Proxy Trainee                   | TBD   | 📋 Planned |
+| 14    | Admin & Global Exercise Library | TBD   | 📋 Planned |
+| 15    | Super Trainee User Type         | TBD   | 📋 Planned |
 
 ### Phase 13: Proxy Trainee
 
@@ -71,6 +72,7 @@ Full phase details: `.planning/milestones/v1.0-ROADMAP.md`
 **Depends on:** Phase 13 (shares shared-component architecture refactor)
 
 **Key requirements:**
+
 - A designated admin role exists (Supabase role or flag); admin can sign in with the normal auth flow
 - Admin can create, edit, and delete exercises in the global library (same CRUD interface, different scope)
 - Global exercises are visible in every trainer's exercise library, clearly badged (e.g. "Global" chip)
@@ -79,10 +81,30 @@ Full phase details: `.planning/milestones/v1.0-ROADMAP.md`
 - Global exercises cannot be deleted by trainers; only the admin can remove them
 
 **Design considerations:**
+
 - UX: admin exercise management UI (could reuse trainer exercise CRUD with an admin flag toggling "global" scope)
 - Data model: add `is_global` flag (or `owner_id IS NULL`) to exercises table; RLS policies differentiate read vs. write by role
 - Copy-on-write trigger: intercept trainer edit attempt on a global exercise, clone the row, redirect edit to the clone
 - Shared component opportunity: exercise CRUD form used by both admin and trainers, parameterised by scope
+
+### Phase 15: Super Trainee User Type
+
+**Goal:** A new "super trainee" role allows advanced gym-goers to self-manage their training without a trainer. They access the global exercise library, build their own plans, assign those plans to themselves, and manage all schemas and workouts independently.
+
+**Depends on:** Phase 14 (global exercise library must exist before super trainees can consume it)
+
+**Key requirements:**
+- A new `super_trainee` role can be selected at sign-up (not advertised on the public landing page for now)
+- Super trainees have read access to the global exercise library (same as trainers, no copy-on-write needed unless they want to customise)
+- Super trainees can create, edit, duplicate, and delete their own workout plans (plan builder parity with trainers, scoped to self)
+- Super trainees can assign plans to themselves and progress through them the same way a regular trainee does
+- Super trainees have no trainer connection — no roster, no invite flow, no shared visibility
+- A dummy super trainee seed account is provided for manual testing
+
+**Design considerations:**
+- UX: single-user dashboard that merges the trainer plan-builder view and the trainee workout-logging view into one coherent experience
+- Architecture: super trainee surfaces the largest shared-component opportunity across all v1.1 phases — plan builder, workout logging, and exercise library components should be extracted to a shared layer usable by trainer, trainee, and super trainee
+- Role gating: middleware and RLS must distinguish `super_trainee` from `trainee` and `trainer` cleanly
 
 </details>
 
@@ -91,11 +113,11 @@ Full phase details: `.planning/milestones/v1.0-ROADMAP.md`
 | Milestone      | Phases | Plans | Status      | Shipped    |
 | -------------- | ------ | ----- | ----------- | ---------- |
 | v1.0 Forge MVP | 19     | 59    | ✅ Complete | 2026-04-01 |
-| v1.1           | 2+     | TBD   | 🚧 Active   | —          |
+| v1.1           | 3+     | TBD   | 🚧 Active   | —          |
 
 ---
 
-_Last updated: 2026-04-01 — v1.1: Phases 13 (Proxy Trainee) and 14 (Admin & Global Exercise Library) added_
+_Last updated: 2026-04-01 — v1.1: Phases 13 (Proxy Trainee), 14 (Admin & Global Exercise Library), and 15 (Super Trainee) added_
 
 Decimal phases appear between their surrounding integers in numeric order.
 
