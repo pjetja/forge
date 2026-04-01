@@ -286,3 +286,26 @@ export async function revokeBodyWeightRequest(
   revalidatePath(`/trainer/trainees/${traineeId}`);
   return { success: true };
 }
+
+export async function reorderAssignedSchemaExercises(
+  assignedPlanId: string,
+  orderedIds: string[],
+): Promise<{ success: true } | { error: string }> {
+  const supabase = await createClient();
+  const claimsResult = await supabase.auth.getClaims();
+  const claims = claimsResult.data?.claims;
+  if (!claims) return { error: 'Not authenticated' };
+
+  const updates = orderedIds.map((id, index) =>
+    supabase
+      .from('assigned_schema_exercises')
+      .update({ sort_order: index })
+      .eq('id', id)
+  );
+
+  const results = await Promise.all(updates);
+  const failed = results.find((r) => r.error);
+  if (failed) return { error: 'Failed to reorder exercises.' };
+
+  return { success: true };
+}

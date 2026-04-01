@@ -1,7 +1,23 @@
 'use client';
-import { useState, useTransition } from 'react';
+import { useState, useTransition, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import { editAssignedPlan, type AssignedExerciseUpdate } from '../../../../actions';
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import { editAssignedPlan, reorderAssignedSchemaExercises, type AssignedExerciseUpdate } from '../../../../actions';
 
 interface AssignedExercise {
   assignedExerciseId: string;
@@ -27,13 +43,37 @@ export function EditAssignedPlanClient({
 }: EditAssignedPlanClientProps) {
   const [, startTransition] = useTransition();
   const [saved, setSaved] = useState(false);
+  const [items, setItems] = useState(exercises);
   const t = useTranslations('trainer');
+
+  useEffect(() => {
+    setItems(exercises);
+  }, [exercises]);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 5 } })
+  );
 
   function saveUpdates(updates: AssignedExerciseUpdate[]) {
     startTransition(async () => {
       await editAssignedPlan(assignedPlanId, traineeId, updates);
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
+    });
+  }
+
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+
+    const oldIndex = items.findIndex((item) => item.assignedExerciseId === active.id);
+    const newIndex = items.findIndex((item) => item.assignedExerciseId === over.id);
+    const reordered = arrayMove(items, oldIndex, newIndex);
+    setItems(reordered);
+
+    startTransition(async () => {
+      await reorderAssignedSchemaExercises(assignedPlanId, reordered.map((item) => item.assignedExerciseId));
     });
   }
 
@@ -47,17 +87,23 @@ export function EditAssignedPlanClient({
           {t('traineeDetail.editPlan.changesSaved')}
         </div>
       )}
-      {exercises.map((ex) => (
-        <ExerciseEditRow
-          key={ex.assignedExerciseId}
-          exercise={ex}
-          onSave={(updates) => saveUpdates([updates])}
-          inputClass={inputClass}
-          setsLabel={t('traineeDetail.editPlan.sets')}
-          repsLabel={t('traineeDetail.editPlan.reps')}
-        />
-      ))}
-      {exercises.length === 0 && (
+      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+        <SortableContext items={items.map((item) => item.assignedExerciseId)} strategy={verticalListSortingStrategy}>
+          <div className="space-y-2">
+            {items.map((ex) => (
+              <ExerciseEditRow
+                key={ex.assignedExerciseId}
+                exercise={ex}
+                onSave={(updates) => saveUpdates([updates])}
+                inputClass={inputClass}
+                setsLabel={t('traineeDetail.editPlan.sets')}
+                repsLabel={t('traineeDetail.editPlan.reps')}
+              />
+            ))}
+          </div>
+        </SortableContext>
+      </DndContext>
+      {items.length === 0 && (
         <p className="text-sm text-text-primary opacity-60">{t('traineeDetail.editPlan.noExercises')}</p>
       )}
     </div>
@@ -77,12 +123,32 @@ function ExerciseEditRow({
   setsLabel: string;
   repsLabel: string;
 }) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: exercise.assignedExerciseId,
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
   const [sets, setSets] = useState(exercise.sets);
   const [reps, setReps] = useState(exercise.reps);
   const [weight, setWeight] = useState(exercise.targetWeightKg ?? 0);
 
   return (
-    <div className="bg-bg-surface border border-border rounded-sm p-4 flex items-center gap-4">
+    <div ref={setNodeRef} style={style} className="bg-bg-surface border border-border rounded-sm p-4 flex items-center gap-4">
+      <button
+        type="button"
+        {...attributes}
+        {...listeners}
+        style={{ touchAction: 'none' }}
+        className="cursor-grab active:cursor-grabbing text-text-primary opacity-40 hover:opacity-100 transition-opacity flex-shrink-0 p-1"
+        aria-label="Drag to reorder"
+      >
+        ⠿
+      </button>
       <div className="flex-1 min-w-0">
         <p className="font-medium text-sm text-text-primary truncate">{exercise.exerciseName}</p>
         <p className="text-xs text-text-primary opacity-60">{exercise.muscleGroup}</p>
