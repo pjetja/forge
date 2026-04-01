@@ -210,6 +210,9 @@ Recent decisions affecting current work:
 - Phase 6 added: trainee and trainer profile pages
 - Phase 7 added: main page / landing page with teasers to drive app adoption
 - Phase 8 added: Training logs and body weight progression tracking
+- Phase 13 added: Proxy Trainee — trainer manages athletes without app accounts, logs workouts + body weight on their behalf, activation link migrates proxy to full account
+- Phase 14 added: Admin and Global Exercise Library — admin curates global exercise library; trainers read global exercises, fork on edit (copy-on-write)
+- Phase 15 added: Super Trainee User Type — self-managing advanced users with plan-builder access, global exercise library, no trainer required
 
 ### Pending Todos
 

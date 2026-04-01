@@ -3,121 +3,78 @@
 ## Milestones
 
 - ✅ **v1.0 Forge MVP** — Phases 1–12 (shipped 2026-04-01) — https://forge-three-tau.vercel.app
-- 🚧 **v1.1** — In progress — Phases 13–15
+- 📋 **v1.1** — Planned (run `/gsd:new-milestone` to define)
 
 ## Phases
 
 <details>
 <summary>✅ v1.0 Forge MVP — Phases 1–12 — SHIPPED 2026-04-01</summary>
 
-| Phase | Name                        | Plans | Completed  |
-| ----- | --------------------------- | ----- | ---------- |
-| 1     | Foundation                  | 5/5   | 2026-03-10 |
-| 01.1  | UI Design System            | 3/3   | 2026-03-10 |
-| 01.2  | Logo Generation             | 2/2   | 2026-03-10 |
-| 01.3  | Figma UI Library            | 2/2   | 2026-03-10 |
-| 2     | Exercise Library            | 3/3   | 2026-03-11 |
-| 02.1  | UI Polish                   | 2/2   | 2026-03-14 |
-| 3     | Plan Builder                | 6/6   | 2026-03-13 |
-| 03.1  | UI Polish                   | 1/1   | 2026-03-13 |
-| 4     | Trainee Workout Logging     | 5/5   | 2026-03-13 |
-| 04.1  | UI Polish                   | 2/2   | 2026-03-14 |
-| 5     | Trainer Progress Visibility | 2/2   | 2026-03-30 |
-| 05.1  | UI Polish                   | 1/1   | 2026-03-18 |
-| 6     | Profile Pages               | 4/4   | 2026-03-25 |
-| 7     | Landing Page & FAQ          | 2/2   | 2026-03-27 |
-| 8     | Training Logs & Body Weight | 3/3   | 2026-03-29 |
-| 9     | Internationalization        | 5/5   | 2026-03-30 |
-| 10    | Demo Users                  | 3/3   | 2026-03-30 |
-| 11    | Deploy                      | 4/4   | 2026-03-31 |
-| 12    | After-Release Fixes         | 6/6   | 2026-04-01 |
+| Phase | Name | Plans | Completed |
+|-------|------|-------|-----------|
+| 1 | Foundation | 5/5 | 2026-03-10 |
+| 01.1 | UI Design System | 3/3 | 2026-03-10 |
+| 01.2 | Logo Generation | 2/2 | 2026-03-10 |
+| 01.3 | Figma UI Library | 2/2 | 2026-03-10 |
+| 2 | Exercise Library | 3/3 | 2026-03-11 |
+| 02.1 | UI Polish | 2/2 | 2026-03-14 |
+| 3 | Plan Builder | 6/6 | 2026-03-13 |
+| 03.1 | UI Polish | 1/1 | 2026-03-13 |
+| 4 | Trainee Workout Logging | 5/5 | 2026-03-13 |
+| 04.1 | UI Polish | 2/2 | 2026-03-14 |
+| 5 | Trainer Progress Visibility | 2/2 | 2026-03-30 |
+| 05.1 | UI Polish | 1/1 | 2026-03-18 |
+| 6 | Profile Pages | 4/4 | 2026-03-25 |
+| 7 | Landing Page & FAQ | 2/2 | 2026-03-27 |
+| 8 | Training Logs & Body Weight | 3/3 | 2026-03-29 |
+| 9 | Internationalization | 5/5 | 2026-03-30 |
+| 10 | Demo Users | 3/3 | 2026-03-30 |
+| 11 | Deploy | 4/4 | 2026-03-31 |
+| 12 | After-Release Fixes | 6/6 | 2026-04-01 |
 
 Full phase details: `.planning/milestones/v1.0-ROADMAP.md`
 
 </details>
 
-<details open>
-<summary>🚧 v1.1 — In Progress</summary>
+## Progress
 
-| Phase | Name                            | Plans | Status     |
-| ----- | ------------------------------- | ----- | ---------- |
-| 13    | Proxy Trainee                   | TBD   | 📋 Planned |
-| 14    | Admin & Global Exercise Library | TBD   | 📋 Planned |
-| 15    | Super Trainee User Type         | TBD   | 📋 Planned |
+| Milestone | Phases | Plans | Status | Shipped |
+|-----------|--------|-------|--------|---------|
+| v1.0 Forge MVP | 19 | 59 | ✅ Complete | 2026-04-01 |
+| v1.1 | TBD | TBD | 📋 Planned | — |
 
 ### Phase 13: Proxy Trainee
 
-**Goal:** Trainers can create proxy trainees (athletes without app accounts), log all workout data and body weight on their behalf, and optionally send an activation link that migrates the proxy to a full authenticated trainee account with all historical data intact.
-
+**Goal:** [To be planned]
+**Requirements**: TBD
 **Depends on:** Phase 12
+**Plans:** 0 plans
 
-**Key requirements:**
+Plans:
+- [ ] TBD (run /gsd:plan-phase 13 to break down)
 
-- Trainer can create a proxy trainee (no real auth account — trainer-managed)
-- Trainer can log workout sessions, sets, and body weight for a proxy trainee, using the same flows a real trainee would use
-- Trainer sees proxy trainees in their roster alongside real trainees (visually distinguished)
-- Trainer can send an activation/invite link to a proxy trainee to upgrade them to a full account
-- On activation, all historical data (sessions, body weight, assigned plans) migrates to the new real account seamlessly
+### Phase 14: Admin and Global Exercise Library
 
-**Design considerations:**
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 13
+**Plans:** 0 plans
 
-- UX: Trainer-side "log on behalf of" flow — minimize extra clicks vs. current trainee self-service flow
-- Architecture: Evaluate shared components/logic between trainer-acting-as-trainee and real trainee flows; extract to a shared layer where it reduces duplication
-- Assign-plan flow simplification: Trainer currently goes Trainee → Add Plan → Select Plan → Select Trainee → Review. Explore starting from trainee context to collapse steps.
-
-### Phase 14: Admin & Global Exercise Library
-
-**Goal:** An admin/super-user account can curate a global exercise library visible to all trainers. Trainers can use global exercises as-is, duplicate and customise them (copy-on-write), and always distinguish their private exercises from global ones. Editing a global exercise auto-forks it into a private copy.
-
-**Depends on:** Phase 13 (shares shared-component architecture refactor)
-
-**Key requirements:**
-
-- A designated admin role exists (Supabase role or flag); admin can sign in with the normal auth flow
-- Admin can create, edit, and delete exercises in the global library (same CRUD interface, different scope)
-- Global exercises are visible in every trainer's exercise library, clearly badged (e.g. "Global" chip)
-- A trainer cannot directly edit a global exercise — editing triggers a copy-on-write fork: the exercise becomes a private clone owned by that trainer
-- A trainer can explicitly duplicate a global exercise to customise it (e.g. swap the YouTube video) without triggering an edit
-- Global exercises cannot be deleted by trainers; only the admin can remove them
-
-**Design considerations:**
-
-- UX: admin exercise management UI (could reuse trainer exercise CRUD with an admin flag toggling "global" scope)
-- Data model: add `is_global` flag (or `owner_id IS NULL`) to exercises table; RLS policies differentiate read vs. write by role
-- Copy-on-write trigger: intercept trainer edit attempt on a global exercise, clone the row, redirect edit to the clone
-- Shared component opportunity: exercise CRUD form used by both admin and trainers, parameterised by scope
+Plans:
+- [ ] TBD (run /gsd:plan-phase 14 to break down)
 
 ### Phase 15: Super Trainee User Type
 
-**Goal:** A new "super trainee" role allows advanced gym-goers to self-manage their training without a trainer. They access the global exercise library, build their own plans, assign those plans to themselves, and manage all schemas and workouts independently.
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 14
+**Plans:** 0 plans
 
-**Depends on:** Phase 14 (global exercise library must exist before super trainees can consume it)
-
-**Key requirements:**
-- A new `super_trainee` role can be selected at sign-up (not advertised on the public landing page for now)
-- Super trainees have read access to the global exercise library (same as trainers, no copy-on-write needed unless they want to customise)
-- Super trainees can create, edit, duplicate, and delete their own workout plans (plan builder parity with trainers, scoped to self)
-- Super trainees can assign plans to themselves and progress through them the same way a regular trainee does
-- Super trainees have no trainer connection — no roster, no invite flow, no shared visibility
-- A dummy super trainee seed account is provided for manual testing
-
-**Design considerations:**
-- UX: single-user dashboard that merges the trainer plan-builder view and the trainee workout-logging view into one coherent experience
-- Architecture: super trainee surfaces the largest shared-component opportunity across all v1.1 phases — plan builder, workout logging, and exercise library components should be extracted to a shared layer usable by trainer, trainee, and super trainee
-- Role gating: middleware and RLS must distinguish `super_trainee` from `trainee` and `trainer` cleanly
-
-</details>
-
-## Progress
-
-| Milestone      | Phases | Plans | Status      | Shipped    |
-| -------------- | ------ | ----- | ----------- | ---------- |
-| v1.0 Forge MVP | 19     | 59    | ✅ Complete | 2026-04-01 |
-| v1.1           | 3+     | TBD   | 🚧 Active   | —          |
+Plans:
+- [ ] TBD (run /gsd:plan-phase 15 to break down)
 
 ---
-
-_Last updated: 2026-04-01 — v1.1: Phases 13 (Proxy Trainee), 14 (Admin & Global Exercise Library), and 15 (Super Trainee) added_
+*Last updated: 2026-04-01 — v1.0 milestone complete*
 
 Decimal phases appear between their surrounding integers in numeric order.
 
@@ -297,19 +254,19 @@ Plans:
 **Execution Order:**
 Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 
-| Phase                          | Plans Complete | Status   | Completed  |
-| ------------------------------ | -------------- | -------- | ---------- |
-| 1. Foundation                  | 5/5            | Complete | 2026-03-10 |
-| 01.1. UI Design System         | 3/3            | Complete | 2026-03-10 |
-| 01.2. Logo Generation          | 2/2            | Complete | 2026-03-10 |
-| 01.3. Figma UI Library         | 2/2            | Complete | 2026-03-10 |
-| 2. Exercise Library            | 3/3            | Complete | 2026-03-11 |
-| 02.1. UI Polish                | Complete       | Complete | 2026-03-14 |
-| 3. Plan Builder                | 6/6            | Complete | 2026-03-13 |
-| 03.1. UI Polish                | Complete       | Complete | 2026-03-13 |
-| 4. Trainee Workout Logging     | 5/5            | Complete | 2026-03-13 |
-| 04.1. UI Polish                | Complete       | Complete | 2026-03-14 |
-| 5. Trainer Progress Visibility | 2/2            | Complete | 2026-03-30 |
+| Phase                          | Plans Complete | Status      | Completed  |
+| ------------------------------ | -------------- | ----------- | ---------- |
+| 1. Foundation                  | 5/5            | Complete    | 2026-03-10 |
+| 01.1. UI Design System         | 3/3            | Complete    | 2026-03-10 |
+| 01.2. Logo Generation          | 2/2            | Complete    | 2026-03-10 |
+| 01.3. Figma UI Library         | 2/2            | Complete    | 2026-03-10 |
+| 2. Exercise Library            | 3/3            | Complete    | 2026-03-11 |
+| 02.1. UI Polish                | Complete       | Complete    | 2026-03-14 |
+| 3. Plan Builder                | 6/6            | Complete    | 2026-03-13 |
+| 03.1. UI Polish                | Complete       | Complete    | 2026-03-13 |
+| 4. Trainee Workout Logging     | 5/5            | Complete    | 2026-03-13 |
+| 04.1. UI Polish                | Complete       | Complete    | 2026-03-14 |
+| 5. Trainer Progress Visibility | 2/2            | Complete    | 2026-03-30 |
 
 ### Phase 05.1: UI Polish (INSERTED)
 
