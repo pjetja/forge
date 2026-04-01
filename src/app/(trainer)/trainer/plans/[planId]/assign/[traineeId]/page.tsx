@@ -23,6 +23,9 @@ export interface ExerciseRow {
   templateWeightKg: number | null;
   templateTempo: string | null;
   templateProgressionMode: string;
+  templateRpeTarget: number | null;
+  templateRirTarget: number | null;
+  templateWeightIncrementPerWeek: number | null;
 }
 
 export default async function AssignReviewPage({ params }: AssignReviewPageProps) {
@@ -62,6 +65,9 @@ export default async function AssignReviewPage({ params }: AssignReviewPageProps
         target_weight_kg,
         tempo,
         progression_mode,
+        rpe_target,
+        rir_target,
+        weight_increment_per_week,
         sort_order,
         exercises (id, name, muscle_group)
       )
@@ -84,6 +90,9 @@ export default async function AssignReviewPage({ params }: AssignReviewPageProps
         templateWeightKg: ex.target_weight_kg ? parseFloat(ex.target_weight_kg) : null,
         templateTempo: ex.tempo ?? null,
         templateProgressionMode: ex.progression_mode ?? 'none',
+        templateRpeTarget: ex.rpe_target ?? null,
+        templateRirTarget: ex.rir_target ?? null,
+        templateWeightIncrementPerWeek: ex.weight_increment_per_week ? parseFloat(ex.weight_increment_per_week) : null,
       })),
   }));
 

@@ -10,7 +10,10 @@ export default function TrainerHomeLoading() {
       {/* Trainee roster cards */}
       <div className="space-y-3">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="flex items-center gap-4 p-4 bg-bg-surface border border-border rounded-lg">
+          <div
+            key={i}
+            className="flex items-center gap-4 p-4 bg-bg-surface border border-border rounded-lg"
+          >
             <div className="h-10 w-10 rounded-full bg-border shrink-0" />
             <div className="flex-1 space-y-2">
               <div className="h-4 w-36 bg-border rounded" />

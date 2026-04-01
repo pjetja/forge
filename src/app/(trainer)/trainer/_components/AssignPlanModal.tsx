@@ -64,6 +64,9 @@ export function AssignPlanModal({
         perSetWeights: null,
         tempo: null,
         progressionMode: 'none',
+        rpeTarget: null,
+        rirTarget: null,
+        weightIncrementPerWeek: null,
       }));
       const result = await assignPlan(planId, traineeAuthUid, overrides);
       if ('error' in result) {

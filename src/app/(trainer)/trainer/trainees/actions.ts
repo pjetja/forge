@@ -1,6 +1,6 @@
-'use server';
-import { createClient } from '@/lib/supabase/server';
-import { revalidatePath } from 'next/cache';
+"use server";
+import { createClient } from "@/lib/supabase/server";
+import { revalidatePath } from "next/cache";
 
 // Exercise override shape for the review step at assignment time
 export type ExerciseOverride = {
@@ -11,6 +11,9 @@ export type ExerciseOverride = {
   perSetWeights: number[] | null;
   tempo: string | null;
   progressionMode: string;
+  rpeTarget: number | null;
+  rirTarget: number | null;
+  weightIncrementPerWeek: number | null;
 };
 
 /** @deprecated Use ExerciseOverride */
@@ -19,19 +22,19 @@ export type WeightOverride = ExerciseOverride;
 export async function assignPlan(
   planId: string,
   traineeAuthUid: string,
-  weightOverrides: ExerciseOverride[] = []
+  weightOverrides: ExerciseOverride[] = [],
 ): Promise<{ assignedPlanId: string } | { error: string }> {
   const supabase = await createClient();
   const claimsResult = await supabase.auth.getClaims();
   const claims = claimsResult.data?.claims;
-  if (!claims) return { error: 'Not authenticated' };
+  if (!claims) return { error: "Not authenticated" };
 
   // Check if trainee already has a pending or active plan — if so, this new one stays pending (UX: user is warned)
   const { data: existingActivePlan } = await supabase
-    .from('assigned_plans')
-    .select('id, status')
-    .eq('trainee_auth_uid', traineeAuthUid)
-    .in('status', ['pending', 'active'])
+    .from("assigned_plans")
+    .select("id, status")
+    .eq("trainee_auth_uid", traineeAuthUid)
+    .in("status", ["pending", "active"])
     .maybeSingle();
 
   // existingActivePlan presence is for UX display only — assign_plan RPC always sets status='pending'
@@ -46,18 +49,22 @@ export async function assignPlan(
     per_set_weights: o.perSetWeights,
     tempo: o.tempo,
     progression_mode: o.progressionMode,
+    rpe_target: o.rpeTarget,
+    rir_target: o.rirTarget,
+    weight_increment_per_week: o.weightIncrementPerWeek,
   }));
 
-  const { data, error } = await supabase.rpc('assign_plan', {
+  const { data, error } = await supabase.rpc("assign_plan", {
     p_plan_id: planId,
     p_trainer_auth_uid: claims.sub,
     p_trainee_auth_uid: traineeAuthUid,
     p_weight_overrides: overridesJson,
   });
 
-  if (error || !data) return { error: 'Failed to assign plan. Please try again.' };
+  if (error || !data)
+    return { error: "Failed to assign plan. Please try again." };
 
-  revalidatePath('/trainer');
+  revalidatePath("/trainer");
   revalidatePath(`/trainer/trainees/${traineeAuthUid}`);
   return { assignedPlanId: data as string };
 }
@@ -75,37 +82,43 @@ export type AssignedExerciseUpdate = {
 export async function editAssignedPlan(
   assignedPlanId: string,
   traineeAuthUid: string,
-  exerciseUpdates: AssignedExerciseUpdate[]
+  exerciseUpdates: AssignedExerciseUpdate[],
 ): Promise<{ success: true } | { error: string }> {
   const supabase = await createClient();
   const claimsResult = await supabase.auth.getClaims();
   const claims = claimsResult.data?.claims;
-  if (!claims) return { error: 'Not authenticated' };
+  if (!claims) return { error: "Not authenticated" };
 
   // Update each exercise
   for (const update of exerciseUpdates) {
-    const fields: Record<string, unknown> = { updated_at: new Date().toISOString() };
+    const fields: Record<string, unknown> = {
+      updated_at: new Date().toISOString(),
+    };
     if (update.sets !== undefined) fields.sets = update.sets;
     if (update.reps !== undefined) fields.reps = update.reps;
-    if ('targetWeightKg' in update) fields.target_weight_kg = update.targetWeightKg ?? null;
-    if ('perSetWeights' in update) {
-      fields.per_set_weights = update.perSetWeights ? JSON.stringify(update.perSetWeights) : null;
+    if ("targetWeightKg" in update)
+      fields.target_weight_kg = update.targetWeightKg ?? null;
+    if ("perSetWeights" in update) {
+      fields.per_set_weights = update.perSetWeights
+        ? JSON.stringify(update.perSetWeights)
+        : null;
     }
-    if ('tempo' in update) fields.tempo = update.tempo ?? null;
-    if ('progressionMode' in update) fields.progression_mode = update.progressionMode;
+    if ("tempo" in update) fields.tempo = update.tempo ?? null;
+    if ("progressionMode" in update)
+      fields.progression_mode = update.progressionMode;
     const { error } = await supabase
-      .from('assigned_schema_exercises')
+      .from("assigned_schema_exercises")
       .update(fields)
-      .eq('id', update.assignedExerciseId);
-    if (error) return { error: 'Failed to update exercise in assigned plan.' };
+      .eq("id", update.assignedExerciseId);
+    if (error) return { error: "Failed to update exercise in assigned plan." };
   }
 
   // Bump plan_updated_at so trainee sees "Plan updated by trainer" badge (Phase 4 reads this)
   const { error: bumpError } = await supabase
-    .from('assigned_plans')
+    .from("assigned_plans")
     .update({ plan_updated_at: new Date().toISOString() })
-    .eq('id', assignedPlanId);
-  if (bumpError) return { error: 'Failed to record plan update timestamp.' };
+    .eq("id", assignedPlanId);
+  if (bumpError) return { error: "Failed to record plan update timestamp." };
 
   revalidatePath(`/trainer/trainees/${traineeAuthUid}`);
   return { success: true };
@@ -113,20 +126,20 @@ export async function editAssignedPlan(
 
 export async function activateAssignedPlan(
   assignedPlanId: string,
-  traineeAuthUid: string
+  traineeAuthUid: string,
 ): Promise<{ success: true } | { error: string }> {
   const supabase = await createClient();
   const claimsResult = await supabase.auth.getClaims();
   const claims = claimsResult.data?.claims;
-  if (!claims) return { error: 'Not authenticated' };
+  if (!claims) return { error: "Not authenticated" };
 
   const { error } = await supabase
-    .from('assigned_plans')
-    .update({ status: 'active', started_at: new Date().toISOString() })
-    .eq('id', assignedPlanId)
-    .eq('trainer_auth_uid', claims.sub)
-    .eq('status', 'pending');
-  if (error) return { error: 'Failed to activate plan.' };
+    .from("assigned_plans")
+    .update({ status: "active", started_at: new Date().toISOString() })
+    .eq("id", assignedPlanId)
+    .eq("trainer_auth_uid", claims.sub)
+    .eq("status", "pending");
+  if (error) return { error: "Failed to activate plan." };
 
   revalidatePath(`/trainer/trainees/${traineeAuthUid}`);
   return { success: true };
@@ -134,21 +147,21 @@ export async function activateAssignedPlan(
 
 export async function reorderPendingPlans(
   traineeAuthUid: string,
-  orderedIds: string[]
+  orderedIds: string[],
 ): Promise<{ success: true } | { error: string }> {
   const supabase = await createClient();
   const claimsResult = await supabase.auth.getClaims();
   const claims = claimsResult.data?.claims;
-  if (!claims) return { error: 'Not authenticated' };
+  if (!claims) return { error: "Not authenticated" };
 
   const updates = orderedIds.map((id, index) =>
     supabase
-      .from('assigned_plans')
+      .from("assigned_plans")
       .update({ sort_order: index })
-      .eq('id', id)
-      .eq('trainer_auth_uid', claims.sub)
-      .eq('trainee_auth_uid', traineeAuthUid)
-      .eq('status', 'pending')
+      .eq("id", id)
+      .eq("trainer_auth_uid", claims.sub)
+      .eq("trainee_auth_uid", traineeAuthUid)
+      .eq("status", "pending"),
   );
 
   await Promise.all(updates);
@@ -158,20 +171,20 @@ export async function reorderPendingPlans(
 
 export async function deleteAssignedPlan(
   assignedPlanId: string,
-  traineeAuthUid: string
+  traineeAuthUid: string,
 ): Promise<{ success: true } | { error: string }> {
   const supabase = await createClient();
   const claimsResult = await supabase.auth.getClaims();
   const claims = claimsResult.data?.claims;
-  if (!claims) return { error: 'Not authenticated' };
+  if (!claims) return { error: "Not authenticated" };
 
   const { error } = await supabase
-    .from('assigned_plans')
+    .from("assigned_plans")
     .delete()
-    .eq('id', assignedPlanId)
-    .eq('trainer_auth_uid', claims.sub)
-    .eq('status', 'pending');
-  if (error) return { error: 'Failed to delete plan.' };
+    .eq("id", assignedPlanId)
+    .eq("trainer_auth_uid", claims.sub)
+    .eq("status", "pending");
+  if (error) return { error: "Failed to delete plan." };
 
   revalidatePath(`/trainer/trainees/${traineeAuthUid}`);
   return { success: true };
@@ -179,19 +192,19 @@ export async function deleteAssignedPlan(
 
 export async function terminateAssignedPlan(
   assignedPlanId: string,
-  traineeAuthUid: string
+  traineeAuthUid: string,
 ): Promise<{ success: true } | { error: string }> {
   const supabase = await createClient();
   const claimsResult = await supabase.auth.getClaims();
   const claims = claimsResult.data?.claims;
-  if (!claims) return { error: 'Not authenticated' };
+  if (!claims) return { error: "Not authenticated" };
 
   const { error } = await supabase
-    .from('assigned_plans')
-    .update({ status: 'terminated' })
-    .eq('id', assignedPlanId)
-    .eq('trainer_auth_uid', claims.sub);
-  if (error) return { error: 'Failed to terminate plan.' };
+    .from("assigned_plans")
+    .update({ status: "terminated" })
+    .eq("id", assignedPlanId)
+    .eq("trainer_auth_uid", claims.sub);
+  if (error) return { error: "Failed to terminate plan." };
 
   revalidatePath(`/trainer/trainees/${traineeAuthUid}`);
   return { success: true };
@@ -199,39 +212,39 @@ export async function terminateAssignedPlan(
 
 export async function updateTraineeGoals(
   traineeAuthUid: string,
-  goals: string
+  goals: string,
 ): Promise<{ success: true } | { error: string }> {
   const supabase = await createClient();
   const claimsResult = await supabase.auth.getClaims();
   const claims = claimsResult.data?.claims;
-  if (!claims) return { error: 'Not authenticated' };
+  if (!claims) return { error: "Not authenticated" };
 
   const { error } = await supabase
-    .from('users')
+    .from("users")
     .update({ goals: goals || null })
-    .eq('auth_uid', traineeAuthUid);
+    .eq("auth_uid", traineeAuthUid);
 
-  if (error) return { error: 'Failed to save goals. Please try again.' };
+  if (error) return { error: "Failed to save goals. Please try again." };
   revalidatePath(`/trainer/trainees/${traineeAuthUid}`);
   return { success: true };
 }
 
 export async function updateTrainerNotes(
   traineeAuthUid: string,
-  notes: string
+  notes: string,
 ): Promise<{ success: true } | { error: string }> {
   const supabase = await createClient();
   const claimsResult = await supabase.auth.getClaims();
   const claims = claimsResult.data?.claims;
-  if (!claims) return { error: 'Not authenticated' };
+  if (!claims) return { error: "Not authenticated" };
 
   const { error } = await supabase
-    .from('trainer_trainee_connections')
+    .from("trainer_trainee_connections")
     .update({ trainer_notes: notes || null })
-    .eq('trainer_auth_uid', claims.sub)
-    .eq('trainee_auth_uid', traineeAuthUid);
+    .eq("trainer_auth_uid", claims.sub)
+    .eq("trainee_auth_uid", traineeAuthUid);
 
-  if (error) return { error: 'Failed to save notes. Please try again.' };
+  if (error) return { error: "Failed to save notes. Please try again." };
   revalidatePath(`/trainer/trainees/${traineeAuthUid}`);
   return { success: true };
 }
@@ -243,24 +256,24 @@ export async function updateTrainerNotes(
  * Uses upsert to handle re-requesting after a decline.
  */
 export async function requestBodyWeightAccess(
-  traineeId: string
+  traineeId: string,
 ): Promise<{ success: true } | { error: string }> {
   const supabase = await createClient();
   const claimsResult = await supabase.auth.getClaims();
   const claims = claimsResult.data?.claims;
-  if (!claims) return { error: 'Not authenticated' };
+  if (!claims) return { error: "Not authenticated" };
 
-  const { error } = await supabase.from('body_weight_access_requests').upsert(
+  const { error } = await supabase.from("body_weight_access_requests").upsert(
     {
       trainer_auth_uid: claims.sub,
       trainee_auth_uid: traineeId,
-      status: 'pending',
+      status: "pending",
       updated_at: new Date().toISOString(),
     },
-    { onConflict: 'trainer_auth_uid,trainee_auth_uid' }
+    { onConflict: "trainer_auth_uid,trainee_auth_uid" },
   );
 
-  if (error) return { error: 'Could not send request. Please try again.' };
+  if (error) return { error: "Could not send request. Please try again." };
   revalidatePath(`/trainer/trainees/${traineeId}`);
   return { success: true };
 }
@@ -269,20 +282,20 @@ export async function requestBodyWeightAccess(
  * Trainer revokes their own body weight access request (pending or approved).
  */
 export async function revokeBodyWeightRequest(
-  traineeId: string
+  traineeId: string,
 ): Promise<{ success: true } | { error: string }> {
   const supabase = await createClient();
   const claimsResult = await supabase.auth.getClaims();
   const claims = claimsResult.data?.claims;
-  if (!claims) return { error: 'Not authenticated' };
+  if (!claims) return { error: "Not authenticated" };
 
   const { error } = await supabase
-    .from('body_weight_access_requests')
+    .from("body_weight_access_requests")
     .delete()
-    .eq('trainer_auth_uid', claims.sub)
-    .eq('trainee_auth_uid', traineeId);
+    .eq("trainer_auth_uid", claims.sub)
+    .eq("trainee_auth_uid", traineeId);
 
-  if (error) return { error: 'Could not revoke request. Please try again.' };
+  if (error) return { error: "Could not revoke request. Please try again." };
   revalidatePath(`/trainer/trainees/${traineeId}`);
   return { success: true };
 }
@@ -294,18 +307,18 @@ export async function reorderAssignedSchemaExercises(
   const supabase = await createClient();
   const claimsResult = await supabase.auth.getClaims();
   const claims = claimsResult.data?.claims;
-  if (!claims) return { error: 'Not authenticated' };
+  if (!claims) return { error: "Not authenticated" };
 
   const updates = orderedIds.map((id, index) =>
     supabase
-      .from('assigned_schema_exercises')
+      .from("assigned_schema_exercises")
       .update({ sort_order: index })
-      .eq('id', id)
+      .eq("id", id),
   );
 
   const results = await Promise.all(updates);
   const failed = results.find((r) => r.error);
-  if (failed) return { error: 'Failed to reorder exercises.' };
+  if (failed) return { error: "Failed to reorder exercises." };
 
   return { success: true };
 }

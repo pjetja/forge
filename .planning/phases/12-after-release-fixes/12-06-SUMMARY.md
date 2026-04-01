@@ -10,6 +10,7 @@
 ## DnD implementation (Task 2)
 
 **`src/app/(trainer)/trainer/trainees/[traineeId]/assigned-plans/[assignedPlanId]/edit/EditAssignedPlanClient.tsx`**
+
 - Added imports: `DndContext`, `closestCenter`, `PointerSensor`, `TouchSensor`, `useSensor`, `useSensors`, `DragEndEvent` from `@dnd-kit/core`; `arrayMove`, `SortableContext`, `useSortable`, `verticalListSortingStrategy` from `@dnd-kit/sortable`; `CSS` from `@dnd-kit/utilities`
 - Added `items` state with `useEffect` sync (mirrors `SchemaExerciseList.tsx` pattern)
 - Added `sensors` with `PointerSensor` (distance: 8) and `TouchSensor` (delay: 250, tolerance: 5) — touch-safe
@@ -18,6 +19,7 @@
 - `ExerciseEditRow` made sortable: added `useSortable({ id: exercise.assignedExerciseId })`, `ref={setNodeRef}`, `style` with transform/transition/opacity, drag handle button (⠿ icon with `...attributes` `...listeners`, `touchAction: 'none'`)
 
 **`src/app/(trainer)/trainer/trainees/actions.ts`**
+
 - Added `reorderAssignedSchemaExercises(assignedPlanId, orderedIds)` server action
 - Bulk updates `assigned_schema_exercises.sort_order` for each ID via parallel Supabase calls
 - Auth check via `getClaims()` before any DB writes

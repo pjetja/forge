@@ -65,6 +65,30 @@ export function AssignReviewForm({
     return init;
   });
 
+  const [rpeTargetOverrides, setRpeTargetOverrides] = useState<Record<string, string>>(() => {
+    const init: Record<string, string> = {};
+    for (const ex of allExercises) {
+      init[ex.exerciseId] = ex.templateRpeTarget != null ? String(ex.templateRpeTarget) : '';
+    }
+    return init;
+  });
+
+  const [rirTargetOverrides, setRirTargetOverrides] = useState<Record<string, string>>(() => {
+    const init: Record<string, string> = {};
+    for (const ex of allExercises) {
+      init[ex.exerciseId] = ex.templateRirTarget != null ? String(ex.templateRirTarget) : '';
+    }
+    return init;
+  });
+
+  const [weightIncrementOverrides, setWeightIncrementOverrides] = useState<Record<string, string>>(() => {
+    const init: Record<string, string> = {};
+    for (const ex of allExercises) {
+      init[ex.exerciseId] = ex.templateWeightIncrementPerWeek != null ? String(ex.templateWeightIncrementPerWeek) : '';
+    }
+    return init;
+  });
+
   function handleAssign() {
     if (!confirmed) { setError('Confirm the warning above to proceed.'); return; }
     startTransition(async () => {
@@ -76,6 +100,9 @@ export function AssignReviewForm({
         perSetWeights: null,
         tempo: tempoOverrides[ex.exerciseId]?.trim() || null,
         progressionMode: progressionOverrides[ex.exerciseId] ?? 'none',
+        rpeTarget: rpeTargetOverrides[ex.exerciseId] ? parseInt(rpeTargetOverrides[ex.exerciseId], 10) : null,
+        rirTarget: rirTargetOverrides[ex.exerciseId] ? parseInt(rirTargetOverrides[ex.exerciseId], 10) : null,
+        weightIncrementPerWeek: weightIncrementOverrides[ex.exerciseId] ? parseFloat(weightIncrementOverrides[ex.exerciseId]) : null,
       }));
       const result = await assignPlan(planId, traineeAuthUid, overrides);
       if ('error' in result) {
@@ -214,6 +241,60 @@ export function AssignReviewForm({
                       }
                       buttonClassName="h-7 py-0 text-xs"
                     />
+
+                    {/* RPE target — shown when progression = rpe */}
+                    {progressionOverrides[ex.exerciseId] === 'rpe' && (
+                      <div className="flex flex-col gap-1">
+                        <label className="text-xs text-text-primary opacity-50">Target RPE</label>
+                        <input
+                          type="number"
+                          value={rpeTargetOverrides[ex.exerciseId] ?? ''}
+                          min={1}
+                          max={10}
+                          placeholder="1-10"
+                          onChange={(e) =>
+                            setRpeTargetOverrides((prev) => ({ ...prev, [ex.exerciseId]: e.target.value }))
+                          }
+                          className="w-16 h-7 bg-bg-page border border-border rounded-sm px-2 text-sm text-text-primary text-center focus:border-accent focus:outline-none"
+                        />
+                      </div>
+                    )}
+
+                    {/* RIR target — shown when progression = rir */}
+                    {progressionOverrides[ex.exerciseId] === 'rir' && (
+                      <div className="flex flex-col gap-1">
+                        <label className="text-xs text-text-primary opacity-50">Target RIR</label>
+                        <input
+                          type="number"
+                          value={rirTargetOverrides[ex.exerciseId] ?? ''}
+                          min={0}
+                          max={5}
+                          placeholder="0-5"
+                          onChange={(e) =>
+                            setRirTargetOverrides((prev) => ({ ...prev, [ex.exerciseId]: e.target.value }))
+                          }
+                          className="w-16 h-7 bg-bg-page border border-border rounded-sm px-2 text-sm text-text-primary text-center focus:border-accent focus:outline-none"
+                        />
+                      </div>
+                    )}
+
+                    {/* kg/week increment — shown when progression = linear */}
+                    {progressionOverrides[ex.exerciseId] === 'linear' && (
+                      <div className="flex flex-col gap-1">
+                        <label className="text-xs text-text-primary opacity-50">+kg/week</label>
+                        <input
+                          type="number"
+                          value={weightIncrementOverrides[ex.exerciseId] ?? ''}
+                          min={0}
+                          step={0.5}
+                          placeholder="e.g. 2.5"
+                          onChange={(e) =>
+                            setWeightIncrementOverrides((prev) => ({ ...prev, [ex.exerciseId]: e.target.value }))
+                          }
+                          className="w-20 h-7 bg-bg-page border border-border rounded-sm px-2 text-sm text-text-primary text-center focus:border-accent focus:outline-none"
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
               );
