@@ -3,7 +3,7 @@
 ## Milestones
 
 - ✅ **v1.0 Forge MVP** — Phases 1–12 (shipped 2026-04-01) — https://forge-three-tau.vercel.app
-- � **v1.1** — In progress — Phase 13: Proxy Trainee
+- 🚧 **v1.1** — In progress — Phases 13–14
 
 ## Phases
 
@@ -39,9 +39,10 @@ Full phase details: `.planning/milestones/v1.0-ROADMAP.md`
 <details open>
 <summary>🚧 v1.1 — In Progress</summary>
 
-| Phase | Name           | Plans | Status     |
-| ----- | -------------- | ----- | ---------- |
-| 13    | Proxy Trainee  | TBD   | 📋 Planned |
+| Phase | Name                              | Plans | Status     |
+| ----- | --------------------------------- | ----- | ---------- |
+| 13    | Proxy Trainee                     | TBD   | 📋 Planned |
+| 14    | Admin & Global Exercise Library   | TBD   | 📋 Planned |
 
 ### Phase 13: Proxy Trainee
 
@@ -50,6 +51,7 @@ Full phase details: `.planning/milestones/v1.0-ROADMAP.md`
 **Depends on:** Phase 12
 
 **Key requirements:**
+
 - Trainer can create a proxy trainee (no real auth account — trainer-managed)
 - Trainer can log workout sessions, sets, and body weight for a proxy trainee, using the same flows a real trainee would use
 - Trainer sees proxy trainees in their roster alongside real trainees (visually distinguished)
@@ -57,9 +59,30 @@ Full phase details: `.planning/milestones/v1.0-ROADMAP.md`
 - On activation, all historical data (sessions, body weight, assigned plans) migrates to the new real account seamlessly
 
 **Design considerations:**
+
 - UX: Trainer-side "log on behalf of" flow — minimize extra clicks vs. current trainee self-service flow
 - Architecture: Evaluate shared components/logic between trainer-acting-as-trainee and real trainee flows; extract to a shared layer where it reduces duplication
 - Assign-plan flow simplification: Trainer currently goes Trainee → Add Plan → Select Plan → Select Trainee → Review. Explore starting from trainee context to collapse steps.
+
+### Phase 14: Admin & Global Exercise Library
+
+**Goal:** An admin/super-user account can curate a global exercise library visible to all trainers. Trainers can use global exercises as-is, duplicate and customise them (copy-on-write), and always distinguish their private exercises from global ones. Editing a global exercise auto-forks it into a private copy.
+
+**Depends on:** Phase 13 (shares shared-component architecture refactor)
+
+**Key requirements:**
+- A designated admin role exists (Supabase role or flag); admin can sign in with the normal auth flow
+- Admin can create, edit, and delete exercises in the global library (same CRUD interface, different scope)
+- Global exercises are visible in every trainer's exercise library, clearly badged (e.g. "Global" chip)
+- A trainer cannot directly edit a global exercise — editing triggers a copy-on-write fork: the exercise becomes a private clone owned by that trainer
+- A trainer can explicitly duplicate a global exercise to customise it (e.g. swap the YouTube video) without triggering an edit
+- Global exercises cannot be deleted by trainers; only the admin can remove them
+
+**Design considerations:**
+- UX: admin exercise management UI (could reuse trainer exercise CRUD with an admin flag toggling "global" scope)
+- Data model: add `is_global` flag (or `owner_id IS NULL`) to exercises table; RLS policies differentiate read vs. write by role
+- Copy-on-write trigger: intercept trainer edit attempt on a global exercise, clone the row, redirect edit to the clone
+- Shared component opportunity: exercise CRUD form used by both admin and trainers, parameterised by scope
 
 </details>
 
@@ -68,11 +91,11 @@ Full phase details: `.planning/milestones/v1.0-ROADMAP.md`
 | Milestone      | Phases | Plans | Status      | Shipped    |
 | -------------- | ------ | ----- | ----------- | ---------- |
 | v1.0 Forge MVP | 19     | 59    | ✅ Complete | 2026-04-01 |
-| v1.1           | 1+     | TBD   | 🚧 Active   | —          |
+| v1.1           | 2+     | TBD   | 🚧 Active   | —          |
 
 ---
 
-_Last updated: 2026-04-01 — v1.1 started (Phase 13: Proxy Trainee added)_
+_Last updated: 2026-04-01 — v1.1: Phases 13 (Proxy Trainee) and 14 (Admin & Global Exercise Library) added_
 
 Decimal phases appear between their surrounding integers in numeric order.
 
