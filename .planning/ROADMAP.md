@@ -3,48 +3,76 @@
 ## Milestones
 
 - ✅ **v1.0 Forge MVP** — Phases 1–12 (shipped 2026-04-01) — https://forge-three-tau.vercel.app
-- 📋 **v1.1** — Planned (run `/gsd:new-milestone` to define)
+- � **v1.1** — In progress — Phase 13: Proxy Trainee
 
 ## Phases
 
 <details>
 <summary>✅ v1.0 Forge MVP — Phases 1–12 — SHIPPED 2026-04-01</summary>
 
-| Phase | Name | Plans | Completed |
-|-------|------|-------|-----------|
-| 1 | Foundation | 5/5 | 2026-03-10 |
-| 01.1 | UI Design System | 3/3 | 2026-03-10 |
-| 01.2 | Logo Generation | 2/2 | 2026-03-10 |
-| 01.3 | Figma UI Library | 2/2 | 2026-03-10 |
-| 2 | Exercise Library | 3/3 | 2026-03-11 |
-| 02.1 | UI Polish | 2/2 | 2026-03-14 |
-| 3 | Plan Builder | 6/6 | 2026-03-13 |
-| 03.1 | UI Polish | 1/1 | 2026-03-13 |
-| 4 | Trainee Workout Logging | 5/5 | 2026-03-13 |
-| 04.1 | UI Polish | 2/2 | 2026-03-14 |
-| 5 | Trainer Progress Visibility | 2/2 | 2026-03-30 |
-| 05.1 | UI Polish | 1/1 | 2026-03-18 |
-| 6 | Profile Pages | 4/4 | 2026-03-25 |
-| 7 | Landing Page & FAQ | 2/2 | 2026-03-27 |
-| 8 | Training Logs & Body Weight | 3/3 | 2026-03-29 |
-| 9 | Internationalization | 5/5 | 2026-03-30 |
-| 10 | Demo Users | 3/3 | 2026-03-30 |
-| 11 | Deploy | 4/4 | 2026-03-31 |
-| 12 | After-Release Fixes | 6/6 | 2026-04-01 |
+| Phase | Name                        | Plans | Completed  |
+| ----- | --------------------------- | ----- | ---------- |
+| 1     | Foundation                  | 5/5   | 2026-03-10 |
+| 01.1  | UI Design System            | 3/3   | 2026-03-10 |
+| 01.2  | Logo Generation             | 2/2   | 2026-03-10 |
+| 01.3  | Figma UI Library            | 2/2   | 2026-03-10 |
+| 2     | Exercise Library            | 3/3   | 2026-03-11 |
+| 02.1  | UI Polish                   | 2/2   | 2026-03-14 |
+| 3     | Plan Builder                | 6/6   | 2026-03-13 |
+| 03.1  | UI Polish                   | 1/1   | 2026-03-13 |
+| 4     | Trainee Workout Logging     | 5/5   | 2026-03-13 |
+| 04.1  | UI Polish                   | 2/2   | 2026-03-14 |
+| 5     | Trainer Progress Visibility | 2/2   | 2026-03-30 |
+| 05.1  | UI Polish                   | 1/1   | 2026-03-18 |
+| 6     | Profile Pages               | 4/4   | 2026-03-25 |
+| 7     | Landing Page & FAQ          | 2/2   | 2026-03-27 |
+| 8     | Training Logs & Body Weight | 3/3   | 2026-03-29 |
+| 9     | Internationalization        | 5/5   | 2026-03-30 |
+| 10    | Demo Users                  | 3/3   | 2026-03-30 |
+| 11    | Deploy                      | 4/4   | 2026-03-31 |
+| 12    | After-Release Fixes         | 6/6   | 2026-04-01 |
 
 Full phase details: `.planning/milestones/v1.0-ROADMAP.md`
 
 </details>
 
+<details open>
+<summary>🚧 v1.1 — In Progress</summary>
+
+| Phase | Name           | Plans | Status     |
+| ----- | -------------- | ----- | ---------- |
+| 13    | Proxy Trainee  | TBD   | 📋 Planned |
+
+### Phase 13: Proxy Trainee
+
+**Goal:** Trainers can create proxy trainees (athletes without app accounts), log all workout data and body weight on their behalf, and optionally send an activation link that migrates the proxy to a full authenticated trainee account with all historical data intact.
+
+**Depends on:** Phase 12
+
+**Key requirements:**
+- Trainer can create a proxy trainee (no real auth account — trainer-managed)
+- Trainer can log workout sessions, sets, and body weight for a proxy trainee, using the same flows a real trainee would use
+- Trainer sees proxy trainees in their roster alongside real trainees (visually distinguished)
+- Trainer can send an activation/invite link to a proxy trainee to upgrade them to a full account
+- On activation, all historical data (sessions, body weight, assigned plans) migrates to the new real account seamlessly
+
+**Design considerations:**
+- UX: Trainer-side "log on behalf of" flow — minimize extra clicks vs. current trainee self-service flow
+- Architecture: Evaluate shared components/logic between trainer-acting-as-trainee and real trainee flows; extract to a shared layer where it reduces duplication
+- Assign-plan flow simplification: Trainer currently goes Trainee → Add Plan → Select Plan → Select Trainee → Review. Explore starting from trainee context to collapse steps.
+
+</details>
+
 ## Progress
 
-| Milestone | Phases | Plans | Status | Shipped |
-|-----------|--------|-------|--------|---------|
-| v1.0 Forge MVP | 19 | 59 | ✅ Complete | 2026-04-01 |
-| v1.1 | TBD | TBD | 📋 Planned | — |
+| Milestone      | Phases | Plans | Status      | Shipped    |
+| -------------- | ------ | ----- | ----------- | ---------- |
+| v1.0 Forge MVP | 19     | 59    | ✅ Complete | 2026-04-01 |
+| v1.1           | 1+     | TBD   | 🚧 Active   | —          |
 
 ---
-*Last updated: 2026-04-01 — v1.0 milestone complete*
+
+_Last updated: 2026-04-01 — v1.1 started (Phase 13: Proxy Trainee added)_
 
 Decimal phases appear between their surrounding integers in numeric order.
 
@@ -224,19 +252,19 @@ Plans:
 **Execution Order:**
 Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 
-| Phase                          | Plans Complete | Status      | Completed  |
-| ------------------------------ | -------------- | ----------- | ---------- |
-| 1. Foundation                  | 5/5            | Complete    | 2026-03-10 |
-| 01.1. UI Design System         | 3/3            | Complete    | 2026-03-10 |
-| 01.2. Logo Generation          | 2/2            | Complete    | 2026-03-10 |
-| 01.3. Figma UI Library         | 2/2            | Complete    | 2026-03-10 |
-| 2. Exercise Library            | 3/3            | Complete    | 2026-03-11 |
-| 02.1. UI Polish                | Complete       | Complete    | 2026-03-14 |
-| 3. Plan Builder                | 6/6            | Complete    | 2026-03-13 |
-| 03.1. UI Polish                | Complete       | Complete    | 2026-03-13 |
-| 4. Trainee Workout Logging     | 5/5            | Complete    | 2026-03-13 |
-| 04.1. UI Polish                | Complete       | Complete    | 2026-03-14 |
-| 5. Trainer Progress Visibility | 2/2            | Complete    | 2026-03-30 |
+| Phase                          | Plans Complete | Status   | Completed  |
+| ------------------------------ | -------------- | -------- | ---------- |
+| 1. Foundation                  | 5/5            | Complete | 2026-03-10 |
+| 01.1. UI Design System         | 3/3            | Complete | 2026-03-10 |
+| 01.2. Logo Generation          | 2/2            | Complete | 2026-03-10 |
+| 01.3. Figma UI Library         | 2/2            | Complete | 2026-03-10 |
+| 2. Exercise Library            | 3/3            | Complete | 2026-03-11 |
+| 02.1. UI Polish                | Complete       | Complete | 2026-03-14 |
+| 3. Plan Builder                | 6/6            | Complete | 2026-03-13 |
+| 03.1. UI Polish                | Complete       | Complete | 2026-03-13 |
+| 4. Trainee Workout Logging     | 5/5            | Complete | 2026-03-13 |
+| 04.1. UI Polish                | Complete       | Complete | 2026-03-14 |
+| 5. Trainer Progress Visibility | 2/2            | Complete | 2026-03-30 |
 
 ### Phase 05.1: UI Polish (INSERTED)
 

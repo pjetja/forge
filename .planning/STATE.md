@@ -1,17 +1,17 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: Forge MVP
-status: completed
-stopped_at: v1.0 milestone complete
+milestone: v1.1
+milestone_name: TBD
+status: planning
+stopped_at: null
 last_updated: "2026-04-01T00:00:00.000Z"
-last_activity: 2026-04-01 -- v1.0 milestone closed (19 phases, 59 plans, 265 commits)
+last_activity: 2026-04-01 -- v1.1 started; Phase 13 (Proxy Trainee) added to roadmap
 progress:
-  total_phases: 19
-  completed_phases: 19
-  total_plans: 59
-  completed_plans: 59
-  percent: 100
+  total_phases: 1
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
@@ -21,14 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-01)
 
 **Core value:** A trainee can open the app mid-workout, see exactly what they did last week on each exercise, and log today's results in under a minute.
-**Current focus:** v1.0 milestone shipped — planning v1.1
+**Current focus:** v1.1 — Phase 13: Proxy Trainee (needs discussion + planning)
 
 ## Current Position
 
-Milestone v1.0 — SHIPPED ✅ (2026-04-01)
-Phases: 19/19 complete | Plans: 59/59 complete
-Live: https://forge-three-tau.vercel.app
-Last activity: 2026-04-01
+Milestone v1.1 — IN PROGRESS 🚧
+Phases: 0/1+ complete | Plans: 0/TBD complete
+Last activity: 2026-04-01 — Phase 13 (Proxy Trainee) added to roadmap
 
 Progress: [██████████] 100%
 
