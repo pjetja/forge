@@ -10,8 +10,8 @@
 
 Phase 12 addresses beta feedback with no scope creep into new features. All work subdivides into six sequential plans:
 
-| Plan  | Title                                                               | Priority     | Status |
-| ----- | ------------------------------------------------------------------- | ------------ | ------ |
+| Plan  | Title                                                               | Priority     | Status       |
+| ----- | ------------------------------------------------------------------- | ------------ | ------------ |
 | 12-01 | Progression mode parameters (RPE/RIR values + linear increment)     | MUST HAVE    | ✅ `02e4fb2` |
 | 12-02 | Nav + UX fixes (log in nav, nav width, assign-plan discoverability) | MUST HAVE    | ✅ `717ebc6` |
 | 12-03 | Trainer view: body weight tab + i18n audit                          | WOULD HAVE   | ✅ `0d3ca70` |
@@ -132,6 +132,7 @@ Two bugs discovered after all plans were committed and STATE.md was marked compl
 **Root cause:** Plan 12-01 added the DB columns and `SchemaExerciseRow` inputs, but the assign-review flow (`AssignReviewForm.tsx`, `page.tsx`, `actions.ts`) was never updated to carry these three fields.
 
 **Files changed:**
+
 - `src/app/(trainer)/trainer/trainees/actions.ts` — `ExerciseOverride` type + `overridesJson` mapping extended with `rpeTarget`, `rirTarget`, `weightIncrementPerWeek`
 - `src/app/(trainer)/trainer/plans/[planId]/assign/[traineeId]/page.tsx` — `ExerciseRow` interface + DB query + `.map()` updated
 - `src/app/(trainer)/trainer/plans/[planId]/assign/[traineeId]/AssignReviewForm.tsx` — 3 new state vars, conditional RPE/RIR/linear inputs rendered after `ProgressionDropdown`, values passed in `handleAssign` overrides
@@ -144,6 +145,7 @@ Two bugs discovered after all plans were committed and STATE.md was marked compl
 **Root cause:** Both detail pages fetched `progression_mode` but never fetched `rpe_target`, `rir_target`, or `weight_increment_per_week`.
 
 **Files changed:**
+
 - `src/app/(trainer)/trainer/trainees/[traineeId]/plans/[assignedPlanId]/exercises/[exerciseId]/page.tsx` — DB select extended; `· RPE n`, `· RIR n`, `· +n kg/week` appended to the sets/reps summary line
 - `src/app/(trainee)/trainee/plans/[assignedPlanId]/workouts/[sessionId]/exercises/[exerciseId]/page.tsx` — DB select + type extended; "Target RPE n" / "Target RIR n" / "+n kg/week" badge chips added to header; for unlogged sets with `progression_mode = 'linear'` the default weight is `lastWeekWeight + weight_increment_per_week` (rounded to nearest 0.25 kg)
 

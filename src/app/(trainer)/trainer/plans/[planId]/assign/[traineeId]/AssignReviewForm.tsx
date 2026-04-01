@@ -1,9 +1,12 @@
-'use client';
-import { useState, useTransition } from 'react';
-import { useRouter } from 'next/navigation';
-import { assignPlan, type ExerciseOverride } from '@/app/(trainer)/trainer/trainees/actions';
-import { ProgressionDropdown } from '@/components/ProgressionDropdown';
-import type { SchemaWithExercises } from './page';
+"use client";
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import {
+  assignPlan,
+  type ExerciseOverride,
+} from "@/app/(trainer)/trainer/trainees/actions";
+import { ProgressionDropdown } from "@/components/ProgressionDropdown";
+import type { SchemaWithExercises } from "./page";
 
 interface AssignReviewFormProps {
   planId: string;
@@ -29,35 +32,46 @@ export function AssignReviewForm({
 
   const allExercises = schemas.flatMap((s) => s.exercises);
 
-  const [setsOverrides, setSetsOverrides] = useState<Record<string, number>>(() => {
-    const init: Record<string, number> = {};
-    for (const ex of allExercises) init[ex.exerciseId] = ex.sets;
-    return init;
-  });
+  const [setsOverrides, setSetsOverrides] = useState<Record<string, number>>(
+    () => {
+      const init: Record<string, number> = {};
+      for (const ex of allExercises) init[ex.exerciseId] = ex.sets;
+      return init;
+    },
+  );
 
-  const [repsOverrides, setRepsOverrides] = useState<Record<string, number>>(() => {
-    const init: Record<string, number> = {};
-    for (const ex of allExercises) init[ex.exerciseId] = ex.reps;
-    return init;
-  });
+  const [repsOverrides, setRepsOverrides] = useState<Record<string, number>>(
+    () => {
+      const init: Record<string, number> = {};
+      for (const ex of allExercises) init[ex.exerciseId] = ex.reps;
+      return init;
+    },
+  );
 
-  const [weightOverrides, setWeightOverrides] = useState<Record<string, number | null>>(() => {
+  const [weightOverrides, setWeightOverrides] = useState<
+    Record<string, number | null>
+  >(() => {
     const init: Record<string, number | null> = {};
     for (const ex of allExercises) {
-      init[ex.exerciseId] = historyByExerciseId[ex.exerciseId] ?? ex.templateWeightKg;
+      init[ex.exerciseId] =
+        historyByExerciseId[ex.exerciseId] ?? ex.templateWeightKg;
     }
     return init;
   });
 
-  const [tempoOverrides, setTempoOverrides] = useState<Record<string, string>>(() => {
-    const init: Record<string, string> = {};
-    for (const ex of allExercises) {
-      init[ex.exerciseId] = ex.templateTempo ?? '';
-    }
-    return init;
-  });
+  const [tempoOverrides, setTempoOverrides] = useState<Record<string, string>>(
+    () => {
+      const init: Record<string, string> = {};
+      for (const ex of allExercises) {
+        init[ex.exerciseId] = ex.templateTempo ?? "";
+      }
+      return init;
+    },
+  );
 
-  const [progressionOverrides, setProgressionOverrides] = useState<Record<string, string>>(() => {
+  const [progressionOverrides, setProgressionOverrides] = useState<
+    Record<string, string>
+  >(() => {
     const init: Record<string, string> = {};
     for (const ex of allExercises) {
       init[ex.exerciseId] = ex.templateProgressionMode;
@@ -65,32 +79,46 @@ export function AssignReviewForm({
     return init;
   });
 
-  const [rpeTargetOverrides, setRpeTargetOverrides] = useState<Record<string, string>>(() => {
+  const [rpeTargetOverrides, setRpeTargetOverrides] = useState<
+    Record<string, string>
+  >(() => {
     const init: Record<string, string> = {};
     for (const ex of allExercises) {
-      init[ex.exerciseId] = ex.templateRpeTarget != null ? String(ex.templateRpeTarget) : '';
+      init[ex.exerciseId] =
+        ex.templateRpeTarget != null ? String(ex.templateRpeTarget) : "";
     }
     return init;
   });
 
-  const [rirTargetOverrides, setRirTargetOverrides] = useState<Record<string, string>>(() => {
+  const [rirTargetOverrides, setRirTargetOverrides] = useState<
+    Record<string, string>
+  >(() => {
     const init: Record<string, string> = {};
     for (const ex of allExercises) {
-      init[ex.exerciseId] = ex.templateRirTarget != null ? String(ex.templateRirTarget) : '';
+      init[ex.exerciseId] =
+        ex.templateRirTarget != null ? String(ex.templateRirTarget) : "";
     }
     return init;
   });
 
-  const [weightIncrementOverrides, setWeightIncrementOverrides] = useState<Record<string, string>>(() => {
+  const [weightIncrementOverrides, setWeightIncrementOverrides] = useState<
+    Record<string, string>
+  >(() => {
     const init: Record<string, string> = {};
     for (const ex of allExercises) {
-      init[ex.exerciseId] = ex.templateWeightIncrementPerWeek != null ? String(ex.templateWeightIncrementPerWeek) : '';
+      init[ex.exerciseId] =
+        ex.templateWeightIncrementPerWeek != null
+          ? String(ex.templateWeightIncrementPerWeek)
+          : "";
     }
     return init;
   });
 
   function handleAssign() {
-    if (!confirmed) { setError('Confirm the warning above to proceed.'); return; }
+    if (!confirmed) {
+      setError("Confirm the warning above to proceed.");
+      return;
+    }
     startTransition(async () => {
       const overrides: ExerciseOverride[] = allExercises.map((ex) => ({
         exerciseId: ex.exerciseId,
@@ -99,13 +127,19 @@ export function AssignReviewForm({
         targetWeightKg: weightOverrides[ex.exerciseId] ?? null,
         perSetWeights: null,
         tempo: tempoOverrides[ex.exerciseId]?.trim() || null,
-        progressionMode: progressionOverrides[ex.exerciseId] ?? 'none',
-        rpeTarget: rpeTargetOverrides[ex.exerciseId] ? parseInt(rpeTargetOverrides[ex.exerciseId], 10) : null,
-        rirTarget: rirTargetOverrides[ex.exerciseId] ? parseInt(rirTargetOverrides[ex.exerciseId], 10) : null,
-        weightIncrementPerWeek: weightIncrementOverrides[ex.exerciseId] ? parseFloat(weightIncrementOverrides[ex.exerciseId]) : null,
+        progressionMode: progressionOverrides[ex.exerciseId] ?? "none",
+        rpeTarget: rpeTargetOverrides[ex.exerciseId]
+          ? parseInt(rpeTargetOverrides[ex.exerciseId], 10)
+          : null,
+        rirTarget: rirTargetOverrides[ex.exerciseId]
+          ? parseInt(rirTargetOverrides[ex.exerciseId], 10)
+          : null,
+        weightIncrementPerWeek: weightIncrementOverrides[ex.exerciseId]
+          ? parseFloat(weightIncrementOverrides[ex.exerciseId])
+          : null,
       }));
       const result = await assignPlan(planId, traineeAuthUid, overrides);
-      if ('error' in result) {
+      if ("error" in result) {
         setError(result.error);
       } else {
         router.push(`/trainer/trainees/${traineeAuthUid}`);
@@ -124,7 +158,8 @@ export function AssignReviewForm({
               {traineeName} already has an active or pending plan.
             </p>
             <p className="text-xs text-yellow-400 mt-1">
-              The new plan will be queued as pending and start when their current plan ends.
+              The new plan will be queued as pending and start when their
+              current plan ends.
             </p>
           </div>
           <label className="flex items-center gap-2 cursor-pointer">
@@ -134,7 +169,9 @@ export function AssignReviewForm({
               onChange={(e) => setConfirmed(e.target.checked)}
               className="accent-accent"
             />
-            <span className="text-sm text-text-primary">I understand — assign anyway</span>
+            <span className="text-sm text-text-primary">
+              I understand — assign anyway
+            </span>
           </label>
         </div>
       )}
@@ -155,7 +192,9 @@ export function AssignReviewForm({
                 >
                   {/* Row 1: name */}
                   <div className="min-w-0">
-                    <p className="font-medium text-sm text-text-primary truncate">{ex.exerciseName}</p>
+                    <p className="font-medium text-sm text-text-primary truncate">
+                      {ex.exerciseName}
+                    </p>
                     <p className="text-xs text-text-primary opacity-60 mt-0.5">
                       {ex.sets} sets &times; {ex.reps} reps
                       {ex.muscleGroup && <> &middot; {ex.muscleGroup}</>}
@@ -166,7 +205,9 @@ export function AssignReviewForm({
                   <div className="flex items-end gap-3">
                     {/* Sets */}
                     <div className="flex flex-col gap-1">
-                      <label className="text-xs text-text-primary opacity-50">Sets</label>
+                      <label className="text-xs text-text-primary opacity-50">
+                        Sets
+                      </label>
                       <input
                         type="number"
                         value={setsOverrides[ex.exerciseId] ?? ex.sets}
@@ -174,7 +215,11 @@ export function AssignReviewForm({
                         max={20}
                         onChange={(e) => {
                           const v = parseInt(e.target.value, 10);
-                          if (!isNaN(v) && v > 0) setSetsOverrides((prev) => ({ ...prev, [ex.exerciseId]: v }));
+                          if (!isNaN(v) && v > 0)
+                            setSetsOverrides((prev) => ({
+                              ...prev,
+                              [ex.exerciseId]: v,
+                            }));
                         }}
                         className="w-14 h-7 bg-bg-page border border-border rounded-sm px-2 text-sm text-text-primary text-center focus:border-accent focus:outline-none"
                       />
@@ -182,7 +227,9 @@ export function AssignReviewForm({
 
                     {/* Reps */}
                     <div className="flex flex-col gap-1">
-                      <label className="text-xs text-text-primary opacity-50">Reps</label>
+                      <label className="text-xs text-text-primary opacity-50">
+                        Reps
+                      </label>
                       <input
                         type="number"
                         value={repsOverrides[ex.exerciseId] ?? ex.reps}
@@ -190,7 +237,11 @@ export function AssignReviewForm({
                         max={100}
                         onChange={(e) => {
                           const v = parseInt(e.target.value, 10);
-                          if (!isNaN(v) && v > 0) setRepsOverrides((prev) => ({ ...prev, [ex.exerciseId]: v }));
+                          if (!isNaN(v) && v > 0)
+                            setRepsOverrides((prev) => ({
+                              ...prev,
+                              [ex.exerciseId]: v,
+                            }));
                         }}
                         className="w-14 h-7 bg-bg-page border border-border rounded-sm px-2 text-sm text-text-primary text-center focus:border-accent focus:outline-none"
                       />
@@ -200,18 +251,23 @@ export function AssignReviewForm({
                     <div className="flex flex-col gap-1">
                       <span className="text-xs text-text-primary opacity-50 flex items-center gap-1">
                         Weight (kg)
-                        {fromHistory && <span className="text-accent opacity-70">· last</span>}
+                        {fromHistory && (
+                          <span className="text-accent opacity-70">· last</span>
+                        )}
                       </span>
                       <input
                         type="number"
-                        value={weightOverrides[ex.exerciseId] ?? ''}
+                        value={weightOverrides[ex.exerciseId] ?? ""}
                         min={0}
                         step={0.5}
                         placeholder="—"
                         onChange={(e) =>
                           setWeightOverrides((prev) => ({
                             ...prev,
-                            [ex.exerciseId]: e.target.value === '' ? null : parseFloat(e.target.value),
+                            [ex.exerciseId]:
+                              e.target.value === ""
+                                ? null
+                                : parseFloat(e.target.value),
                           }))
                         }
                         className="w-24 h-7 bg-bg-page border border-border rounded-sm px-2 text-sm text-text-primary text-center focus:border-accent focus:outline-none"
@@ -220,14 +276,19 @@ export function AssignReviewForm({
 
                     {/* Tempo */}
                     <div className="flex flex-col gap-1">
-                      <label className="text-xs text-text-primary opacity-50">Tempo</label>
+                      <label className="text-xs text-text-primary opacity-50">
+                        Tempo
+                      </label>
                       <input
                         type="text"
-                        value={tempoOverrides[ex.exerciseId] ?? ''}
+                        value={tempoOverrides[ex.exerciseId] ?? ""}
                         placeholder="e.g. 3010"
                         maxLength={8}
                         onChange={(e) =>
-                          setTempoOverrides((prev) => ({ ...prev, [ex.exerciseId]: e.target.value }))
+                          setTempoOverrides((prev) => ({
+                            ...prev,
+                            [ex.exerciseId]: e.target.value,
+                          }))
                         }
                         className="w-24 h-7 bg-bg-page border border-border rounded-sm px-2 text-xs text-text-primary text-center focus:border-accent focus:outline-none"
                       />
@@ -235,25 +296,33 @@ export function AssignReviewForm({
 
                     {/* Progression */}
                     <ProgressionDropdown
-                      value={progressionOverrides[ex.exerciseId] ?? 'none'}
+                      value={progressionOverrides[ex.exerciseId] ?? "none"}
                       onChange={(val) =>
-                        setProgressionOverrides((prev) => ({ ...prev, [ex.exerciseId]: val }))
+                        setProgressionOverrides((prev) => ({
+                          ...prev,
+                          [ex.exerciseId]: val,
+                        }))
                       }
                       buttonClassName="h-7 py-0 text-xs"
                     />
 
                     {/* RPE target — shown when progression = rpe */}
-                    {progressionOverrides[ex.exerciseId] === 'rpe' && (
+                    {progressionOverrides[ex.exerciseId] === "rpe" && (
                       <div className="flex flex-col gap-1">
-                        <label className="text-xs text-text-primary opacity-50">Target RPE</label>
+                        <label className="text-xs text-text-primary opacity-50">
+                          Target RPE
+                        </label>
                         <input
                           type="number"
-                          value={rpeTargetOverrides[ex.exerciseId] ?? ''}
+                          value={rpeTargetOverrides[ex.exerciseId] ?? ""}
                           min={1}
                           max={10}
                           placeholder="1-10"
                           onChange={(e) =>
-                            setRpeTargetOverrides((prev) => ({ ...prev, [ex.exerciseId]: e.target.value }))
+                            setRpeTargetOverrides((prev) => ({
+                              ...prev,
+                              [ex.exerciseId]: e.target.value,
+                            }))
                           }
                           className="w-16 h-7 bg-bg-page border border-border rounded-sm px-2 text-sm text-text-primary text-center focus:border-accent focus:outline-none"
                         />
@@ -261,17 +330,22 @@ export function AssignReviewForm({
                     )}
 
                     {/* RIR target — shown when progression = rir */}
-                    {progressionOverrides[ex.exerciseId] === 'rir' && (
+                    {progressionOverrides[ex.exerciseId] === "rir" && (
                       <div className="flex flex-col gap-1">
-                        <label className="text-xs text-text-primary opacity-50">Target RIR</label>
+                        <label className="text-xs text-text-primary opacity-50">
+                          Target RIR
+                        </label>
                         <input
                           type="number"
-                          value={rirTargetOverrides[ex.exerciseId] ?? ''}
+                          value={rirTargetOverrides[ex.exerciseId] ?? ""}
                           min={0}
                           max={5}
                           placeholder="0-5"
                           onChange={(e) =>
-                            setRirTargetOverrides((prev) => ({ ...prev, [ex.exerciseId]: e.target.value }))
+                            setRirTargetOverrides((prev) => ({
+                              ...prev,
+                              [ex.exerciseId]: e.target.value,
+                            }))
                           }
                           className="w-16 h-7 bg-bg-page border border-border rounded-sm px-2 text-sm text-text-primary text-center focus:border-accent focus:outline-none"
                         />
@@ -279,17 +353,22 @@ export function AssignReviewForm({
                     )}
 
                     {/* kg/week increment — shown when progression = linear */}
-                    {progressionOverrides[ex.exerciseId] === 'linear' && (
+                    {progressionOverrides[ex.exerciseId] === "linear" && (
                       <div className="flex flex-col gap-1">
-                        <label className="text-xs text-text-primary opacity-50">+kg/week</label>
+                        <label className="text-xs text-text-primary opacity-50">
+                          +kg/week
+                        </label>
                         <input
                           type="number"
-                          value={weightIncrementOverrides[ex.exerciseId] ?? ''}
+                          value={weightIncrementOverrides[ex.exerciseId] ?? ""}
                           min={0}
                           step={0.5}
                           placeholder="e.g. 2.5"
                           onChange={(e) =>
-                            setWeightIncrementOverrides((prev) => ({ ...prev, [ex.exerciseId]: e.target.value }))
+                            setWeightIncrementOverrides((prev) => ({
+                              ...prev,
+                              [ex.exerciseId]: e.target.value,
+                            }))
                           }
                           className="w-20 h-7 bg-bg-page border border-border rounded-sm px-2 text-sm text-text-primary text-center focus:border-accent focus:outline-none"
                         />
@@ -312,7 +391,7 @@ export function AssignReviewForm({
         disabled={isPending || !confirmed}
         className="w-full bg-accent hover:bg-accent-hover disabled:opacity-50 text-white rounded-sm py-2.5 text-sm font-semibold transition-colors cursor-pointer"
       >
-        {isPending ? 'Assigning...' : `Assign plan to ${traineeName}`}
+        {isPending ? "Assigning..." : `Assign plan to ${traineeName}`}
       </button>
     </div>
   );

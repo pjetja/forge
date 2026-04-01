@@ -2,7 +2,7 @@
 
 ## What This Is
 
-A mobile-first PWA for personal trainers and their clients. Trainers create structured multi-week workout plans and assign them to trainees. Trainees track their sets, reps, and weights at the gym — with last week's results visible inline — replacing the spreadsheets trainers and clients are using today.
+A mobile-first PWA for personal trainers and their clients. Trainers create structured multi-week workout plans, define exercises with sets/reps/target weights and progression modes (linear, double-progression, RPE, RIR), and assign plans to trainees. Trainees track their sets, reps, and weights at the gym — with last week's results visible inline — and log body weight and workout enrichment data. Trainers monitor progress via cross-plan exercise charts and body weight trends. The app is live at https://forge-three-tau.vercel.app with Polish as the default language.
 
 ## Core Value
 
@@ -10,57 +10,77 @@ A trainee can open the app mid-workout, see exactly what they did last week on e
 
 ## Requirements
 
-### Validated
+### Validated (v1.0)
 
-- [x] Public landing page drives trainer and trainee signups (Validated in Phase 07)
-- [x] In-app FAQ/Help page accessible to all users without login (Validated in Phase 07)
-- [x] Trainee can log enrichment data (training time, kcal burned, RPE) after finishing a workout (Validated in Phase 08)
-- [x] Trainee home shows 4-tab layout: Plans, Exercises, Log, Body Weight (Validated in Phase 08)
-- [x] Trainee training log shows completed sessions in reverse chronological order with enrichment data (Validated in Phase 08)
-- [x] Trainee can log and track daily body weight with chart visualisation (Validated in Phase 08)
-- [x] Trainer can request access to trainee body weight data; trainee approves or declines (Validated in Phase 08)
+- ✓ Trainer and trainee can sign up, log in, stay logged in, and log out — v1.0
+- ✓ Trainer can connect with trainees via invite link; trainee joins via /join/[token] — v1.0
+- ✓ Trainer can build and manage an exercise library with search and muscle-group filtering — v1.0
+- ✓ Trainer can create multi-week plans with schemas, assign exercises with sets/reps/weight and progression mode — v1.0
+- ✓ Trainer can assign a plan to a connected trainee with per-trainee weight review step — v1.0
+- ✓ Trainer can duplicate a plan as a template for another trainee — v1.0
+- ✓ Trainer can edit a plan currently assigned to an active trainee — v1.0
+- ✓ Trainee sees their current week's scheduled schemas and can open a workout session — v1.0
+- ✓ Trainee logs actual sets/reps/weight with last-week results inline per exercise — v1.0
+- ✓ Trainer views cross-plan exercise progress charts per trainee — v1.0
+- ✓ Trainee views their own cross-plan exercise progress — v1.0
+- ✓ Both roles have profile pages (name, bio, goals, stats, Gravatar avatar) — v1.0
+- ✓ Trainer sees trainee roster with compliance stats and private per-trainee notes — v1.0
+- ✓ Public landing page drives signups; all users can access /help and /guide — v1.0
+- ✓ Trainee logs workout enrichment (duration, kcal, RPE) and daily body weight — v1.0
+- ✓ Trainer can request access to trainee body weight data; trainee approves/declines — v1.0
+- ✓ Full PL/EN i18n with LanguageSwitcher in both nav headers; Polish default — v1.0
+- ✓ Demo trainer and trainee accounts with pre-seeded data, one-click login from landing page — v1.0
+- ✓ App deployed to Vercel with Supabase production config, PWA manifest, GitHub CI — v1.0
+- ✓ RPE/RIR/linear progression parameters editable on plan schema, assign-review, and exercise detail pages — v1.0
+- ✓ Public landing page drives trainer and trainee signups — v1.0
+- ✓ In-app FAQ/Help page and /guide usage-flow walkthrough accessible to all users — v1.0
 
-### Active
+### Active (v1.1 candidates)
 
-- [ ] Trainer can create a workout plan with multiple weekly schemas
-- [ ] Trainer can define exercises per schema (series, reps, target weight)
-- [ ] Trainer can assign plans to trainees directly
-- [ ] Trainee can request to join a trainer's plan via invite/code
-- [ ] Trainee can view their current weekly workout schema
-- [ ] Trainee can log sets/reps/weight for each exercise
-- [ ] Trainee sees last week's results inline when logging current workout
-- [ ] Trainer can view all trainee progress logs (weights, reps, over time)
-- [ ] Trainee can import heart rate and workout confirmation data from Apple Watch or Garmin
-- [ ] Multiple trainers can use the platform independently with their own client rosters
+- [ ] Trainee browse full workout history (all past sessions, pagination)
+- [ ] Rest timer between sets (countdown after logging a set)
+- [ ] Email invite: trainer can add trainee directly by email without a link
+- [ ] Push notifications: trainee reminded of scheduled workout; trainer notified when trainee completes session
 
 ### Out of Scope
 
-- AI-generated workout plan suggestions — not in v1, focus on manual plan creation
+- AI-generated workout plan suggestions — not in v1 or v1.1, focus on usability first
 - Real-time messaging between trainer and trainee — future feature
-- Native iOS/Android apps — PWA covers the gym use case
+- Native iOS/Android apps — PWA covers the gym use case well
 - Payments/billing — not in v1
+- Offline logging with sync — significant complexity, defer post v1.1
+- Smartwatch integration (Apple Watch, Garmin) — deferred, storage/bandwidth concerns
+- Social feed / community features — anti-feature for current focus
 
 ## Context
 
-- Replacing spreadsheets: trainers currently manage plans in Google Sheets, trainees track manually
-- Trainees interact with the app at the gym: glance at plan and last week's results, then fill in results after the workout
-- Smartwatch integration (Apple Watch / Garmin) is v1: import heart rate and workout confirmation — HealthKit on iOS, Garmin Connect API
-- PWA enables home-screen installation without app store friction
-- Multi-trainer platform: each trainer manages their own client roster independently
+- **Deployed:** https://forge-three-tau.vercel.app (public beta since 2026-03-31)
+- **Stack:** Next.js 15 App Router · TypeScript · Supabase (Postgres + RLS + Auth) · Drizzle ORM (types) · Tailwind CSS · next-intl · @dnd-kit · recharts · Zod · React Hook Form
+- **Codebase:** 130 TS/TSX files · ~15,600 lines · 265 commits
+- **i18n:** Polish default, English available; 8 translation JSON files (~170 keys)
+- **DB migrations:** 0001–0012 (latest: 0012 adds rpe_target/rir_target/weight_increment_per_week to schema_exercises and assigned_schema_exercises)
+- **Design system:** Dark navy (#0f172a base) + emerald accent (#34d399) + Lato font; 8 color tokens as Tailwind `@theme` inline utilities
+- **Beta feedback addressed:** Post-launch Phase 12 fixed progression parameter display, nav alignment, DnD on assigned schema editor, body-weight tab visibility, loading skeletons, Gravatar docs, i18n audit
 
 ## Constraints
 
 - **Platform**: Progressive Web App (PWA) — mobile-first, installable to home screen
-- **Smartwatch**: Apple Watch via HealthKit (iOS Safari), Garmin via Garmin Connect API — both in v1
-- **Multi-tenancy**: Multiple trainers with isolated client rosters
+- **Multi-tenancy**: Multiple trainers with isolated client rosters (RLS on all tables)
+- **Demo accounts**: Cannot change password (server-action guard + UI hide)
 
 ## Key Decisions
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| PWA over native apps | No app store friction, works on all devices, covers gym use case | — Pending |
-| Smartwatch in v1 | User-specified as v1 scope; HR + workout confirmation data | — Pending |
-| Multi-trainer platform from day 1 | Not personal use — multiple trainers with independent rosters | — Pending |
+| PWA over native apps | No app store friction, works on all devices, covers gym use case | ✓ Good — works well in mobile browser, home-screen install works |
+| Supabase + RLS for multi-tenancy | Server-enforced isolation without application-layer complexity | ✓ Good — zero cross-tenant data leaks in testing |
+| Invite-link connection (not direct email) | Simpler UX, no email lookup privacy issues | ✓ Good — trainers prefer sharing a link over knowing trainee emails |
+| next-intl 4.x with cookie-based locale | Polish-first market, simple switcher | ✓ Good — no URL prefix needed, works with App Router middleware |
+| Server Actions for mutations | Avoids API route boilerplate, type-safe end-to-end | ✓ Good — consistent pattern across all 50+ mutations |
+| Recharts for progress charts | Lightweight, good React integration, no license cost | ✓ Good — renders well on mobile |
+| @dnd-kit for exercise reordering | Accessible, works in Next.js App Router without issues | ✓ Good — used on both plan template and assigned schema editors |
+| Smartwatch integration deferred | Too complex for MVP scope, HealthKit needs native bridge | — Deferred to v2+ |
+| Progression modes (linear/RPE/RIR/double) on schema exercises | Beta feedback: trainers need to specify target values, not just mode | ✓ Built in Phase 12 |
 
 ---
-*Last updated: 2026-03-29 — Phase 08 complete (final phase of v1.0 milestone)*
+*Last updated: 2026-04-01 after v1.0 milestone shipped*
