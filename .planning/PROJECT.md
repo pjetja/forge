@@ -1,5 +1,14 @@
 # Forge
 
+## Current Milestone: v1.1 Expanded User Roles
+
+**Goal:** Extend Forge beyond the trainer↔trainee model with three new user flows — trainers managing athletes without accounts, a global exercise library curated by an admin, and self-managing advanced trainees.
+
+**Target features:**
+- Phase 13: Proxy Trainee — Trainer-managed athletes without accounts; log workouts + body weight on their behalf; activation invite migrates to full account
+- Phase 14: Admin & Global Exercise Library — Admin role curates shared exercise library; trainers fork on edit (copy-on-write)
+- Phase 15: Super Trainee — Self-managing advanced users with plan-builder access, global library, no trainer required
+
 ## What This Is
 
 A mobile-first PWA for personal trainers and their clients. Trainers create structured multi-week workout plans, define exercises with sets/reps/target weights and progression modes (linear, double-progression, RPE, RIR), and assign plans to trainees. Trainees track their sets, reps, and weights at the gym — with last week's results visible inline — and log body weight and workout enrichment data. Trainers monitor progress via cross-plan exercise charts and body weight trends. The app is live at https://forge-three-tau.vercel.app with Polish as the default language.

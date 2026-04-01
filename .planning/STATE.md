@@ -1,13 +1,13 @@
 ---
 gsd_state_version: 1.0
 milestone: v1.1
-milestone_name: TBD
+milestone_name: Expanded User Roles
 status: planning
 stopped_at: null
 last_updated: "2026-04-01T00:00:00.000Z"
-last_activity: 2026-04-01 -- v1.1 started; Phase 13 (Proxy Trainee) added to roadmap
+last_activity: 2026-04-01 -- Milestone v1.1 started; defining requirements for phases 13-15
 progress:
-  total_phases: 1
+  total_phases: 3
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -21,13 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-01)
 
 **Core value:** A trainee can open the app mid-workout, see exactly what they did last week on each exercise, and log today's results in under a minute.
-**Current focus:** v1.1 — Phase 13: Proxy Trainee (needs discussion + planning)
+**Current focus:** v1.1 Expanded User Roles — defining requirements and roadmap
 
 ## Current Position
 
-Milestone v1.1 — IN PROGRESS 🚧
-Phases: 0/1+ complete | Plans: 0/TBD complete
-Last activity: 2026-04-01 — Phase 13 (Proxy Trainee) added to roadmap
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-04-01 — Milestone v1.1 started
 
 Progress: [██████████] 100%
 
