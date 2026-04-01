@@ -148,7 +148,9 @@
       "changePasswordNewLabel": "New password",
       "changePasswordConfirmLabel": "Confirm new password",
       "changePasswordSubmit": "Change password",
-      "changePasswordSaving": "Saving..."
+      "changePasswordSaving": "Saving...",
+      "changePasswordSuccess": "Password updated. You will be signed out.",
+      "changePasswordError": "Failed to update password."
     }
   }
 }

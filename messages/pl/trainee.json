@@ -148,7 +148,9 @@
       "changePasswordNewLabel": "Nowe hasło",
       "changePasswordConfirmLabel": "Potwierdź nowe hasło",
       "changePasswordSubmit": "Zmień hasło",
-      "changePasswordSaving": "Zapisywanie..."
+      "changePasswordSaving": "Zapisywanie...",
+      "changePasswordSuccess": "Hasło zmienione. Zostaniesz wylogowany/a.",
+      "changePasswordError": "Nie udało się zmienić hasła."
     }
   }
 }
