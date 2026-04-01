@@ -30,7 +30,7 @@ export default async function TrainerExerciseProgressPage({ params }: TrainerExe
   // Fetch assigned_schema_exercise
   const { data: ase } = await supabase
     .from('assigned_schema_exercises')
-    .select('id, exercise_id, sets, reps, target_weight_kg, tempo, progression_mode')
+    .select('id, exercise_id, sets, reps, target_weight_kg, tempo, progression_mode, rpe_target, rir_target, weight_increment_per_week')
     .eq('id', exerciseId)
     .single();
 
@@ -163,6 +163,15 @@ export default async function TrainerExerciseProgressPage({ params }: TrainerExe
           {ase.sets} sets &middot; {ase.reps} reps
           {ase.target_weight_kg != null && (
             <> &middot; {parseFloat(String(ase.target_weight_kg))} kg target</>
+          )}
+          {(ase as any).progression_mode === 'rpe' && (ase as any).rpe_target != null && (
+            <> &middot; RPE {(ase as any).rpe_target}</>
+          )}
+          {(ase as any).progression_mode === 'rir' && (ase as any).rir_target != null && (
+            <> &middot; RIR {(ase as any).rir_target}</>
+          )}
+          {(ase as any).progression_mode === 'linear' && (ase as any).weight_increment_per_week != null && (
+            <> &middot; +{parseFloat(String((ase as any).weight_increment_per_week))} kg/week</>
           )}
         </p>
       </div>

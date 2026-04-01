@@ -43,7 +43,7 @@ export default async function ExerciseDetailPage({ params }: ExerciseDetailPageP
   // Fetch the assigned schema exercise (no exercises join — RLS blocks trainee from reading exercises table)
   const { data: rawExercise } = await supabase
     .from('assigned_schema_exercises')
-    .select('id, exercise_id, sets, reps, target_weight_kg, per_set_weights, tempo, progression_mode')
+    .select('id, exercise_id, sets, reps, target_weight_kg, per_set_weights, tempo, progression_mode, rpe_target, rir_target, weight_increment_per_week')
     .eq('id', exerciseId)
     .single();
 
@@ -58,6 +58,9 @@ export default async function ExerciseDetailPage({ params }: ExerciseDetailPageP
     per_set_weights: number[] | null;
     tempo: string | null;
     progression_mode: string;
+    rpe_target: number | null;
+    rir_target: number | null;
+    weight_increment_per_week: number | null;
   };
 
   // Fetch exercise name/muscle_group/video via admin client (bypasses trainer-only RLS on exercises table)
@@ -174,7 +177,11 @@ export default async function ExerciseDetailPage({ params }: ExerciseDetailPageP
       targetReps: ex.reps,
       targetWeightKg,
       actualReps: logged?.actualReps ?? ex.reps,
-      actualWeightKg: logged?.actualWeightKg ?? targetWeightKg,
+      actualWeightKg:
+        logged?.actualWeightKg ??
+        (ex.progression_mode === 'linear' && ex.weight_increment_per_week != null && lastSet?.actual_weight_kg != null
+          ? Math.round((parseFloat(String(lastSet.actual_weight_kg)) + ex.weight_increment_per_week) * 4) / 4
+          : targetWeightKg),
       muscleFailure: logged?.muscleFailure ?? false,
       completed: !!logged,
       lastWeekReps: lastSet?.actual_reps ?? null,
@@ -249,6 +256,21 @@ export default async function ExerciseDetailPage({ params }: ExerciseDetailPageP
               {ex.progression_mode === 'double_progression' && t('workout.doubleProgression')}
               {ex.progression_mode === 'rpe' && t('workout.rpe')}
               {ex.progression_mode === 'rir' && t('workout.rir')}
+            </span>
+          )}
+          {ex.progression_mode === 'rpe' && ex.rpe_target != null && (
+            <span className="text-xs text-text-primary border border-border rounded-sm px-1.5 py-0.5">
+              Target RPE {ex.rpe_target}
+            </span>
+          )}
+          {ex.progression_mode === 'rir' && ex.rir_target != null && (
+            <span className="text-xs text-text-primary border border-border rounded-sm px-1.5 py-0.5">
+              Target RIR {ex.rir_target}
+            </span>
+          )}
+          {ex.progression_mode === 'linear' && ex.weight_increment_per_week != null && (
+            <span className="text-xs text-text-primary border border-border rounded-sm px-1.5 py-0.5">
+              +{ex.weight_increment_per_week} kg/week
             </span>
           )}
         </div>
