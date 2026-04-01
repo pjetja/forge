@@ -37,7 +37,8 @@ export default async function TrainerProfilePage() {
           <h1 className="text-[28px] font-bold text-text-primary">{name}</h1>
           <p className="text-sm text-text-primary opacity-50">{email}</p>
           <p className="text-sm text-text-primary opacity-50">
-            {t("profile.setAvatarHint")}
+            {t("profile.gravatarNote")}{" "}
+            <a href="https://gravatar.com" target="_blank" rel="noopener noreferrer" className="underline">Gravatar</a>
           </p>
         </div>
       </div>

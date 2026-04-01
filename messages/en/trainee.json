@@ -137,6 +137,7 @@
     "profile": {
       "tabProfile": "Profile",
       "tabMyTrainer": "My Trainer",
+      "gravatarNote": "Profile photo from",
       "myTrainerHeading": "My Trainer",
       "noTrainer": "No trainer connected yet.",
       "nameLabelField": "Name",

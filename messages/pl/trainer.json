@@ -165,6 +165,7 @@
     "profile": {
       "profileSection": "Profil",
       "setAvatarHint": "Ustaw swój awatar na gravatar.com",
+      "gravatarNote": "Zdjęcie profilowe z",
       "nameLabel": "Imię",
       "bioLabel": "O mnie",
       "saving": "Zapisywanie...",
