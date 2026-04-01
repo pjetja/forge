@@ -1,7 +1,8 @@
 # Phase 12: After-Release Fixes — Context
 
-**Gathered:** 2026-03-31
-**Status:** Planning
+**Gathered:** 2026-03-31  
+**Completed:** 2026-04-01  
+**Status:** ✅ Complete (all 6 plans + 2 post-phase bug-fixes committed)  
 **Source:** Beta feedback gathered post-launch
 
 <domain>
@@ -9,14 +10,14 @@
 
 Phase 12 addresses beta feedback with no scope creep into new features. All work subdivides into six sequential plans:
 
-| Plan  | Title                                                               | Priority     |
-| ----- | ------------------------------------------------------------------- | ------------ |
-| 12-01 | Progression mode parameters (RPE/RIR values + linear increment)     | MUST HAVE    |
-| 12-02 | Nav + UX fixes (log in nav, nav width, assign-plan discoverability) | MUST HAVE    |
-| 12-03 | Trainer view: body weight tab + i18n audit                          | WOULD HAVE   |
-| 12-04 | FAQ usage flows for trainer and trainee                             | MUST HAVE    |
-| 12-05 | Loading states + Gravatar docs                                      | WOULD HAVE   |
-| 12-06 | Drag & drop on assigned schema editor                               | NICE TO HAVE |
+| Plan  | Title                                                               | Priority     | Status |
+| ----- | ------------------------------------------------------------------- | ------------ | ------ |
+| 12-01 | Progression mode parameters (RPE/RIR values + linear increment)     | MUST HAVE    | ✅ `02e4fb2` |
+| 12-02 | Nav + UX fixes (log in nav, nav width, assign-plan discoverability) | MUST HAVE    | ✅ `717ebc6` |
+| 12-03 | Trainer view: body weight tab + i18n audit                          | WOULD HAVE   | ✅ `0d3ca70` |
+| 12-04 | FAQ usage flows for trainer and trainee                             | MUST HAVE    | ✅ `9d4b768` |
+| 12-05 | Loading states + Gravatar docs                                      | WOULD HAVE   | ✅ `8d7df61` |
+| 12-06 | Drag & drop on assigned schema editor                               | NICE TO HAVE | ✅ `c3e0593` |
 
 </domain>
 
@@ -117,3 +118,33 @@ Phase 12 addresses beta feedback with no scope creep into new features. All work
 - **D-06: Body weight** — Body weight tracking goes to **FAQ** as a new Q&A entry in the existing `/help` page (trainees section, new `q3`). Not in the guide.
 
 </decisions>
+
+<post_phase_fixes>
+
+## Post-Phase Bug Fixes (2026-04-01)
+
+Two bugs discovered after all plans were committed and STATE.md was marked complete.
+
+### BUG-01: Assign plan review page missing RPE/RIR/linear inputs (commit `41ac3fe`)
+
+**Symptom:** On `/trainer/plans/[planId]/assign/[traineeId]`, selecting RPE / RIR / linear in the `ProgressionDropdown` had no effect — no additional fields appeared.
+
+**Root cause:** Plan 12-01 added the DB columns and `SchemaExerciseRow` inputs, but the assign-review flow (`AssignReviewForm.tsx`, `page.tsx`, `actions.ts`) was never updated to carry these three fields.
+
+**Files changed:**
+- `src/app/(trainer)/trainer/trainees/actions.ts` — `ExerciseOverride` type + `overridesJson` mapping extended with `rpeTarget`, `rirTarget`, `weightIncrementPerWeek`
+- `src/app/(trainer)/trainer/plans/[planId]/assign/[traineeId]/page.tsx` — `ExerciseRow` interface + DB query + `.map()` updated
+- `src/app/(trainer)/trainer/plans/[planId]/assign/[traineeId]/AssignReviewForm.tsx` — 3 new state vars, conditional RPE/RIR/linear inputs rendered after `ProgressionDropdown`, values passed in `handleAssign` overrides
+- `src/app/(trainer)/trainer/_components/AssignPlanModal.tsx` — nulls added for 3 new required fields to satisfy updated type
+
+### BUG-02: Exercise detail pages missing RPE/RIR/linear display; no linear auto-increment (commit `f93c787`)
+
+**Symptom:** Trainer and trainee exercise detail pages showed no RPE / RIR / kg/week information. On the trainee side, the default weight for an unlogged set did not auto-increment for linear progression.
+
+**Root cause:** Both detail pages fetched `progression_mode` but never fetched `rpe_target`, `rir_target`, or `weight_increment_per_week`.
+
+**Files changed:**
+- `src/app/(trainer)/trainer/trainees/[traineeId]/plans/[assignedPlanId]/exercises/[exerciseId]/page.tsx` — DB select extended; `· RPE n`, `· RIR n`, `· +n kg/week` appended to the sets/reps summary line
+- `src/app/(trainee)/trainee/plans/[assignedPlanId]/workouts/[sessionId]/exercises/[exerciseId]/page.tsx` — DB select + type extended; "Target RPE n" / "Target RIR n" / "+n kg/week" badge chips added to header; for unlogged sets with `progression_mode = 'linear'` the default weight is `lastWeekWeight + weight_increment_per_week` (rounded to nearest 0.25 kg)
+
+</post_phase_fixes>
