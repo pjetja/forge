@@ -244,7 +244,8 @@
         "noData": "Brak zapisanych wpisów masy ciała.",
         "showChart": "Pokaż wykres",
         "hideChart": "Ukryj wykres",
-        "notEnoughData": "Niewystarczające dane do wyświetlenia wykresu. Wymagane są co najmniej 2 wpisy."
+        "notEnoughData": "Niewystarczające dane do wyświetlenia wykresu. Wymagane są co najmniej 2 wpisy.",
+        "requestExplanation": "Poproś o dostęp do danych o masie ciała tego podopiecznego."
       },
       "stats": {
         "height": "Wzrost",

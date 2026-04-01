@@ -131,7 +131,7 @@ export default async function TraineeDetailPage({
           { key: 'exercises', label: t('traineeDetail.tabs.exercises') },
           { key: 'goals', label: t('traineeDetail.tabs.goals') },
           { key: 'notes', label: t('traineeDetail.tabs.notes') },
-          ...(bodyWeightAccess === 'approved' ? [{ key: 'body-weight', label: t('traineeDetail.tabs.bodyWeight') }] : []),
+          { key: 'body-weight', label: t('traineeDetail.tabs.bodyWeight') },
         ]}
         activeTab={activeTab}
       />
@@ -251,10 +251,8 @@ export default async function TraineeDetailPage({
         </section>
       )}
       {/* Body weight access request button — shown on Plans tab */}
-      <RequestBodyWeightAccessButton
-        traineeId={traineeId}
-        accessStatus={bodyWeightAccess}
-      />
+      <>
+      </>
       </>
       )}
 
@@ -284,8 +282,18 @@ export default async function TraineeDetailPage({
       )}
 
       {/* Body Weight tab content */}
-      {activeTab === 'body-weight' && bodyWeightAccess === 'approved' && weightEntries && (
-        <BodyWeightTab entries={weightEntries} traineeId={traineeId} />
+      {activeTab === 'body-weight' && (
+        bodyWeightAccess === 'approved' && weightEntries
+          ? <BodyWeightTab entries={weightEntries} traineeId={traineeId} />
+          : <div className="space-y-3">
+              <RequestBodyWeightAccessButton
+                traineeId={traineeId}
+                accessStatus={bodyWeightAccess}
+              />
+              {bodyWeightAccess === null && (
+                <p className="text-sm text-text-primary opacity-60">{t('traineeDetail.bodyWeight.requestExplanation')}</p>
+              )}
+            </div>
       )}
     </div>
   );

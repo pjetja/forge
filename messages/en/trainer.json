@@ -244,7 +244,8 @@
         "noData": "No body weight entries recorded yet.",
         "showChart": "Show chart",
         "hideChart": "Hide chart",
-        "notEnoughData": "Not enough data to show a chart. At least 2 entries are needed."
+        "notEnoughData": "Not enough data to show a chart. At least 2 entries are needed.",
+        "requestExplanation": "Request access to view this trainee\u2019s body weight data."
       },
       "stats": {
         "height": "Height",
