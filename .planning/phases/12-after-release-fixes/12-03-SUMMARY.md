@@ -5,6 +5,7 @@
 ### Task 1: Body-weight tab always visible
 
 **`src/app/(trainer)/trainer/trainees/[traineeId]/page.tsx`**
+
 - Removed the conditional `...(bodyWeightAccess === 'approved' ? [{key: 'body-weight', ...}] : [])` from the TabSwitcher `tabs` prop — the body-weight tab is now always shown
 - Updated the body-weight tab render block to handle all 4 access states:
   - `null` → `<RequestBodyWeightAccessButton>` + explanation paragraph
@@ -13,6 +14,7 @@
 - Removed `<RequestBodyWeightAccessButton>` from the Plans tab (no longer needed there)
 
 **`messages/en/trainer.json` + `messages/pl/trainer.json`**
+
 - Added `traineeDetail.bodyWeight.requestExplanation` key
   - EN: "Request access to view this trainee's body weight data."
   - PL: "Poproś o dostęp, aby zobaczyć dane dotyczące masy ciała tego podopiecznego."
@@ -22,6 +24,7 @@
 All 8 translation files (en/pl × auth, common, trainee, trainer) were audited with a structural comparison script.
 
 **Findings:**
+
 - `common.muscleGroup.biceps` / `triceps` — identical in both locales: `"Biceps"` / `"Triceps"` — correct, these are the same words in Polish
 - `trainee.startWorkout.start` — `"Start"` — correct, same in Polish
 - `trainer.schemas.tempo` — `"Tempo"` — correct, loanword

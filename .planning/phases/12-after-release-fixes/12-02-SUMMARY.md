@@ -11,12 +11,12 @@ Four UX fixes: Log link in trainee nav, max-width alignment for both nav headers
 
 ## Tasks completed
 
-| Task | Description | Status |
-|------|-------------|--------|
-| 1 | "Log" link in TraineeNavHeader with searchParams active state | ✓ |
-| 2 | max-w-[1280px] content containers in both nav headers | ✓ |
-| 3 | Verified FIX-04: kcal/duration/rpe already render in log tab | ✓ (no changes needed) |
-| 4 | Persistent "+ Assign Plan" button on Plans tab | ✓ |
+| Task | Description                                                   | Status                |
+| ---- | ------------------------------------------------------------- | --------------------- |
+| 1    | "Log" link in TraineeNavHeader with searchParams active state | ✓                     |
+| 2    | max-w-[1280px] content containers in both nav headers         | ✓                     |
+| 3    | Verified FIX-04: kcal/duration/rpe already render in log tab  | ✓ (no changes needed) |
+| 4    | Persistent "+ Assign Plan" button on Plans tab                | ✓                     |
 
 ## Key files modified
 

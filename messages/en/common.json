@@ -87,7 +87,36 @@
         "q1": "How do I join a trainer?",
         "a1": "Your trainer will send you an invite link or code. Click the link or enter the code on the join page. Once connected, you'll see the workout plans your trainer assigns to you.",
         "q2": "How do I log a workout?",
-        "a2": "Open your current plan from the Plans tab. Tap the workout scheduled for today to start a session. For each exercise, you'll see last week's results inline. Enter your actual weight, reps, and sets for each exercise. Tap 'Finish Workout' when you're done."
+        "a2": "Open your current plan from the Plans tab. Tap the workout scheduled for today to start a session. For each exercise, you'll see last week's results inline. Enter your actual weight, reps, and sets for each exercise. Tap 'Finish Workout' when you're done.",
+        "q3": "How do I track my body weight?",
+        "a3": "Go to your Profile tab to log your body weight. Enter today's weight and confirm. Your trainer can see your body weight history once you grant them access — you'll be prompted to approve this the first time they request it."
+      },
+      "guideLink": "New here? Read the Getting Started guide →"
+    },
+    "guide": {
+      "heading": "Getting Started",
+      "backToHelp": "← Help & FAQ",
+      "trainers": {
+        "sectionHeading": "For Trainers",
+        "intro": "Follow these steps to set up your first training programme.",
+        "step1Title": "Create your exercises",
+        "step1Body": "Go to the Exercises tab and add the exercises you want to use. Give each one a name and optionally a category. These build your personal exercise library.",
+        "step2Title": "Build a plan",
+        "step2Body": "Go to the Plans tab and click 'New Plan'. Name your plan and set the number of weeks. Add workout schemas (e.g. 'Push Day', 'Pull Day') to each week, then add exercises from your library to each schema with target sets, reps, and weight.",
+        "step3Title": "Assign the plan to a trainee",
+        "step3Body": "Open the plan and click 'Assign'. Select a trainee from your connected roster. Review and adjust the exercise weights for that specific trainee, then confirm.",
+        "step4Title": "Monitor progress",
+        "step4Body": "Go to the Trainees tab and click a trainee's name. You'll see their full session history with the actual reps and weights they logged. Use the Exercises tab to view cross-plan progress charts for individual exercises."
+      },
+      "trainees": {
+        "sectionHeading": "For Trainees",
+        "intro": "Follow these steps to get started with your training.",
+        "step1Title": "Join your trainer",
+        "step1Body": "Your trainer will send you an invite link. Click the link to connect your account to theirs. Once connected, you'll see the workout plans they assign to you.",
+        "step2Title": "Log a workout",
+        "step2Body": "Open your current plan from the Plans tab. Tap the workout scheduled for today to start a session. For each exercise, you'll see last week's results inline. Enter your actual weight, reps, and sets, then tap 'Finish Workout' when done.",
+        "step3Title": "View your progress",
+        "step3Body": "Go to the Exercises tab to see progress charts for every exercise across all your plans. You can also open any completed plan to browse session history week by week."
       }
     },
     "join": {

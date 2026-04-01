@@ -87,7 +87,36 @@
         "q1": "Jak dołączyć do trenera?",
         "a1": "Twój trener wyśle Ci link lub kod zaproszenia. Kliknij link lub wpisz kod na stronie dołączania. Po połączeniu zobaczysz plany treningowe przypisane przez trenera.",
         "q2": "Jak zalogować trening?",
-        "a2": "Otwórz aktualny plan z zakładki Plany. Stuknij trening zaplanowany na dzisiaj, aby rozpocząć sesję. Dla każdego ćwiczenia zobaczysz wyniki z ubiegłego tygodnia. Wpisz rzeczywisty ciężar, powtórzenia i serie dla każdego ćwiczenia. Po skończeniu stuknij 'Zakończ trening'."
+        "a2": "Otwórz aktualny plan z zakładki Plany. Stuknij trening zaplanowany na dzisiaj, aby rozpocząć sesję. Dla każdego ćwiczenia zobaczysz wyniki z ubiegłego tygodnia. Wpisz rzeczywisty ciężar, powtórzenia i serie dla każdego ćwiczenia. Po skończeniu stuknij 'Zakończ trening'.",
+        "q3": "Jak śledzić masę ciała?",
+        "a3": "Przejdź do zakładki Profil, aby zapisać swoją masę ciała. Wprowadź dzisiejszą wagę i potwierdź. Trener może zobaczyć historię Twojej masy ciała po udzieleniu mu dostępu — przy pierwszym żądaniu zostaniesz poproszony o zatwierdzenie."
+      },
+      "guideLink": "Jesteś tu po raz pierwszy? Przeczytaj przewodnik dla nowych użytkowników →"
+    },
+    "guide": {
+      "heading": "Pierwsze kroki",
+      "backToHelp": "← Pomoc i FAQ",
+      "trainers": {
+        "sectionHeading": "Dla trenerów",
+        "intro": "Wykonaj te kroki, aby skonfigurować swój pierwszy program treningowy.",
+        "step1Title": "Utwórz ćwiczenia",
+        "step1Body": "Przejdź do zakładki Ćwiczenia i dodaj ćwiczenia, których chcesz używać. Nadaj każdemu nazwę i opcjonalnie kategorię. Tworzą one Twoją osobistą bibliotekę ćwiczeń.",
+        "step2Title": "Zbuduj plan",
+        "step2Body": "Przejdź do zakładki Plany i kliknij 'Nowy plan'. Nazwij plan i ustaw liczbę tygodni. Dodaj schematy treningów (np. 'Push Day', 'Pull Day') do każdego tygodnia, a następnie dodaj ćwiczenia z biblioteki do każdego schematu z docelowymi seriami, powtórzeniami i ciężarem.",
+        "step3Title": "Przypisz plan do podopiecznego",
+        "step3Body": "Otwórz plan i kliknij 'Przypisz'. Wybierz podopiecznego z listy. Sprawdź i dostosuj ciężary ćwiczeń dla tego konkretnego podopiecznego, a następnie potwierdź.",
+        "step4Title": "Monitoruj postępy",
+        "step4Body": "Przejdź do zakładki Podopieczni i kliknij na imię podopiecznego. Zobaczysz pełną historię sesji z faktycznymi powtórzeniami i ciężarami. Użyj zakładki Ćwiczenia, aby wyświetlić wykresy postępu dla poszczególnych ćwiczeń."
+      },
+      "trainees": {
+        "sectionHeading": "Dla podopiecznych",
+        "intro": "Wykonaj te kroki, aby rozpocząć trening.",
+        "step1Title": "Dołącz do trenera",
+        "step1Body": "Trener wyśle Ci link zaproszenia. Kliknij link, aby połączyć swoje konto z jego kontem. Po połączeniu zobaczysz plany treningowe, które Ci przypisze.",
+        "step2Title": "Zaloguj trening",
+        "step2Body": "Otwórz bieżący plan w zakładce Plany. Dotknij treningu zaplanowanego na dziś, aby rozpocząć sesję. Dla każdego ćwiczenia zobaczysz wyniki z ubiegłego tygodnia. Wprowadź rzeczywisty ciężar, powtórzenia i serie, a następnie dotknij 'Zakończ trening'.",
+        "step3Title": "Sprawdź swoje postępy",
+        "step3Body": "Przejdź do zakładki Ćwiczenia, aby zobaczyć wykresy postępu dla każdego ćwiczenia we wszystkich planach. Możesz też otworzyć dowolny ukończony plan i przeglądać historię sesji tydzień po tygodniu."
       }
     },
     "join": {

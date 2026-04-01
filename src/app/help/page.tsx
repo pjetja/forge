@@ -13,7 +13,11 @@ export default async function HelpPage() {
         {/* Back to home link for unauthenticated users */}
         <Link href="/" className="text-sm text-accent hover:text-accent-hover transition-colors mb-8 inline-block">{t('help.backToHome')}</Link>
 
-        {/* For Trainers section */}
+        <p className="text-sm text-accent hover:text-accent-hover mb-8">
+          <Link href="/guide">{t('help.guideLink')}</Link>
+        </p>
+
+        {/* For Trainers section */
         <section className="mt-8">
           <h2 className="text-2xl font-bold text-text-primary mb-4">{t('help.trainers.sectionHeading')}</h2>
 
@@ -48,6 +52,12 @@ export default async function HelpPage() {
           <div className="mb-6">
             <h3 className="text-base font-bold text-text-primary mb-2">{t('help.trainees.q2')}</h3>
             <p className="text-base text-text-primary mb-6" style={{ opacity: 0.8 }}>{t('help.trainees.a2')}</p>
+            <hr className="border-border" />
+          </div>
+
+          <div className="mb-6">
+            <h3 className="text-base font-bold text-text-primary mb-2">{t('help.trainees.q3')}</h3>
+            <p className="text-base text-text-primary mb-6" style={{ opacity: 0.8 }}>{t('help.trainees.a3')}</p>
           </div>
         </section>
       </div>

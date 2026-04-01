@@ -11,18 +11,20 @@ Added configurable parameters to progression modes so trainers can specify RPE/R
 
 ## Tasks completed
 
-| Task | Description | Status |
-|------|-------------|--------|
-| 1 | DB migration + Drizzle schema fix | ✓ |
-| 2 | SchemaExerciseRow conditional inputs | ✓ |
-| 3 | Trainee exercise session progression display | ✓ |
+| Task | Description                                  | Status |
+| ---- | -------------------------------------------- | ------ |
+| 1    | DB migration + Drizzle schema fix            | ✓      |
+| 2    | SchemaExerciseRow conditional inputs         | ✓      |
+| 3    | Trainee exercise session progression display | ✓      |
 
 ## Key files
 
 ### Created
+
 - `src/lib/db/migrations/0012_progression_targets.sql` — Adds rpe_target, rir_target, weight_increment_per_week to both schema_exercises and assigned_schema_exercises; updates assign_plan() RPC
 
 ### Modified
+
 - `src/lib/db/schema.ts` — Added tempo, progressionMode, rpeTarget, rirTarget, weightIncrementPerWeek to schemaExercises and assignedSchemaExercises type definitions
 - `src/app/(trainer)/trainer/_components/SchemaExerciseRow.tsx` — Conditional parameter inputs (Target RPE / Target RIR / +kg/week) based on selected progression mode
 - `src/app/(trainer)/trainer/plans/actions.ts` — Added rpeTarget/rirTarget/weightIncrementPerWeek to SchemaExerciseData and updateSchemaExercise handler
