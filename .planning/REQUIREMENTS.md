@@ -100,50 +100,52 @@ Requirements for milestone v1.1 — Expanded User Roles.
 
 ## Out of Scope
 
-| Feature | Reason |
-| ------- | ------- |
-| AI-generated workout plan suggestions | Not in v1 or v1.1 — focus on usability first |
-| Real-time messaging between trainer and trainee | Future feature |
-| Native iOS/Android apps | PWA covers the gym use case well |
-| Payments/billing | Not in scope |
-| Offline logging with sync | Significant complexity — defer post v1.1 |
-| Social feed / community features | Anti-feature for current focus |
-| Super trainee progress visible to any trainer | Super trainees are fully independent |
-| Smartwatch integration (Apple Watch, Garmin) | Deferred — significant complexity |
+| Feature                                         | Reason                                       |
+| ----------------------------------------------- | -------------------------------------------- |
+| AI-generated workout plan suggestions           | Not in v1 or v1.1 — focus on usability first |
+| Real-time messaging between trainer and trainee | Future feature                               |
+| Native iOS/Android apps                         | PWA covers the gym use case well             |
+| Payments/billing                                | Not in scope                                 |
+| Offline logging with sync                       | Significant complexity — defer post v1.1     |
+| Social feed / community features                | Anti-feature for current focus               |
+| Super trainee progress visible to any trainer   | Super trainees are fully independent         |
+| Smartwatch integration (Apple Watch, Garmin)    | Deferred — significant complexity            |
 
 ## Traceability
 
 Which phases cover which requirements.
 
-| Requirement | Phase | Status |
-| ----------- | ----- | ------ |
-| PROXY-01 | Phase 13 | Pending |
-| PROXY-02 | Phase 13 | Pending |
-| PROXY-03 | Phase 13 | Pending |
-| PROXY-04 | Phase 13 | Pending |
-| PROXY-05 | Phase 13 | Pending |
-| PROXY-06 | Phase 13 | Pending |
-| PROXY-07 | Phase 13 | Pending |
-| ADMIN-01 | Phase 14 | Pending |
-| ADMIN-02 | Phase 14 | Pending |
-| ADMIN-03 | Phase 14 | Pending |
-| ADMIN-04 | Phase 14 | Pending |
-| ADMIN-05 | Phase 14 | Pending |
-| ADMIN-06 | Phase 14 | Pending |
-| ADMIN-07 | Phase 14 | Pending |
-| ADMIN-08 | Phase 14 | Pending |
-| SUPER-01 | Phase 15 | Pending |
-| SUPER-02 | Phase 15 | Pending |
-| SUPER-03 | Phase 15 | Pending |
-| SUPER-04 | Phase 15 | Pending |
-| SUPER-05 | Phase 15 | Pending |
-| SUPER-06 | Phase 15 | Pending |
+| Requirement | Phase    | Status  |
+| ----------- | -------- | ------- |
+| PROXY-01    | Phase 13 | Pending |
+| PROXY-02    | Phase 13 | Pending |
+| PROXY-03    | Phase 13 | Pending |
+| PROXY-04    | Phase 13 | Pending |
+| PROXY-05    | Phase 13 | Pending |
+| PROXY-06    | Phase 13 | Pending |
+| PROXY-07    | Phase 13 | Pending |
+| ADMIN-01    | Phase 14 | Pending |
+| ADMIN-02    | Phase 14 | Pending |
+| ADMIN-03    | Phase 14 | Pending |
+| ADMIN-04    | Phase 14 | Pending |
+| ADMIN-05    | Phase 14 | Pending |
+| ADMIN-06    | Phase 14 | Pending |
+| ADMIN-07    | Phase 14 | Pending |
+| ADMIN-08    | Phase 14 | Pending |
+| SUPER-01    | Phase 15 | Pending |
+| SUPER-02    | Phase 15 | Pending |
+| SUPER-03    | Phase 15 | Pending |
+| SUPER-04    | Phase 15 | Pending |
+| SUPER-05    | Phase 15 | Pending |
+| SUPER-06    | Phase 15 | Pending |
 
 **Coverage:**
+
 - v1.1 requirements: 21 total
 - Mapped to phases: 21/21
 - Unmapped: 0 ✓
 
 ---
-*Requirements defined: 2026-04-01*
-*Last updated: 2026-04-01 — milestone v1.1 initialized*
+
+_Requirements defined: 2026-04-01_
+_Last updated: 2026-04-01 — milestone v1.1 initialized_
